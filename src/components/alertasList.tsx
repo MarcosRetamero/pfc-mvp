@@ -1,12 +1,23 @@
 'use client'
 
 import { Box, Typography, Chip, Paper } from '@mui/material'
-import { Alertas } from '@/interfaces/types'
 
+// Tipo Alerta (según backend.json)
+type Alerta = {
+  alertaId: number
+  seccionId: number
+  tipo: 'normal' | 'precaucion' | 'critico'
+  descripcion: string
+  fechaHora: string
+  resuelta: boolean
+  resolucion: string
+}
+
+// Tipo Galpon enriquecido (solo para esta vista)
 type Galpon = {
   galponId: number
   nombre: string
-  alertas: Alertas[]
+  alertas: Alerta[]
 }
 
 type Props = {
@@ -14,7 +25,7 @@ type Props = {
 }
 
 export default function AlertasList({ galpones }: Props) {
-  const galponesConAlertas = galpones.filter(g => g.alertas.length > 0)
+  const galponesConAlertas = galpones.filter((g) => g.alertas.length > 0)
 
   return (
     <div className="space-y-4">

@@ -11,15 +11,25 @@ import {
 } from "@mui/material"
 import { Thermostat, Opacity, ArrowForward } from "@mui/icons-material"
 
+type Alerta = {
+  alertaId: number
+  seccionId: number
+  tipo: "normal" | "precaucion" | "critico"
+  descripcion: string
+  fechaHora: string
+  resuelta: boolean
+  resolucion: string
+}
+
 type Galpon = {
-  id: string
+  galponId: number
   nombre: string
   temperatura: number
   humedad: number
   estado: "normal" | "precaucion" | "critico"
   pollosVivos: number
   pollosFallecidos: number
-  alertas: { tipo: string; mensaje: string }[]
+  alertas: Alerta[]
 }
 
 type Props = {
@@ -35,7 +45,7 @@ export default function GalponCard({ galpon, onSelect }: Props) {
   }
 
   return (
-    <Card className="h-full flex flex-col justify-between" sx={{borderRadius: 3}}>
+    <Card className="h-full flex flex-col justify-between" sx={{ borderRadius: 3 }}>
       <CardContent>
         <Box className="flex justify-between items-center mb-2">
           <Typography variant="h6">{galpon.nombre}</Typography>
@@ -67,10 +77,10 @@ export default function GalponCard({ galpon, onSelect }: Props) {
 
         {galpon.alertas.length > 0 && (
           <Box className="mt-2 space-y-1">
-            {galpon.alertas.map((alerta, idx) => (
+            {galpon.alertas.map((alerta) => (
               <Chip
-                key={idx}
-                label={alerta.mensaje}
+                key={alerta.alertaId}
+                label={alerta.descripcion}
                 variant="outlined"
                 size="small"
                 color={

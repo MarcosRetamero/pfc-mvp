@@ -21,7 +21,7 @@
     {
       "usuarioId": 1,
       "nombreUsuario": "admin",
-      "password": "admin123",
+      "password": "admin",
       "email": "admin@sistema.com",
       "rolId": 1,
       "activo": true
@@ -82,7 +82,7 @@
       "seccionId": 1,
       "galponId": 1,
       "nombre": "A1",
-      "temperatura": 25.5,
+      "temperatura": 20,
       "humedad": 60.0,
       "fechaHora": "2024-03-13T10:00:00"
     },
@@ -90,7 +90,7 @@
       "seccionId": 2,
       "galponId": 1,
       "nombre": "A2",
-      "temperatura": 26.0,
+      "temperatura": 30,
       "humedad": 63.0,
       "fechaHora": "2024-03-13T10:00:00"
     },

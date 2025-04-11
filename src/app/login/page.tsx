@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TextField, Button, Typography, Paper } from "@mui/material";
-import { Usuarios } from "@/interfaces/types";
+
 
 export default function LoginPage() {
   const [usuario, setUsuario] = useState("");
@@ -11,6 +11,15 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  interface Usuario     {
+    usuarioId: number,
+    nombreUsuario: string,
+    password: string,
+    email: string,
+    rolId: 3,
+    activo: boolean
+  }
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +29,7 @@ export default function LoginPage() {
     
     const data = await res.json();
     const user = data.usuarios.find(
-      (u: Usuarios) => u.nombreUsuario === usuario && u.password === password
+      (u: Usuario) => u.nombreUsuario === usuario && u.password === password
     );
 
     if (user) {
