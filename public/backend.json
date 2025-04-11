@@ -51,16 +51,26 @@
       "proveedor": "Frigorífico Las Camelias"
     }
   ],
-  "galpones": [
+ "galpones": [
     {
       "galponId": 1,
-      "nombre": "Galpón A",
+      "nombre": "Galpón 1",
       "camadaId": 1
     },
     {
       "galponId": 2,
-      "nombre": "Galpón B",
+      "nombre": "Galpón 2",
       "camadaId": 1
+    },
+    {
+      "galponId": 3,
+      "nombre": "Galpón 3",
+      "camadaId": 2
+    },
+    {
+      "galponId": 4,
+      "nombre": "Galpón 4",
+      "camadaId": 2
     }
   ],
   "camadaGalpon": [
@@ -75,14 +85,26 @@
       "galponId": 2,
       "camadaId": 1,
       "cantidadInicial": 2300
+    },
+    {
+      "registroId": 3,
+      "galponId": 3,
+      "camadaId": 2,
+      "cantidadInicial": 3000
+    },
+    {
+      "registroId": 4,
+      "galponId": 4,
+      "camadaId": 2,
+      "cantidadInicial": 2800
     }
   ],
-  "secciones": [
+"secciones": [
     {
       "seccionId": 1,
       "galponId": 1,
       "nombre": "A1",
-      "temperatura": 20,
+      "temperatura": 20.5,
       "humedad": 60.0,
       "fechaHora": "2024-03-13T10:00:00"
     },
@@ -90,7 +112,7 @@
       "seccionId": 2,
       "galponId": 1,
       "nombre": "A2",
-      "temperatura": 30,
+      "temperatura": 21.2,
       "humedad": 63.0,
       "fechaHora": "2024-03-13T10:00:00"
     },
@@ -101,6 +123,118 @@
       "temperatura": 27.2,
       "humedad": 65.5,
       "fechaHora": "2024-03-13T10:00:00"
+    },
+    {
+      "seccionId": 4,
+      "galponId": 1,
+      "nombre": "A3",
+      "temperatura": 22.1,
+      "humedad": 61.5,
+      "fechaHora": "2024-03-15T14:30:00"
+    },
+    {
+      "seccionId": 5,
+      "galponId": 1,
+      "nombre": "A4",
+      "temperatura": 23.5,
+      "humedad": 62.8,
+      "fechaHora": "2024-03-15T14:30:00"
+    },
+    {
+      "seccionId": 6,
+      "galponId": 2,
+      "nombre": "B2",
+      "temperatura": 26.8,
+      "humedad": 64.2,
+      "fechaHora": "2024-03-15T15:00:00"
+    },
+    {
+      "seccionId": 7,
+      "galponId": 2,
+      "nombre": "B3",
+      "temperatura": 25.9,
+      "humedad": 66.1,
+      "fechaHora": "2024-03-16T09:15:00"
+    },
+    {
+      "seccionId": 8,
+      "galponId": 2,
+      "nombre": "B4",
+      "temperatura": 27.5,
+      "humedad": 65.0,
+      "fechaHora": "2024-03-16T09:15:00"
+    },
+    {
+      "seccionId": 9,
+      "galponId": 3,
+      "nombre": "C1",
+      "temperatura": 19.8,
+      "humedad": 58.7,
+      "fechaHora": "2024-04-07T11:00:00"
+    },
+    {
+      "seccionId": 10,
+      "galponId": 3,
+      "nombre": "C2",
+      "temperatura": 20.1,
+      "humedad": 59.3,
+      "fechaHora": "2024-04-07T11:00:00"
+    },
+    {
+      "seccionId": 11,
+      "galponId": 3,
+      "nombre": "C3",
+      "temperatura": 19.5,
+      "humedad": 60.5,
+      "fechaHora": "2024-04-08T16:45:00"
+    },
+    {
+      "seccionId": 12,
+      "galponId": 3,
+      "nombre": "C4",
+      "temperatura": 20.8,
+      "humedad": 57.9,
+      "fechaHora": "2024-04-08T16:45:00"
+    },
+    {
+      "seccionId": 13,
+      "galponId": 4,
+      "nombre": "D1",
+      "temperatura": 24.6,
+      "humedad": 68.2,
+      "fechaHora": "2024-04-09T08:30:00"
+    },
+    {
+      "seccionId": 14,
+      "galponId": 4,
+      "nombre": "D2",
+      "temperatura": 25.1,
+      "humedad": 67.5,
+      "fechaHora": "2024-04-09T08:30:00"
+    },
+    {
+      "seccionId": 15,
+      "galponId": 4,
+      "nombre": "D3",
+      "temperatura": 23.9,
+      "humedad": 69.1,
+      "fechaHora": "2024-04-10T12:00:00"
+    },
+    {
+      "seccionId": 16,
+      "galponId": 4,
+      "nombre": "D4",
+      "temperatura": 25.5,
+      "humedad": 66.8,
+      "fechaHora": "2024-04-10T12:00:00"
+    },
+    {
+      "seccionId": 17,
+      "galponId": 4,
+      "nombre": "D5",
+      "temperatura": 24.2,
+      "humedad": 70.3,
+      "fechaHora": "2024-04-10T18:15:00"
     }
   ],
   "dispositivos": [

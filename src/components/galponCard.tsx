@@ -97,8 +97,8 @@ export default function GalponCard({ galpon, onSelect }: Props) {
       </CardContent>
 
       <CardActions>
-        <Button onClick={onSelect} size="small" endIcon={<ArrowForward />}>
-          Ver detalles
+        <Button onClick={onSelect} size="medium" endIcon={<ArrowForward />} variant="outlined" fullWidth >
+          Ver galpón
         </Button>
       </CardActions>
     </Card>
