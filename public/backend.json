@@ -1,0 +1,204 @@
+{
+  "roles": [
+    {
+      "rolId": 1,
+      "nombre": "Administrador"
+    },
+    {
+      "rolId": 2,
+      "nombre": "Gerente"
+    },
+    {
+      "rolId": 3,
+      "nombre": "Operario"
+    },
+    {
+      "rolId": 4,
+      "nombre": "Proveedor"
+    }
+  ],
+  "usuarios": [
+    {
+      "usuarioId": 1,
+      "nombreUsuario": "admin",
+      "password": "admin123",
+      "email": "admin@sistema.com",
+      "rolId": 1,
+      "activo": true
+    },
+    {
+      "usuarioId": 2,
+      "nombreUsuario": "gerente",
+      "password": "gerente123",
+      "email": "gerente@granja.com",
+      "rolId": 2,
+      "activo": true
+    },
+    {
+      "usuarioId": 3,
+      "nombreUsuario": "operario1",
+      "password": "operario123",
+      "email": "op1@granja.com",
+      "rolId": 3,
+      "activo": true
+    }
+  ],
+  "camadas": [
+    {
+      "camadaId": 1,
+      "fechaIngreso": "2024-03-01",
+      "fechaSalida": null,
+      "proveedor": "Frigorífico Las Camelias"
+    }
+  ],
+  "galpones": [
+    {
+      "galponId": 1,
+      "nombre": "Galpón A",
+      "camadaId": 1
+    },
+    {
+      "galponId": 2,
+      "nombre": "Galpón B",
+      "camadaId": 1
+    }
+  ],
+  "camadaGalpon": [
+    {
+      "registroId": 1,
+      "galponId": 1,
+      "camadaId": 1,
+      "cantidadInicial": 2500
+    },
+    {
+      "registroId": 2,
+      "galponId": 2,
+      "camadaId": 1,
+      "cantidadInicial": 2300
+    }
+  ],
+  "secciones": [
+    {
+      "seccionId": 1,
+      "galponId": 1,
+      "nombre": "A1",
+      "temperatura": 25.5,
+      "humedad": 60.0,
+      "fechaHora": "2024-03-13T10:00:00"
+    },
+    {
+      "seccionId": 2,
+      "galponId": 1,
+      "nombre": "A2",
+      "temperatura": 26.0,
+      "humedad": 63.0,
+      "fechaHora": "2024-03-13T10:00:00"
+    },
+    {
+      "seccionId": 3,
+      "galponId": 2,
+      "nombre": "B1",
+      "temperatura": 27.2,
+      "humedad": 65.5,
+      "fechaHora": "2024-03-13T10:00:00"
+    }
+  ],
+  "dispositivos": [
+    {
+      "id": 1,
+      "seccionId": 1,
+      "tipo": "ventilador",
+      "estado": "apagado"
+    },
+    {
+      "id": 2,
+      "seccionId": 1,
+      "tipo": "aspersor",
+      "estado": "encendido"
+    },
+    {
+      "id": 3,
+      "seccionId": 2,
+      "tipo": "ventilador",
+      "estado": "encendido"
+    }
+  ],
+  "registroCamadaGalpon": [
+    {
+      "registroId": 1,
+      "galponId": 1,
+      "fecha": "2024-03-10",
+      "pesoPromedio": 0.75,
+      "cantidadMuestra": 25,
+      "cantidadMuertes": 5,
+      "motivoMuerte": "Calor"
+    }
+  ],
+  "climaExterno": [
+    {
+      "climaId": 1,
+      "fechaHora": "2024-03-13T10:00:00",
+      "temperatura": 28.0,
+      "humedad": 70.0,
+      "viento": 12.0,
+      "lluvia": false,
+      "presion": 1012.3
+    }
+  ],
+  "alertas": [
+    {
+      "alertaId": 1,
+      "seccionId": 1,
+      "tipo": "critico",
+      "descripcion": "Temperatura crítica detectada",
+      "fechaHora": "2024-03-13T10:05:00",
+      "resuelta": false,
+      "resolucion": ""
+    }
+  ],
+  "configuracionAlerta": [
+    {
+      "configId": 1,
+      "galponId": 1,
+      "variable": "temperatura",
+      "valorMin": 20,
+      "valorMax": 28,
+      "rolANotificar": "Operario",
+      "canalNotificacion": "email"
+    }
+  ],
+  "visitasVeterinarias": [
+    {
+      "visitaId": 1,
+      "camadaId": 1,
+      "fecha": "2024-03-12",
+      "profesional": "Dra. López",
+      "descripcion": "Signos de estrés por calor",
+      "medicacion": "Vitaminas y electrolitos",
+      "severidad": "media"
+    }
+  ],
+  "informeDiario": [
+    {
+      "informeId": 1,
+      "camadaId": 1,
+      "fecha": "2024-03-13",
+      "avesFallecidasHoy": 3,
+      "ultimoPesoPromedio": 0.78,
+      "requiereVeterinario": false,
+      "reposicionAlimentoNecesaria": true,
+      "incidencia": "Revisión de silo 1",
+      "enviado": true
+    }
+  ],
+  "logSistema": [
+    {
+      "logId": 1,
+      "usuarioId": 2,
+      "fechaHora": "2024-03-13T09:00:00",
+      "descripcion": "Modificó alerta para galpón A",
+      "modulo": "alertas",
+      "tipoAccion": "update"
+    }
+  ]
+}
