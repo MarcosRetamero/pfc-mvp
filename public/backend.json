@@ -49,6 +49,12 @@
       "fechaIngreso": "2024-03-01",
       "fechaSalida": null,
       "proveedor": "Frigorífico Las Camelias"
+    },
+    {
+      "camadaId": 2,
+      "fechaIngreso": "2024-04-05",
+      "fechaSalida": "2024-05-15",
+      "proveedor": "Frigorífico Las Camelias"
     }
   ],
  "galpones": [
@@ -85,6 +91,18 @@
       "galponId": 2,
       "camadaId": 1,
       "cantidadInicial": 2300
+    },
+    {
+      "registroId": 5,
+      "galponId": 3,
+      "camadaId": 1,
+      "cantidadInicial": 3000
+    },
+    {
+      "registroId": 6,
+      "galponId": 4,
+      "camadaId": 1,
+      "cantidadInicial": 2800
     },
     {
       "registroId": 3,

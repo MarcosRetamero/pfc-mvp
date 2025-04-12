@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
-import EstadisticasGenerales from "../../components/estadisticasGenerales";
-import GalponCard from "../../components/galponCard";
-import AlertasList from "../../components/alertasList";
+import EstadisticasGenerales from "@/components/estadisticasGenerales";
+import GalponCard from "@/components/galponCard";
+import AlertasList from "@/components/alertasList";
+  
 
 // Tipos locales
 type Alerta = {
