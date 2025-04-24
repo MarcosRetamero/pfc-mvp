@@ -71,12 +71,12 @@
     {
       "galponId": 3,
       "nombre": "Galpón 3",
-      "camadaId": 2
+      "camadaId": 1
     },
     {
       "galponId": 4,
       "nombre": "Galpón 4",
-      "camadaId": 2
+      "camadaId": 1
     }
   ],
   "camadaGalpon": [

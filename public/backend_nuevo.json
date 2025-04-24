@@ -1,0 +1,1201 @@
+{
+  "rol": [
+    {
+      "rolId": 1,
+      "nombre": "Administrador",
+      "descripcion": "Acceso total al sistema"
+    },
+    {
+      "rolId": 2,
+      "nombre": "Gerente",
+      "descripcion": "Acceso a reportes y configuración"
+    },
+    {
+      "rolId": 3,
+      "nombre": "Operario",
+      "descripcion": "Acceso a operaciones diarias"
+    },
+    {
+      "rolId": 4,
+      "nombre": "Proveedor",
+      "descripcion": "Solo lectura de informes"
+    }
+  ],
+  "usuario": [
+    {
+      "usuarioId": 1,
+      "nombreUsuario": "admin",
+      "email": "admin@avicola.com",
+      "rol": 1,
+      "activo": true,
+      "numero": 1001,
+      "ultimoLogin": "2025-01-05T09:00:00Z"
+    },
+    {
+      "usuarioId": 2,
+      "nombreUsuario": "gerente",
+      "email": "gerente@avicola.com",
+      "rol": 2,
+      "activo": true,
+      "numero": 1002,
+      "ultimoLogin": "2025-01-05T08:30:00Z"
+    },
+    {
+      "usuarioId": 3,
+      "nombreUsuario": "operario1",
+      "email": "operario1@avicola.com",
+      "rol": 3,
+      "activo": true,
+      "numero": 2001,
+      "ultimoLogin": "2025-01-05T07:45:00Z"
+    }
+  ],
+  "proveedor": [
+    {
+      "proveedorId": 1,
+      "nombre": "Las Camelias",
+      "email": "contacto@lascamelias.com"
+    },
+    {
+      "proveedorId": 2,
+      "nombre": "Pollos del Sur",
+      "email": "ventas@pollosdelsur.com"
+    }
+  ],
+  "galpon": [
+    {
+      "galponId": 1,
+      "nombre": "Galpón 1",
+      "superficieM2": 500.0,
+      "cantidadSecciones": 2,
+      "capacidadMax": 6000,
+      "capacidadSiloKg": 1500.0
+    },
+    {
+      "galponId": 2,
+      "nombre": "Galpón 2",
+      "superficieM2": 700.0,
+      "cantidadSecciones": 2,
+      "capacidadMax": 8000,
+      "capacidadSiloKg": 2000.0
+    },
+    {
+      "galponId": 3,
+      "nombre": "Galpón 3",
+      "superficieM2": 600.0,
+      "cantidadSecciones": 2,
+      "capacidadMax": 7000,
+      "capacidadSiloKg": 1800.0
+    },
+    {
+      "galponId": 4,
+      "nombre": "Galpón 4",
+      "superficieM2": 550.0,
+      "cantidadSecciones": 2,
+      "capacidadMax": 6500,
+      "capacidadSiloKg": 1600.0
+    }
+  ],
+  "seccion": [
+    { "seccionId": 1, "galponId": 1, "nombre": "Sección A" },
+    { "seccionId": 2, "galponId": 1, "nombre": "Sección B" },
+    { "seccionId": 3, "galponId": 2, "nombre": "Sección A" },
+    { "seccionId": 4, "galponId": 2, "nombre": "Sección B" },
+    { "seccionId": 5, "galponId": 3, "nombre": "Sección A" },
+    { "seccionId": 6, "galponId": 3, "nombre": "Sección B" },
+    { "seccionId": 7, "galponId": 4, "nombre": "Sección A" },
+    { "seccionId": 8, "galponId": 4, "nombre": "Sección B" }
+  ],
+  "sensor": [
+    {
+      "sensorId": 1,
+      "seccionId": 1,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 2,
+      "seccionId": 2,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 3,
+      "seccionId": 3,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 4,
+      "seccionId": 4,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 5,
+      "seccionId": 1,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 6,
+      "seccionId": 2,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 7,
+      "seccionId": 3,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 8,
+      "seccionId": 4,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 9,
+      "seccionId": 5,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 10,
+      "seccionId": 6,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 11,
+      "seccionId": 5,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 12,
+      "seccionId": 6,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 13,
+      "seccionId": 7,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 14,
+      "seccionId": 8,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 15,
+      "seccionId": 7,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 16,
+      "seccionId": 8,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    }
+  ],
+  "lecturaSensor": [
+    {
+      "lecturaId": 1,
+      "sensorId": 1,
+      "valor": 24.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 2,
+      "sensorId": 2,
+      "valor": 26.8,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 3,
+      "sensorId": 3,
+      "valor": 23.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 4,
+      "sensorId": 4,
+      "valor": 29.2,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 5,
+      "sensorId": 5,
+      "valor": 65.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 6,
+      "sensorId": 6,
+      "valor": 72.1,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 7,
+      "sensorId": 1,
+      "valor": 25.0,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 8,
+      "sensorId": 2,
+      "valor": 27.1,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 9,
+      "sensorId": 5,
+      "valor": 66.5,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 10,
+      "sensorId": 6,
+      "valor": 71.0,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 11,
+      "sensorId": 3,
+      "valor": 24.0,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 12,
+      "sensorId": 4,
+      "valor": 28.8,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 13,
+      "sensorId": 1,
+      "valor": 25.5,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 14,
+      "sensorId": 2,
+      "valor": 27.5,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 15,
+      "sensorId": 5,
+      "valor": 67.0,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 16,
+      "sensorId": 6,
+      "valor": 70.5,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 17,
+      "sensorId": 3,
+      "valor": 24.2,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 18,
+      "sensorId": 4,
+      "valor": 28.5,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 19,
+      "sensorId": 1,
+      "valor": 25.2,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 20,
+      "sensorId": 5,
+      "valor": 64.0,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 21,
+      "sensorId": 3,
+      "valor": 23.8,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 22,
+      "sensorId": 1,
+      "valor": 24.8,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 23,
+      "sensorId": 5,
+      "valor": 68.0,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 24,
+      "sensorId": 3,
+      "valor": 24.1,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 25,
+      "sensorId": 4,
+      "valor": 28.9,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 26,
+      "sensorId": 7,
+      "valor": 62.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 27,
+      "sensorId": 8,
+      "valor": 68.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 28,
+      "sensorId": 7,
+      "valor": 63.0,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 29,
+      "sensorId": 8,
+      "valor": 67.5,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 30,
+      "sensorId": 7,
+      "valor": 63.8,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 31,
+      "sensorId": 8,
+      "valor": 67.1,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 32,
+      "sensorId": 3,
+      "valor": 23.9,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 33,
+      "sensorId": 7,
+      "valor": 64.0,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 34,
+      "sensorId": 8,
+      "valor": 66.5,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 35,
+      "sensorId": 7,
+      "valor": 65.0,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 36,
+      "sensorId": 9,
+      "valor": 22.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 37,
+      "sensorId": 10,
+      "valor": 23.1,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 38,
+      "sensorId": 11,
+      "valor": 60.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 39,
+      "sensorId": 12,
+      "valor": 61.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 40,
+      "sensorId": 9,
+      "valor": 22.8,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 41,
+      "sensorId": 11,
+      "valor": 60.5,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 42,
+      "sensorId": 13,
+      "valor": 24.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 43,
+      "sensorId": 14,
+      "valor": 24.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 44,
+      "sensorId": 15,
+      "valor": 68.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 45,
+      "sensorId": 16,
+      "valor": 69.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 46,
+      "sensorId": 13,
+      "valor": 24.2,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 47,
+      "sensorId": 15,
+      "valor": 68.5,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    }
+  ],
+  "dispositivo": [
+    {
+      "dispositivoId": 1,
+      "seccionId": 1,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 2,
+      "seccionId": 1,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 3,
+      "seccionId": 2,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 4,
+      "seccionId": 2,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 5,
+      "seccionId": 3,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 6,
+      "seccionId": 3,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 7,
+      "seccionId": 4,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 8,
+      "seccionId": 4,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 9,
+      "seccionId": 1,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 10,
+      "seccionId": 2,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 11,
+      "seccionId": 5,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 12,
+      "seccionId": 5,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 13,
+      "seccionId": 6,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 14,
+      "seccionId": 6,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 15,
+      "seccionId": 5,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 16,
+      "seccionId": 7,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 17,
+      "seccionId": 7,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 18,
+      "seccionId": 8,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 19,
+      "seccionId": 8,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 20,
+      "seccionId": 7,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    }
+  ],
+  "logDispositivo": [
+    {
+      "logId": 1,
+      "dispositivoId": 1,
+      "accion": "ON",
+      "fechaHora": "2025-01-05T09:00:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 2,
+      "dispositivoId": 2,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T09:05:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 3,
+      "dispositivoId": 3,
+      "accion": "ON",
+      "fechaHora": "2025-01-05T09:10:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 4,
+      "dispositivoId": 4,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T09:15:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 5,
+      "dispositivoId": 5,
+      "accion": "ON",
+      "fechaHora": "2025-01-05T09:20:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 6,
+      "dispositivoId": 6,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T09:25:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 7,
+      "dispositivoId": 7,
+      "accion": "ON",
+      "fechaHora": "2025-01-05T09:30:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 8,
+      "dispositivoId": 8,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T09:35:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 9,
+      "dispositivoId": 9,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T18:00:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 10,
+      "dispositivoId": 10,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T18:01:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 11,
+      "dispositivoId": 11,
+      "accion": "ON",
+      "fechaHora": "2025-01-05T10:00:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 12,
+      "dispositivoId": 12,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T10:05:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 13,
+      "dispositivoId": 15,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T19:00:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 14,
+      "dispositivoId": 16,
+      "accion": "ON",
+      "fechaHora": "2025-01-05T11:00:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 15,
+      "dispositivoId": 17,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T11:05:00Z",
+      "usuarioId": 3
+    },
+    {
+      "logId": 16,
+      "dispositivoId": 20,
+      "accion": "OFF",
+      "fechaHora": "2025-01-05T19:30:00Z",
+      "usuarioId": 3
+    }
+  ],
+  "camada": [
+    {
+      "camadaId": 1,
+      "fechaIngreso": "2025-01-01",
+      "fechaSalida": null,
+      "proveedorId": 1
+    },
+    {
+      "camadaId": 2,
+      "fechaIngreso": "2025-02-15",
+      "fechaSalida": "2025-03-15",
+      "proveedorId": 2
+    },
+    {
+      "camadaId": 3,
+      "fechaIngreso": "2025-01-02",
+      "fechaSalida": null,
+      "proveedorId": 1
+    }
+  ],
+  "camadaGalpon": [
+    {
+      "camadaGalponId": 1,
+      "camadaId": 1,
+      "galponId": 1,
+      "cantidadInicial": 5000
+    },
+    {
+      "camadaGalponId": 2,
+      "camadaId": 1,
+      "galponId": 2,
+      "cantidadInicial": 4800
+    },
+    {
+      "camadaGalponId": 3,
+      "camadaId": 2,
+      "galponId": 1,
+      "cantidadInicial": 6000
+    },
+    {
+      "camadaGalponId": 4,
+      "camadaId": 2,
+      "galponId": 2,
+      "cantidadInicial": 6200
+    },
+    {
+      "camadaGalponId": 5,
+      "camadaId": 3,
+      "galponId": 3,
+      "cantidadInicial": 5500
+    },
+    {
+      "camadaGalponId": 6,
+      "camadaId": 3,
+      "galponId": 4,
+      "cantidadInicial": 5200
+    }
+  ],
+  "mortalidad": [
+    {
+      "mortalidadId": 1,
+      "camadaGalponId": 1,
+      "fecha": "2025-01-05",
+      "cantidad": 10,
+      "motivo": "enfermedad"
+    },
+    {
+      "mortalidadId": 2,
+      "camadaGalponId": 2,
+      "fecha": "2025-01-06",
+      "cantidad": 5,
+      "motivo": "estrés térmico"
+    },
+    {
+      "mortalidadId": 3,
+      "camadaGalponId": 5,
+      "fecha": "2025-01-07",
+      "cantidad": 8,
+      "motivo": "aplastamiento"
+    },
+    {
+      "mortalidadId": 4,
+      "camadaGalponId": 6,
+      "fecha": "2025-01-08",
+      "cantidad": 3,
+      "motivo": "desconocido"
+    }
+  ],
+  "registroPeso": [
+    {
+      "pesoId": 1,
+      "camadaGalponId": 1,
+      "fecha": "2025-01-07",
+      "pesoPromedio": 1.2,
+      "cantidadMuestra": 50
+    },
+    {
+      "pesoId": 2,
+      "camadaGalponId": 2,
+      "fecha": "2025-01-08",
+      "pesoPromedio": 1.25,
+      "cantidadMuestra": 55
+    },
+    {
+      "pesoId": 3,
+      "camadaGalponId": 5,
+      "fecha": "2025-01-09",
+      "pesoPromedio": 1.15,
+      "cantidadMuestra": 45
+    },
+    {
+      "pesoId": 4,
+      "camadaGalponId": 6,
+      "fecha": "2025-01-10",
+      "pesoPromedio": 1.18,
+      "cantidadMuestra": 50
+    }
+  ],
+  "reposicionAlimento": [
+    {
+      "reposicionId": 1,
+      "galponId": 1,
+      "fechaReposicion": "2025-01-03",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 1000.0,
+      "fechaEstimadoFin": "2025-01-10"
+    },
+    {
+      "reposicionId": 2,
+      "galponId": 2,
+      "fechaReposicion": "2025-01-04",
+      "tipoAlimento": "Grower",
+      "cantidadKg": 1200.0,
+      "fechaEstimadoFin": "2025-01-12"
+    },
+    {
+      "reposicionId": 3,
+      "galponId": 3,
+      "fechaReposicion": "2025-01-05",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 1100.0,
+      "fechaEstimadoFin": "2025-01-11"
+    },
+    {
+      "reposicionId": 4,
+      "galponId": 4,
+      "fechaReposicion": "2025-01-06",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 1050.0,
+      "fechaEstimadoFin": "2025-01-13"
+    }
+  ],
+  "incidencia": [
+    {
+      "incidenciaId": 1,
+      "fecha": "2025-01-05",
+      "descripcion": "Corte de luz",
+      "tipo": "operativa",
+      "usuarioId": 3,
+      "galponId": 1,
+      "camadaId": 1
+    },
+    {
+      "incidenciaId": 2,
+      "fecha": "2025-01-07",
+      "descripcion": "Fuga de agua bebedero",
+      "tipo": "mantenimiento",
+      "usuarioId": 3,
+      "galponId": 3,
+      "camadaId": 3
+    },
+    {
+      "incidenciaId": 3,
+      "fecha": "2025-01-08",
+      "descripcion": "Ventilador ruidoso",
+      "tipo": "mantenimiento",
+      "usuarioId": 3,
+      "galponId": 4,
+      "camadaId": 3
+    }
+  ],
+  "visitaVeterinaria": [
+    {
+      "visitaId": 1,
+      "camadaId": 1,
+      "fecha": "2025-01-06",
+      "profesional": "Dr. Perez",
+      "descripcion": "Chequeo general",
+      "medicacion": "antibióticos",
+      "severidad": "media"
+    },
+    {
+      "visitaId": 2,
+      "camadaId": 3,
+      "fecha": "2025-01-09",
+      "profesional": "Dra. Gomez",
+      "descripcion": "Vacunación",
+      "medicacion": "Vacuna Gumboro",
+      "severidad": "baja"
+    }
+  ],
+  "climaExterno": [
+    {
+      "climaId": 1,
+      "fechaHora": "2025-01-05T08:00:00Z",
+      "temperatura": 20.0,
+      "humedad": 50.0,
+      "viento": 5.0,
+      "lluvia": false,
+      "presion": 1012.0
+    },
+    {
+      "climaId": 2,
+      "fechaHora": "2025-01-05T14:00:00Z",
+      "temperatura": 22.5,
+      "humedad": 55.0,
+      "viento": 4.5,
+      "lluvia": false,
+      "presion": 1010.0
+    }
+  ],
+  "alerta": [
+    {
+      "alertaId": 1,
+      "seccionId": 2,
+      "tipo": "temperatura",
+      "descripcion": "Temperatura alta en sección B Galpón 1",
+      "fechaHora": "2025-01-05T10:00:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "critico"
+    },
+    {
+      "alertaId": 2,
+      "seccionId": 1,
+      "tipo": "humedad",
+      "descripcion": "Humedad baja en sección A Galpón 1",
+      "fechaHora": "2025-01-05T11:15:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "precaucion"
+    },
+    {
+      "alertaId": 3,
+      "seccionId": 4,
+      "tipo": "ventilacion",
+      "descripcion": "Fallo en ventilador sección B Galpón 2",
+      "fechaHora": "2025-01-05T09:30:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "critico"
+    },
+    {
+      "alertaId": 4,
+      "seccionId": 3,
+      "tipo": "temperatura",
+      "descripcion": "Temperatura baja en sección A Galpón 2",
+      "fechaHora": "2025-01-05T12:05:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "precaucion"
+    },
+    {
+      "alertaId": 5,
+      "seccionId": 1,
+      "tipo": "sensor",
+      "descripcion": "Sensor de temperatura offline",
+      "fechaHora": "2025-01-05T13:00:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "normal"
+    },
+    {
+      "alertaId": 6,
+      "seccionId": 1,
+      "tipo": "sistema",
+      "descripcion": "Alerta de prueba generada por sistema",
+      "fechaHora": "2025-01-05T14:00:00Z",
+      "resuelta": true,
+      "resolucion": "Prueba completada",
+      "severidad": "normal"
+    },
+    {
+      "alertaId": 7,
+      "seccionId": 5,
+      "tipo": "temperatura",
+      "descripcion": "Temperatura baja en sección A Galpón 3",
+      "fechaHora": "2025-01-05T15:00:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "precaucion"
+    },
+    {
+      "alertaId": 8,
+      "seccionId": 6,
+      "tipo": "humedad",
+      "descripcion": "Humedad alta en sección B Galpón 3",
+      "fechaHora": "2025-01-05T16:00:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "precaucion"
+    },
+    {
+      "alertaId": 9,
+      "seccionId": 7,
+      "tipo": "sensor",
+      "descripcion": "Sensor de humedad offline sección A Galpón 4",
+      "fechaHora": "2025-01-05T17:00:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "normal"
+    },
+    {
+      "alertaId": 10,
+      "seccionId": 8,
+      "tipo": "temperatura",
+      "descripcion": "Temperatura alta en sección B Galpón 4",
+      "fechaHora": "2025-01-05T18:00:00Z",
+      "resuelta": false,
+      "resolucion": "",
+      "severidad": "critico"
+    }
+  ],
+  "configuracionAlerta": [
+    {
+      "configId": 1,
+      "galponId": 1,
+      "variable": "temperatura",
+      "rolANotificar": "Gerente",
+      "valorMin": 18.0,
+      "valorMax": 28.0,
+      "canalNotificacion": "email"
+    },
+    {
+      "configId": 2,
+      "galponId": 2,
+      "variable": "humedad",
+      "rolANotificar": "Operario",
+      "valorMin": 40.0,
+      "valorMax": 70.0,
+      "canalNotificacion": "push"
+    },
+    {
+      "configId": 3,
+      "galponId": 3,
+      "variable": "temperatura",
+      "rolANotificar": "Operario",
+      "valorMin": 19.0,
+      "valorMax": 27.0,
+      "canalNotificacion": "email"
+    },
+    {
+      "configId": 4,
+      "galponId": 4,
+      "variable": "humedad",
+      "rolANotificar": "Gerente",
+      "valorMin": 45.0,
+      "valorMax": 75.0,
+      "canalNotificacion": "push"
+    }
+  ],
+  "informeDiario": [
+    {
+      "informeId": 1,
+      "camadaId": 1,
+      "fecha": "2025-01-06",
+      "diasVidaCamada": 5,
+      "avesVivas": 4990,
+      "avesFallecidasHoy": 10,
+      "mortalidadAcumulada": 10,
+      "motivoFallecimiento": "enfermedad",
+      "ultimoPesoPromedio": 1.2,
+      "requiereVeterinario": true,
+      "reposicionAlimentoNecesaria": false,
+      "incidencia": "Corte de luz",
+      "enviado": true
+    },
+    {
+      "informeId": 2,
+      "camadaId": 2,
+      "fecha": "2025-02-20",
+      "diasVidaCamada": 5,
+      "avesVivas": 5995,
+      "avesFallecidasHoy": 5,
+      "mortalidadAcumulada": 5,
+      "motivoFallecimiento": "estrés térmico",
+      "ultimoPesoPromedio": 1.3,
+      "requiereVeterinario": false,
+      "reposicionAlimentoNecesaria": true,
+      "incidencia": "",
+      "enviado": false
+    },
+    {
+      "informeId": 3,
+      "camadaId": 3,
+      "fecha": "2025-01-08",
+      "diasVidaCamada": 6,
+      "avesVivas": 10689,
+      "avesFallecidasHoy": 11,
+      "mortalidadAcumulada": 11,
+      "motivoFallecimiento": "aplastamiento, desconocido",
+      "ultimoPesoPromedio": 1.16,
+      "requiereVeterinario": false,
+      "reposicionAlimentoNecesaria": false,
+      "incidencia": "Fuga de agua, Ventilador ruidoso",
+      "enviado": false
+    }
+  ],
+  "logSistema": [
+    {
+      "logId": 1,
+      "usuarioId": 1,
+      "descripcion": "Login exitoso",
+      "fechaHora": "2025-01-05T09:00:00Z",
+      "modulo": "auth",
+      "tipoAccion": "login"
+    },
+    {
+      "logId": 2,
+      "usuarioId": 3,
+      "descripcion": "Registro de muertes de aves",
+      "fechaHora": "2025-01-05T11:00:00Z",
+      "modulo": "mortalidad",
+      "tipoAccion": "create"
+    },
+    {
+      "logId": 3,
+      "usuarioId": 2,
+      "descripcion": "Configuración de alerta de temperatura modificada para Galpón 1",
+      "fechaHora": "2025-01-05T15:00:00Z",
+      "modulo": "configuracion",
+      "tipoAccion": "update"
+    },
+    {
+      "logId": 4,
+      "usuarioId": 1,
+      "descripcion": "Nuevo usuario 'operario2' creado",
+      "fechaHora": "2025-01-06T10:00:00Z",
+      "modulo": "usuarios",
+      "tipoAccion": "create"
+    },
+    {
+      "logId": 5,
+      "usuarioId": 2,
+      "descripcion": "Configuración de alerta de temperatura creada para Galpón 3",
+      "fechaHora": "2025-01-06T11:00:00Z",
+      "modulo": "configuracion",
+      "tipoAccion": "create"
+    },
+    {
+      "logId": 6,
+      "usuarioId": 3,
+      "descripcion": "Registro de incidencia en Galpón 4",
+      "fechaHora": "2025-01-08T14:00:00Z",
+      "modulo": "incidencias",
+      "tipoAccion": "create"
+    }
+  ]
+}
