@@ -744,7 +744,7 @@
     {
       "camadaId": 1,
       "fechaIngreso": "2025-01-01",
-      "fechaSalida": null,
+      "fechaSalida": "2025-03-15",
       "proveedorId": 1
     },
     {
@@ -752,12 +752,6 @@
       "fechaIngreso": "2025-02-15",
       "fechaSalida": "2025-03-15",
       "proveedorId": 2
-    },
-    {
-      "camadaId": 3,
-      "fechaIngreso": "2025-01-02",
-      "fechaSalida": null,
-      "proveedorId": 1
     }
   ],
   "camadaGalpon": [
@@ -775,27 +769,39 @@
     },
     {
       "camadaGalponId": 3,
-      "camadaId": 2,
-      "galponId": 1,
+      "camadaId": 1,
+      "galponId": 3,
       "cantidadInicial": 6000
     },
     {
       "camadaGalponId": 4,
-      "camadaId": 2,
-      "galponId": 2,
+      "camadaId": 1,
+      "galponId": 4,
       "cantidadInicial": 6200
     },
     {
       "camadaGalponId": 5,
-      "camadaId": 3,
-      "galponId": 3,
+      "camadaId": 2,
+      "galponId": 1,
       "cantidadInicial": 5500
     },
     {
       "camadaGalponId": 6,
-      "camadaId": 3,
-      "galponId": 4,
+      "camadaId": 2,
+      "galponId": 2,
       "cantidadInicial": 5200
+    },
+    {
+      "camadaGalponId": 7,
+      "camadaId": 2,
+      "galponId": 3,
+      "cantidadInicial": 5800
+    },
+    {
+      "camadaGalponId": 8,
+      "camadaId": 2,
+      "galponId": 4,  
+      "cantidadInicial": 5600
     }
   ],
   "mortalidad": [
