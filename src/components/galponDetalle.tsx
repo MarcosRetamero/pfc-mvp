@@ -1,14 +1,16 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 import {
     Box, Typography, Button, Grid, Card, CardContent, Switch, Tabs, Tab, Paper,
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Chip, Tooltip as MuiTooltip
 } from '@mui/material';
 import {
-    Thermostat, Opacity, PeopleAlt, DangerousOutlined, Air, WaterDrop, Sensors, Lightbulb,
+    Thermostat, Opacity, PeopleAlt, DangerousOutlined, Air, Add, WaterDrop, Sensors, Lightbulb,
     ShowChart, History, NotificationsActive, ArrowBack,
     WarningAmber, ErrorOutline, InfoOutlined, FiberManualRecord
 } from '@mui/icons-material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useRouter } from 'next/navigation'
 
 // --- Tipos (Idealmente centralizados) ---
 
@@ -24,6 +26,8 @@ type LogSistema = { logId: number; usuarioId: number; descripcion: string; fecha
 type CamadaGalpon = { camadaGalponId: number; camadaId: number; galponId: number; cantidadInicial: number; };
 type Mortalidad = { mortalidadId: number; camadaGalponId: number; fecha: string; cantidad: number; motivo: string; };
 type RegistroPeso = { pesoId: number; camadaGalponId: number; fecha: string; pesoPromedio: number; cantidadMuestra: number; };
+
+
 
 type GalponDashboard = {
     galponId: number;
@@ -77,6 +81,8 @@ const formatDateTime = (dateTimeString: string) => {
     }
 };
 
+
+
 const formatRelativeTime = (dateTimeString: string): string => {
     try {
         const now = new Date();
@@ -117,6 +123,9 @@ const getChipProps = (severidad?: "normal" | "precaucion" | "critico") => {
 // --- Componente Principal ---
 
 const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
+
+    const router = useRouter();
+    
     const [tabIndex, setTabIndex] = useState(0);
     // Estados de control (simulados)
     const [ventiladorOn, setVentiladorOn] = useState(false);
@@ -368,6 +377,11 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
         setTabIndex(newValue);
     };
 
+    const handleCrearAlerta = () => {
+        
+        router.push('/alertas')
+      }
+
     // Ordenar alertas del galpón por fecha para la pestaña de Alertas (ya se hace en el useEffect de historial, pero podemos usar las del prop galpon si son las 'activas')
     const alertasActivasOrdenadas = [...galpon.alertas].sort((a, b) => new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime());
 
@@ -582,48 +596,63 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
             {/* Contenido de la Pestaña Alertas Activas */}
             {tabIndex === 2 && ( // Cambiado a índice 2
                 <Box p={3}>
-                    <Typography variant="h6" gutterBottom>Alertas Activas</Typography>
-                    {alertasActivasOrdenadas.length > 0 ? (
-                        <TableContainer component={Paper} variant="outlined">
-                            <Table size="small" aria-label="alertas activas">
-                                <TableHead sx={{ backgroundColor: 'grey.100' }}>
-                                    <TableRow>
-                                        <TableCell>Fecha y Hora</TableCell>
-                                        <TableCell>Severidad</TableCell>
-                                        <TableCell>Descripción</TableCell>
-                                        <TableCell>Estado</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {alertasActivasOrdenadas.map((alerta) => {
-                                        const chipProps = getChipProps(alerta.severidad);
-                                        return (
-                                            <TableRow key={alerta.alertaId} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                <TableCell component="th" scope="row">
-                                                    <MuiTooltip title={formatDateTime(alerta.fechaHora)} placement="top">
-                                                        <Typography variant="body2">{formatRelativeTime(alerta.fechaHora)}</Typography>
-                                                    </MuiTooltip>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Chip label={chipProps.label} color={chipProps.color} size="small" icon={chipProps.icon} />
-                                                </TableCell>
-                                                <TableCell>{alerta.descripcion}</TableCell>
-                                                <TableCell>
-                                                    {alerta.resuelta
-                                                        ? <Chip label="Resuelta" size="small" color="success" variant="outlined" />
-                                                        : <Chip label="Activa" size="small" color="warning" />
-                                                    }
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    ) : (
-                        <Typography color="text.secondary">No hay alertas activas en este momento.</Typography>
-                    )}
+                {/* Encabezado con botón alineado */}
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={1} py={2}>
+                  <Typography variant="h6" gutterBottom>
+                    Alertas Activas
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    startIcon={<Add />}
+                    onClick={handleCrearAlerta} // Asegurate de definir esta función
+                    title="Registrar una nueva alerta manual" // Personalizá el tooltip según necesidad
+                  >
+                    Configurar Alerta
+                  </Button>
                 </Box>
+              
+                {alertasActivasOrdenadas.length > 0 ? (
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table size="small" aria-label="alertas activas">
+                      <TableHead sx={{ backgroundColor: 'grey.100' }}>
+                        <TableRow>
+                          <TableCell>Fecha y Hora</TableCell>
+                          <TableCell>Severidad</TableCell>
+                          <TableCell>Descripción</TableCell>
+                          <TableCell>Estado</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {alertasActivasOrdenadas.map((alerta) => {
+                          const chipProps = getChipProps(alerta.severidad);
+                          return (
+                            <TableRow key={alerta.alertaId} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                              <TableCell component="th" scope="row">
+                                <MuiTooltip title={formatDateTime(alerta.fechaHora)} placement="top">
+                                  <Typography variant="body2">{formatRelativeTime(alerta.fechaHora)}</Typography>
+                                </MuiTooltip>
+                              </TableCell>
+                              <TableCell>
+                                <Chip label={chipProps.label} color={chipProps.color} size="small" icon={chipProps.icon} />
+                              </TableCell>
+                              <TableCell>{alerta.descripcion}</TableCell>
+                              <TableCell>
+                                {alerta.resuelta
+                                  ? <Chip label="Resuelta" size="small" color="success" variant="outlined" />
+                                  : <Chip label="Activa" size="small" color="warning" />
+                                }
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                ) : (
+                  <Typography color="text.secondary">No hay alertas activas en este momento.</Typography>
+                )}
+              </Box>
+              
             )}
         </Paper>
     </Box>
