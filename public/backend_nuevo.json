@@ -97,14 +97,22 @@
     }
   ],
   "seccion": [
-    { "seccionId": 1, "galponId": 1, "nombre": "Sección A" },
-    { "seccionId": 2, "galponId": 1, "nombre": "Sección B" },
-    { "seccionId": 3, "galponId": 2, "nombre": "Sección A" },
-    { "seccionId": 4, "galponId": 2, "nombre": "Sección B" },
-    { "seccionId": 5, "galponId": 3, "nombre": "Sección A" },
-    { "seccionId": 6, "galponId": 3, "nombre": "Sección B" },
-    { "seccionId": 7, "galponId": 4, "nombre": "Sección A" },
-    { "seccionId": 8, "galponId": 4, "nombre": "Sección B" }
+    { "seccionId": 1, "galponId": 1, "nombre": "Sección 1" },
+    { "seccionId": 2, "galponId": 1, "nombre": "Sección 2" },
+    { "seccionId": 3, "galponId": 1, "nombre": "Sección 3" },
+    { "seccionId": 4, "galponId": 1, "nombre": "Sección 4" },
+    { "seccionId": 5, "galponId": 2, "nombre": "Sección 5" },
+    { "seccionId": 6, "galponId": 2, "nombre": "Sección 6" },
+    { "seccionId": 7, "galponId": 2, "nombre": "Sección 7" },
+    { "seccionId": 8, "galponId": 2, "nombre": "Sección 8" },
+    { "seccionId": 9, "galponId": 3, "nombre": "Sección 9" },
+    { "seccionId": 10, "galponId": 3, "nombre": "Sección 10" },
+    { "seccionId": 11, "galponId": 3, "nombre": "Sección 11" },
+    { "seccionId": 12, "galponId": 3, "nombre": "Sección 12" },
+    { "seccionId": 13, "galponId": 4, "nombre": "Sección 13" },
+    { "seccionId": 14, "galponId": 4, "nombre": "Sección 14" },
+    { "seccionId": 15, "galponId": 4, "nombre": "Sección 15" },
+    { "seccionId": 16, "galponId": 4, "nombre": "Sección 16" }
   ],
   "sensor": [
     {
@@ -738,6 +746,64 @@
       "accion": "OFF",
       "fechaHora": "2025-01-05T19:30:00Z",
       "usuarioId": 3
+    }
+  ],
+  "cortinaGalpon": [
+    {
+      "cortinaId": 1,
+      "galponId": 1,
+      "lado": "izquierda",
+      "aperturaPorcentaje": 30,
+      "ultimaActualizacion": "2025-01-05T10:00:00Z"
+    },
+    {
+      "cortinaId": 2,
+      "galponId": 1,
+      "lado": "derecha",
+      "aperturaPorcentaje": 45,
+      "ultimaActualizacion": "2025-01-05T10:00:00Z"
+    },
+    {
+      "cortinaId": 3,
+      "galponId": 2,
+      "lado": "izquierda",
+      "aperturaPorcentaje": 20,
+      "ultimaActualizacion": "2025-01-05T09:30:00Z"
+    },
+    {
+      "cortinaId": 4,
+      "galponId": 2,
+      "lado": "derecha",
+      "aperturaPorcentaje": 20,
+      "ultimaActualizacion": "2025-01-05T09:30:00Z"
+    },
+    {
+      "cortinaId": 5,
+      "galponId": 3,
+      "lado": "izquierda",
+      "aperturaPorcentaje": 50,
+      "ultimaActualizacion": "2025-01-05T11:15:00Z"
+    },
+    {
+      "cortinaId": 6,
+      "galponId": 3,
+      "lado": "derecha",
+      "aperturaPorcentaje": 50,
+      "ultimaActualizacion": "2025-01-05T11:15:00Z"
+    },
+    {
+      "cortinaId": 7,
+      "galponId": 4,
+      "lado": "izquierda",
+      "aperturaPorcentaje": 0,
+      "ultimaActualizacion": "2025-01-05T08:45:00Z"
+    },
+    {
+      "cortinaId": 8,
+      "galponId": 4,
+      "lado": "derecha",
+      "aperturaPorcentaje": 0,
+      "ultimaActualizacion": "2025-01-05T08:45:00Z"
     }
   ],
   "camada": [
