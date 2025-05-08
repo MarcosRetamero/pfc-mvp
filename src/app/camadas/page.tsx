@@ -1,99 +1,86 @@
-// app/camadas/alertas/page.tsx
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'; // Importar useState y useEffect
+import ListaCamadas from '@/components/listaCamadas'
+import { Box, Typography, Button, CircularProgress, Alert } from '@mui/material' // Añadir CircularProgress y Alert
+import { Add } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
-import FormularioAlerta from '@/components/configurarAlerta' //D:\Repositorios\pfc-mvp\src\components\configurarAlerta.tsx
-import {
-  Box,
-  Container,
-  Typography,
-  CircularProgress,
-  Alert,
-  Paper,
-  Button
-} from '@mui/material'
-import { ArrowBack } from '@mui/icons-material'
 
-type GalponInfo = { galponId: number; nombre: string }
+// Definir tipo para la camada según backend_nuevo.json
+type CamadaInfo = {
+  camadaId: number;
+  fechaIngreso: string;
+  fechaSalida: string | null; // Clave para saber si está activa
+  proveedorId: number;
+};
 
-export default function AlertasPage() {
+export default function CamadasPage() {
   const router = useRouter()
-  const [galpones, setGalpones]     = useState<GalponInfo[]>([])
-  const [loading, setLoading]       = useState(true)
-  const [error, setError]           = useState<string | null>(null)
-  const [successMsg, setSuccessMsg] = useState<string | null>(null)
+  const [hayCamadaActiva, setHayCamadaActiva] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    ;(async () => {
-      setLoading(true); setError(null)
+    const verificarCamadaActiva = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const res = await fetch('/backend_nuevo.json')
-        if (!res.ok) throw new Error('No se pudieron cargar los galpones')
-        const data = await res.json()
-        setGalpones(Array.isArray(data.galpon) ? data.galpon : [])
+        const res = await fetch('/backend_nuevo.json');
+        if (!res.ok) {
+          throw new Error('No se pudo cargar la información de las camadas.');
+        }
+        const data = await res.json();
+        const camadas: CamadaInfo[] = data.camada || [];
+        // Verificar si alguna camada tiene fechaSalida === null
+        const activa = camadas.some(camada => camada.fechaSalida === null);
+        setHayCamadaActiva(activa);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error desconocido')
+        console.error("Error verificando camada activa:", err);
+        setError(err instanceof Error ? err.message : 'Error desconocido');
+        // Considerar cómo manejar el error, quizás deshabilitar el botón por precaución
+        setHayCamadaActiva(true); // Deshabilitar si hay error
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    })()
-  }, [])
+    };
 
-  const handleGuardar = (alertaData: any) => {
-    console.log('Alerta creada:', alertaData)
-    // aquí podrías hacer un POST real...
-    setSuccessMsg('Alerta registrada correctamente')
+    verificarCamadaActiva();
+  }, []); // Ejecutar solo al montar
+
+  const handleNuevaCamada = () => {
+    router.push('/camadas/nueva')
   }
 
   return (
-    <Container maxWidth="md" sx={{ pt: 3, pb: 6 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={() => router.push('/dashboard')}
-        >
-          Volver al dashboard
-        </Button>
+    <Box sx={{ p: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h4" className='text-black'>
+          Gestión de Camadas
+        </Typography>
+        {loading ? (
+          <CircularProgress size={24} />
+        ) : (
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={handleNuevaCamada}
+            disabled={hayCamadaActiva || !!error} // Deshabilitar si hay camada activa o si hubo error
+            title={hayCamadaActiva ? "Ya existe una camada activa. Debe registrar su salida antes de crear una nueva." : error ? "Error al verificar camadas activas." : "Registrar una nueva camada"}
+          >
+            Registrar Nueva Camada
+          </Button>
+        )}
       </Box>
 
-      <Typography variant="h4" gutterBottom>
-        Nueva Configuración de Alerta
-      </Typography>
-
-      <Paper elevation={3} sx={{ p: 4, mt: 1 }}>
-        {loading ? (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 120
-            }}
-          >
-            <CircularProgress />
-            <Typography sx={{ ml: 2 }}>Cargando galpones...</Typography>
-          </Box>
-        ) : error ? (
-          <Alert severity="error">{error}</Alert>
-        ) : (
-          <FormularioAlerta
-            galponesDisponibles={galpones}
-            onGuardar={handleGuardar}
-            onCancel={() => router.push('/dashboard')}
-          />
-        )}
-      </Paper>
-
-      {successMsg && (
-        <Alert
-          severity="success"
-          onClose={() => setSuccessMsg(null)}
-          sx={{ mt: 2 }}
-        >
-          {successMsg}
-        </Alert>
+      {error && <Alert severity="error" sx={{ mb: 2 }}>Error al verificar estado de camadas: {error}</Alert>}
+      {hayCamadaActiva && !loading && !error && (
+         <Alert severity="info" sx={{ mb: 2 }}>
+           Actualmente hay una camada activa. Para registrar una nueva, primero debe finalizar la actual.
+         </Alert>
       )}
-    </Container>
+
+      <ListaCamadas />
+
+    </Box>
   )
 }
