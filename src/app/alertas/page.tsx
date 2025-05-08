@@ -86,7 +86,7 @@ const Alertas = () => {
         Nueva Configuración de Alerta
       </Typography>
 
-      <Paper elevation={3} sx={{ p: 3 }}>
+      <Paper elevation={3} sx={{ p: 8 }}>
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 100 }}>
             <CircularProgress />
