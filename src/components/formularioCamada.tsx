@@ -1,219 +1,347 @@
 'use client'
 
-import { useState } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
+import React, { useState, useEffect } from 'react';
 import {
+  Box,
   TextField,
   Button,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Paper,
+  Grid,
   Typography,
-  Box,
+  IconButton,
+  CircularProgress,
   Alert,
-  FormHelperText,
-} from '@mui/material'
+  SelectChangeEvent
+} from '@mui/material';
+import { AddCircleOutline, DeleteOutline } from '@mui/icons-material';
 
-// Tipo para la nueva camada
-type NuevaCamada = {
-  fechaIngreso: string
-  proveedor: string
-  galponId: number
-  cantidadAves: number
+// Tipos basados en backend_nuevo.json
+type Proveedor = {
+  proveedorId: number;
+  nombre: string;
+  email: string; // Aunque no se use en el form, es bueno tenerlo por si acaso
+};
+
+// Tipo para los galpones recibidos como prop
+type Galpon = {
+  galponId: number;
+  nombre: string;
+  capacidadMax: number; // Es importante que este campo exista y sea numérico
+};
+
+// Tipo para el estado local de la distribución
+type DistribucionGalpon = {
+  id: number; // ID temporal único para manejar el estado de React
+  galponId: string; // Usamos string para el estado del Select
+  cantidadInicial: string; // Usamos string para el estado del TextField
+};
+
+// Tipo para los datos que se enviarán al guardar
+type NuevaCamadaData = {
+    fechaIngreso: string;
+    proveedorId: string; // El ID del proveedor seleccionado
+    distribucion: Array<{ galponId: number; cantidadInicial: number }>; // Datos numéricos validados
+};
+
+// Definición de las props que el componente espera recibir
+interface FormularioCamadaProps {
+  onGuardar: (data: NuevaCamadaData) => void; // Función callback para manejar el guardado (viene del padre)
+  galponesDisponibles: Galpon[]; // Lista de galpones disponibles con su capacidad (viene del padre)
 }
 
-export default function FormularioCamada() {
-  const router = useRouter()
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+const FormularioCamada: React.FC<FormularioCamadaProps> = ({ onGuardar, galponesDisponibles }) => {
+  // Estados del formulario
+  const [fechaIngreso, setFechaIngreso] = useState<string>(new Date().toISOString().split('T')[0]); // Fecha actual por defecto
+  const [proveedorId, setProveedorId] = useState<string>(''); // ID del proveedor seleccionado
+  const [distribucion, setDistribucion] = useState<DistribucionGalpon[]>([{ id: Date.now(), galponId: '', cantidadInicial: '' }]); // Estado para la distribución dinámica
+  const [proveedores, setProveedores] = useState<Proveedor[]>([]); // Estado para la lista de proveedores
 
-  // Configuración de react-hook-form con validaciones
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<NuevaCamada>({
-    defaultValues: {
-      fechaIngreso: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
-      proveedor: '',
-      galponId: 0,
-      cantidadAves: 0,
-    },
-  })
+  // Estados de UI y errores
+  const [loadingProveedores, setLoadingProveedores] = useState<boolean>(true); // Estado de carga solo para proveedores
+  const [errorCarga, setErrorCarga] = useState<string | null>(null); // Error al cargar proveedores
+  const [formError, setFormError] = useState<string | null>(null); // Error de validación del formulario
 
-  // Galpones disponibles (simulados, en una app real se cargarían desde la API)
-  const galpones = [
-    { galponId: 1, nombre: 'Galpón 1' },
-    { galponId: 2, nombre: 'Galpón 2' },
-    { galponId: 3, nombre: 'Galpón 3' },
-    { galponId: 4, nombre: 'Galpón 4' },
-  ]
-
-  // Función para manejar el envío del formulario
-  const onSubmit = async (data: NuevaCamada) => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      // En una app real, aquí se haría una llamada a la API
-      // Simulamos una llamada a la API con un timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Simulamos guardar los datos
-      console.log('Datos de la nueva camada:', data)
-
-      // Obtener el último ID de camada para generar uno nuevo
-      const res = await fetch('/backend.json')
-      const backendData = await res.json()
-      
-      // Crear nueva camada
-      const nuevaCamadaId = Math.max(...backendData.camadas.map((c: any) => c.camadaId)) + 1
-      const nuevaCamada = {
-        camadaId: nuevaCamadaId,
-        fechaIngreso: data.fechaIngreso,
-        fechaSalida: null,
-        proveedor: data.proveedor
+  // Cargar solo los proveedores al montar el componente
+  useEffect(() => {
+    const fetchProveedores = async () => {
+      setLoadingProveedores(true);
+      setErrorCarga(null);
+      try {
+        const res = await fetch('/backend_nuevo.json'); // Asume que está en la carpeta public
+        if (!res.ok) throw new Error('No se pudo cargar la lista de proveedores.');
+        const data = await res.json();
+        setProveedores(data.proveedor || []); // Asegurarse de manejar si 'proveedor' no existe
+      } catch (err) {
+        setErrorCarga(err instanceof Error ? err.message : 'Error desconocido al cargar proveedores');
+        console.error("Error fetching proveedores:", err);
+      } finally {
+        setLoadingProveedores(false);
       }
-      
-      // Crear registro de camada-galpón
-      const nuevoRegistroId = Math.max(...backendData.camadaGalpon.map((cg: any) => cg.registroId)) + 1
-      const nuevoCamadaGalpon = {
-        registroId: nuevoRegistroId,
-        galponId: data.galponId,
-        camadaId: nuevaCamadaId,
-        cantidadInicial: data.cantidadAves
-      }
-      
-      // En una app real, aquí se enviarían estos datos al backend
-      console.log('Nueva camada a guardar:', nuevaCamada)
-      console.log('Nuevo registro camada-galpón a guardar:', nuevoCamadaGalpon)
+    };
+    fetchProveedores();
+  }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
-      // Redirigir al dashboard
-      router.push('/dashboard')
-    } catch (err) {
-      console.error('Error al guardar la camada:', err)
-      setError('Ocurrió un error al guardar la camada. Inténtalo de nuevo.')
-    } finally {
-      setLoading(false)
+  // --- Manejadores de eventos ---
+
+  // Añadir una nueva fila para asignar galpón/cantidad
+  const handleAddGalpon = () => {
+    // Validar antes de añadir: no permitir más filas que galpones disponibles
+    if (distribucion.length >= galponesDisponibles.length) {
+        setFormError(`No puede asignar la camada a más de ${galponesDisponibles.length} galpones.`);
+        return;
     }
-  }
+    // Añadir nueva fila con un ID único basado en timestamp
+    setDistribucion([...distribucion, { id: Date.now(), galponId: '', cantidadInicial: '' }]);
+    setFormError(null); // Limpiar error si se añade correctamente
+  };
 
+  // Eliminar una fila de distribución por su ID temporal
+  const handleRemoveGalpon = (idToRemove: number) => {
+    setDistribucion(distribucion.filter(item => item.id !== idToRemove));
+  };
+
+  // Actualizar el valor de un campo (galponId o cantidadInicial) en una fila específica
+  const handleDistribucionChange = (idToUpdate: number, field: keyof Omit<DistribucionGalpon, 'id'>, value: string) => {
+    setDistribucion(distribucion.map(item =>
+      item.id === idToUpdate ? { ...item, [field]: value } : item
+    ));
+  };
+
+  // Actualizar el proveedor seleccionado
+  const handleProveedorChange = (event: SelectChangeEvent<string>) => {
+    setProveedorId(event.target.value);
+  };
+
+  // --- Lógica de Envío y Validación ---
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevenir recarga de página
+    setFormError(null); // Resetear mensaje de error previo
+
+    // 1. Validaciones básicas de campos requeridos
+    if (!fechaIngreso || !proveedorId) {
+      setFormError('La fecha de ingreso y el proveedor son obligatorios.');
+      return;
+    }
+    if (distribucion.length === 0) {
+        setFormError('Debe asignar la camada al menos a un galpón.');
+        return;
+    }
+    if (distribucion.some(d => !d.galponId || !d.cantidadInicial)) {
+      setFormError('Debe seleccionar un galpón y especificar la cantidad inicial para cada fila asignada.');
+      return;
+    }
+
+    // 2. Validar número máximo de galpones asignados (doble chequeo)
+    if (distribucion.length > galponesDisponibles.length) {
+        setFormError(`Error: No puede asignar la camada a más de ${galponesDisponibles.length} galpones.`);
+        return;
+    }
+
+    // 3. Convertir y validar datos numéricos de la distribución
+    let distribucionNumerica: Array<{ galponId: number; cantidadInicial: number }>;
+    try {
+        distribucionNumerica = distribucion.map(d => {
+            const galponIdNum = parseInt(d.galponId, 10);
+            const cantidadNum = parseInt(d.cantidadInicial, 10);
+
+            if (isNaN(galponIdNum) || isNaN(cantidadNum)) {
+                throw new Error('Valores inválidos en la distribución.');
+            }
+            if (cantidadNum <= 0) {
+                throw new Error('La cantidad inicial debe ser un número positivo.');
+            }
+            return { galponId: galponIdNum, cantidadInicial: cantidadNum };
+        });
+    } catch (error) {
+        setFormError(error instanceof Error ? error.message : 'Error en los datos de distribución.');
+        return;
+    }
+
+
+    // 4. Validar que no se repitan galpones
+    const galponIdsAsignados = distribucionNumerica.map(d => d.galponId);
+    if (new Set(galponIdsAsignados).size !== galponIdsAsignados.length) {
+        setFormError('No puede asignar la misma camada a un galpón más de una vez.');
+        return;
+    }
+
+    // 5. Validar capacidad máxima por galpón asignado
+    for (const asignacion of distribucionNumerica) {
+        const galponInfo = galponesDisponibles.find(g => g.galponId === asignacion.galponId);
+        if (!galponInfo) {
+            // Esto es una salvaguarda, no debería ocurrir si el Select se llena correctamente
+            setFormError(`Error interno: No se encontró información para el galpón ID ${asignacion.galponId}.`);
+            return;
+        }
+        // Asegurarse que capacidadMax es un número antes de comparar
+        if (typeof galponInfo.capacidadMax !== 'number') {
+             setFormError(`Error interno: Falta la capacidad máxima para el galpón ${galponInfo.nombre}.`);
+             return;
+        }
+        if (asignacion.cantidadInicial > galponInfo.capacidadMax) {
+            setFormError(`Error: La cantidad (${asignacion.cantidadInicial}) para ${galponInfo.nombre} supera su capacidad máxima (${galponInfo.capacidadMax}).`);
+            return; // Detener el guardado
+        }
+    }
+
+    // Si todas las validaciones pasan:
+    // Crear el objeto de datos a enviar
+    const nuevaCamadaData: NuevaCamadaData = {
+      fechaIngreso,
+      proveedorId, // Ya es string
+      distribucion: distribucionNumerica // Datos numéricos validados
+    };
+
+    // Llamar a la función onGuardar pasada por props desde el componente padre
+    onGuardar(nuevaCamadaData);
+  };
+
+  // --- Renderizado del Componente ---
+
+  // Mostrar indicador de carga mientras se obtienen los proveedores
+  if (loadingProveedores) return <CircularProgress />;
+  // Mostrar error si la carga de proveedores falló
+  if (errorCarga) return <Alert severity="error">Error cargando datos necesarios: {errorCarga}</Alert>;
+
+  // Renderizar el formulario
   return (
-    <Paper className="p-6 max-w-2xl mx-auto">
-      <Typography variant="h5" className="mb-6 text-center text-black mt-6">
-        Registrar Nueva Camada
-      </Typography>
+    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      <Grid container spacing={3}>
+        {/* Campo Fecha de Ingreso */}
+        <Grid item xs={12} sm={6}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="fechaIngreso"
+            label="Fecha de Ingreso"
+            name="fechaIngreso"
+            type="date"
+            value={fechaIngreso}
+            onChange={(e) => setFechaIngreso(e.target.value)}
+            InputLabelProps={{
+              shrink: true, // Para que la etiqueta no se superponga con la fecha
+            }}
+          />
+        </Grid>
 
-      {error && (
-        <Alert severity="error" className="mb-4">
-          {error}
-        </Alert>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 mt-4">
-        {/* Fecha de Ingreso */}
-        <Controller
-          name="fechaIngreso"
-          control={control}
-          rules={{ required: 'La fecha de ingreso es obligatoria' }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Fecha de Ingreso"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              error={!!errors.fechaIngreso}
-              helperText={errors.fechaIngreso?.message}
-              className="mb-4"  
-            />
-          )}
-        />
-
-        {/* Proveedor */}
-        <Controller
-          name="proveedor"
-          control={control}
-          rules={{ required: 'El proveedor es obligatorio' }}
-          render={({ field }) => (
-            <TextField
-              {...field}
+        {/* Campo Selector de Proveedor */}
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth margin="normal" required>
+            <InputLabel id="proveedor-label">Proveedor</InputLabel>
+            <Select
+              labelId="proveedor-label"
+              id="proveedorId"
+              value={proveedorId}
               label="Proveedor"
-              fullWidth
-              error={!!errors.proveedor}
-              helperText={errors.proveedor?.message}
-            />
-          )}
-        />
-
-        {/* Galpón */}
-        <Controller
-          name="galponId"
-          control={control}
-          rules={{ required: 'Debes seleccionar un galpón', min: { value: 1, message: 'Selecciona un galpón válido' } }}
-          render={({ field }) => (
-            <FormControl fullWidth error={!!errors.galponId}>
-              <InputLabel>Galpón</InputLabel>
-              <Select {...field} label="Galpón">
-                <MenuItem value={0} disabled>
-                  Selecciona un galpón
+              onChange={handleProveedorChange}
+            >
+              <MenuItem value="">
+                <em>Seleccione un proveedor</em>
+              </MenuItem>
+              {proveedores.map((p) => (
+                <MenuItem key={p.proveedorId} value={p.proveedorId.toString()}>
+                  {p.nombre}
                 </MenuItem>
-                {galpones.map((galpon) => (
-                  <MenuItem key={galpon.galponId} value={galpon.galponId}>
-                    {galpon.nombre}
-                  </MenuItem>
-                ))}
-              </Select>
-              {errors.galponId && <FormHelperText>{errors.galponId.message}</FormHelperText>}
-            </FormControl>
-          )}
-        />
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
 
-        {/* Cantidad de Aves */}
-        <Controller
-          name="cantidadAves"
-          control={control}
-          rules={{
-            required: 'La cantidad de aves es obligatoria',
-            min: { value: 1, message: 'Debe haber al menos 1 ave' },
-            validate: (value) => Number.isInteger(value) || 'Debe ser un número entero',
-          }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Cantidad de Aves"
-              type="number"
-              fullWidth
-              inputProps={{ min: 1, step: 1 }}
-              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-              error={!!errors.cantidadAves}
-              helperText={errors.cantidadAves?.message}
-            />
-          )}
-        />
-
-        {/* Botones */}
-        <Box className="flex justify-end space-x-2 pt-4">
+        {/* Sección de Distribución por Galpón */}
+        <Grid item xs={12}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+            Distribución por Galpón ({distribucion.length}/{galponesDisponibles.length}) {/* Mostrar contador */}
+          </Typography>
+          {distribucion.map((item, index) => (
+            <Grid container spacing={2} key={item.id} alignItems="center" sx={{ mb: 1 }}>
+              {/* Selector de Galpón */}
+              <Grid item xs={12} sm={5}>
+                <FormControl fullWidth size="small" required>
+                  <InputLabel id={`galpon-label-${item.id}`}>Galpón</InputLabel>
+                  <Select
+                    labelId={`galpon-label-${item.id}`}
+                    value={item.galponId}
+                    label="Galpón"
+                    onChange={(e) => handleDistribucionChange(item.id, 'galponId', e.target.value)}
+                    required
+                  >
+                    <MenuItem value=""><em>Seleccione</em></MenuItem>
+                    {/* Usar galponesDisponibles pasados por props */}
+                    {galponesDisponibles.map((g) => (
+                      <MenuItem
+                        key={g.galponId}
+                        value={g.galponId.toString()}
+                        // Opcional: Deshabilitar si ya está seleccionado en otra fila
+                        disabled={distribucion.some(d => d.galponId === g.galponId.toString() && d.id !== item.id)}
+                      >
+                        {g.nombre} (Max: {g.capacidadMax ?? 'N/A'}) {/* Mostrar capacidad */}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              {/* Campo Cantidad Inicial */}
+              <Grid item xs={8} sm={5}> {/* Ajustar tamaño para que quepa el botón */}
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Cantidad Inicial"
+                  type="number"
+                  required
+                  value={item.cantidadInicial}
+                  onChange={(e) => handleDistribucionChange(item.id, 'cantidadInicial', e.target.value)}
+                  inputProps={{ min: "1" }} // HTML5 validation
+                />
+              </Grid>
+              {/* Botón Eliminar Fila */}
+              <Grid item xs={4} sm={2}> {/* Ajustar tamaño */}
+                <IconButton
+                  onClick={() => handleRemoveGalpon(item.id)}
+                  color="error"
+                  disabled={distribucion.length <= 1} // No permitir eliminar la última fila
+                  title="Eliminar asignación"
+                >
+                  <DeleteOutline />
+                </IconButton>
+              </Grid>
+            </Grid>
+          ))}
+          {/* Botón Añadir Fila */}
           <Button
-            variant="outlined"
-            onClick={() => router.push('/dashboard')}
-            disabled={loading}
+            startIcon={<AddCircleOutline />}
+            onClick={handleAddGalpon}
+            sx={{ mt: 1 }}
+            disabled={distribucion.length >= galponesDisponibles.length} // Deshabilitar si se alcanzó el límite
           >
-            Cancelar
+            Añadir Galpón
           </Button>
+        </Grid>
+
+        {/* Mostrar Error del Formulario */}
+        {formError && (
+            <Grid item xs={12}>
+                <Alert severity="error">{formError}</Alert>
+            </Grid>
+        )}
+
+        {/* Botón de Envío */}
+        <Grid item xs={12}>
           <Button
             type="submit"
+            fullWidth
             variant="contained"
-            color="primary"
-            disabled={loading}
+            sx={{ mt: 3, mb: 2 }}
           >
-            {loading ? 'Guardando...' : 'Guardar Camada'}
+            Registrar Camada
           </Button>
-        </Box>
-      </form>
-    </Paper>
-  )
-}
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+export default FormularioCamada;

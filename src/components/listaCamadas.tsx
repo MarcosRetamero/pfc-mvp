@@ -1,280 +1,255 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Paper,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
   Box,
   Chip,
   CircularProgress,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Divider,
   Tabs,
   Tab,
-} from '@mui/material'
-import { Visibility, ExpandMore } from '@mui/icons-material'
+} from "@mui/material";
+import {  ExpandMore } from "@mui/icons-material";
+import {CamadasGestion} from "./CamadasGestion";
+
+// --- Tipos basados en backend_nuevo.json ---
+type Proveedor = {
+  proveedorId: number;
+  nombre: string;
+  email: string;
+};
 
 type Camada = {
-  camadaId: number
-  fechaIngreso: string
-  fechaSalida: string | null
-  proveedor: string
-}
+  camadaId: number;
+  fechaIngreso: string;
+  fechaSalida: string | null;
+  proveedorId: number; // Cambiado de 'proveedor' a 'proveedorId'
+};
 
 type Galpon = {
-  galponId: number
-  nombre: string
-  camadaId: number
-}
+  galponId: number;
+  nombre: string;
+  superficieM2: number;
+  cantidadSecciones: number;
+  capacidadMax: number;
+  capacidadSiloKg: number;
+  // 'camadaId' no está directamente en el objeto galpon en backend_nuevo.json
+};
 
 type CamadaGalpon = {
-  registroId: number
-  galponId: number
-  camadaId: number
-  cantidadInicial: number
-}
+  camadaGalponId: number; // Cambiado de 'registroId'
+  galponId: number;
+  camadaId: number;
+  cantidadInicial: number;
+};
+// --- Fin Tipos ---
 
 export default function ListaCamadas() {
-  const router = useRouter()
-  const [camadas, setCamadas] = useState<Camada[]>([])
-  const [galpones, setGalpones] = useState<Galpon[]>([])
-  const [camadaGalpon, setCamadaGalpon] = useState<CamadaGalpon[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [tabValue, setTabValue] = useState(0) // 0 for active, 1 for all
+  const [camadas, setCamadas] = useState<Camada[]>([]);
+  const [proveedores, setProveedores] = useState<Proveedor[]>([]); // Añadido para buscar nombres
+  const [galpones, setGalpones] = useState<Galpon[]>([]);
+  const [camadaGalpon, setCamadaGalpon] = useState<CamadaGalpon[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [tabValue, setTabValue] = useState(0); // 0 for active, 1 for all
 
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        setLoading(true)
-        const res = await fetch('/backend.json')
-        const data = await res.json()
-        setCamadas(data.camadas || [])
-        setGalpones(data.galpones || [])
-        setCamadaGalpon(data.camadaGalpon || [])
-      } catch (err) {
-        console.error('Error al cargar datos:', err)
-        setError('No se pudieron cargar los datos. Intente nuevamente.')
-      } finally {
-        setLoading(false)
-      }
-    }
+        setLoading(true);
+        // Cambiado a backend_nuevo.json
+        const res = await fetch("/backend_nuevo.json");
+        if (!res.ok) {
+          throw new Error(`Error al cargar datos: ${res.statusText}`);
+        }
+        const data = await res.json();
 
-    cargarDatos()
-  }, [])
+        // Validar que los datos esperados existan y sean arrays
+        if (!Array.isArray(data.camada))
+          throw new Error("Formato inválido: 'camada' no es un array.");
+        if (!Array.isArray(data.proveedor))
+          throw new Error("Formato inválido: 'proveedor' no es un array.");
+        if (!Array.isArray(data.galpon))
+          throw new Error("Formato inválido: 'galpon' no es un array.");
+        if (!Array.isArray(data.camadaGalpon))
+          throw new Error("Formato inválido: 'camadaGalpon' no es un array.");
+
+        setCamadas(data.camada);
+        setProveedores(data.proveedor);
+        setGalpones(data.galpon);
+        setCamadaGalpon(data.camadaGalpon);
+      } catch (err) {
+        console.error("Error al cargar datos:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "No se pudieron cargar los datos. Intente nuevamente."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarDatos();
+  }, []);
 
   // Función para formatear la fecha
-  const formatearFecha = (fechaStr: string) => {
-    const fecha = new Date(fechaStr)
-    return fecha.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    })
-  }
+  const formatearFecha = (fechaStr: string | null): string => {
+    if (!fechaStr) return "-";
+    try {
+      const fecha = new Date(fechaStr);
+      // Verificar si la fecha es válida
+      if (isNaN(fecha.getTime())) {
+        return "Fecha inválida";
+      }
+      return fecha.toLocaleDateString("es-ES", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    } catch (e) {
+      console.error("Error formateando fecha:", fechaStr, e);
+      return "Error fecha";
+    }
+  };
 
   // Función para determinar el estado de la camada
   const estadoCamada = (fechaSalida: string | null) => {
-    return fechaSalida ? 'Finalizada' : 'Activa'
-  }
+    return fechaSalida ? "Finalizada" : "Activa";
+  };
 
-  // Función para ver detalles de una camada
-  const verDetalleCamada = (camadaId: number) => {
-    router.push(`/camadas/${camadaId}`)
-  }
+  // Función para obtener el nombre del proveedor
+  const obtenerNombreProveedor = (proveedorId: number): string => {
+    const proveedor = proveedores.find((p) => p.proveedorId === proveedorId);
+    return proveedor ? proveedor.nombre : `ID ${proveedorId}`;
+  };
 
-  // Obtener galpones por camada
-  const obtenerGalponesPorCamada = (camadaId: number) => {
-    // Get all galpones that have this camadaId
-    const galponesDirectos = galpones.filter(galpon => galpon.camadaId === camadaId);
-    
-    // Also check camadaGalpon to find all galpon IDs associated with this camada
-    const galponIdsFromRelation = camadaGalpon
-      .filter(cg => cg.camadaId === camadaId)
-      .map(cg => cg.galponId);
-    
-    // Find galpones that match these IDs but aren't already in galponesDirectos
-    const galponesFromRelation = galpones.filter(
-      galpon => galponIdsFromRelation.includes(galpon.galponId) && 
-                !galponesDirectos.some(g => g.galponId === galpon.galponId)
+  // Calcular total de aves por camada usando camadaGalpon
+  const calcularTotalAvesPorCamada = (camadaId: number): number => {
+    const registros = camadaGalpon.filter((cg) => cg.camadaId === camadaId);
+    return registros.reduce(
+      (total, registro) => total + registro.cantidadInicial,
+      0
     );
-    
-    // Combine both sets of galpones
-    return [...galponesDirectos, ...galponesFromRelation];
-  }
+  };
 
-  // Obtener cantidad de aves por galpón y camada
-  const obtenerCantidadAves = (galponId: number, camadaId: number) => {
-    const registro = camadaGalpon.find(
-      cg => cg.galponId === galponId && cg.camadaId === camadaId
-    )
-    return registro ? registro.cantidadInicial : 0
-  }
+  // Filtrar camadas activas (sin fecha de salida)
+  const camadasActivas = camadas.filter(
+    (camada) => camada.fechaSalida === null
+  );
 
-  // Calcular total de aves por camada
-  const calcularTotalAvesPorCamada = (camadaId: number) => {
-    const registros = camadaGalpon.filter(cg => cg.camadaId === camadaId)
-    return registros.reduce((total, registro) => total + registro.cantidadInicial, 0)
-  }
-
-  // Filtrar camadas activas
-  const camadasActivas = camadas.filter(camada => camada.fechaSalida === null)
-  
   // Determinar qué camadas mostrar según la pestaña seleccionada
-  const camadasAMostrar = tabValue === 0 ? camadasActivas : camadas
-  
+  const camadasAMostrar = tabValue === 0 ? camadasActivas : camadas;
+
   // Manejar cambio de pestaña
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue)
-  }
+    setTabValue(newValue);
+  };
 
   if (loading) {
     return (
       <Box className="flex justify-center items-center p-8">
         <CircularProgress />
       </Box>
-    )
+    );
   }
 
   if (error) {
     return (
       <Paper className="p-4">
-        <Typography color="error">{error}</Typography>
+        <Typography color="error">Error al cargar datos: {error}</Typography>
       </Paper>
-    )
+    );
   }
 
-  if (camadas.length === 0) {
-    return (
-      <Paper className="p-6">
-        <Typography variant="h6" className="mb-4">No hay camadas registradas</Typography>
-        <Button 
-          variant="contained" 
-          color="primary"
-          onClick={() => router.push('/camadas/nueva')}
-        >
-          Registrar Nueva Camada
-        </Button>
-      </Paper>
-    )
-  }
+  // El botón de "Nueva Camada" ahora está en la página /camadas, no aquí.
 
   return (
     <Paper className="p-4">
-      <Box className="flex justify-between items-center mb-4">
-        <Typography variant="h6">Camadas Registradas</Typography>
-        <Button 
-          variant="contained" 
-          color="primary"
-          onClick={() => router.push('/camadas/nueva')}
-        >
-          Nueva Camada
-        </Button>
-      </Box>
-
-      <Tabs 
-        value={tabValue} 
-        onChange={handleTabChange} 
+      <Tabs
+        value={tabValue}
+        onChange={handleTabChange}
         className="mb-4"
         variant="fullWidth"
+        indicatorColor="primary"
+        textColor="primary"
       >
         <Tab label={`Activas (${camadasActivas.length})`} />
         <Tab label={`Todas (${camadas.length})`} />
       </Tabs>
 
       {camadasAMostrar.length === 0 ? (
-        <Typography className="p-4 text-center">
-          No hay camadas {tabValue === 0 ? "activas" : ""} para mostrar
+        <Typography className="p-4 text-center text-gray-500">
+          No hay camadas {tabValue === 0 ? "activas" : ""} para mostrar.
         </Typography>
       ) : (
-        camadasAMostrar.map((camada) => (
-          <Accordion key={camada.camadaId} className="mb-4">
-            <AccordionSummary
-              expandIcon={<ExpandMore />}
-              aria-controls={`panel-${camada.camadaId}-content`}
-              id={`panel-${camada.camadaId}-header`}
+        <>
+          {camadasAMostrar.map((camada) => (
+            <Accordion
+              key={camada.camadaId}
+              className="mb-4 shadow-sm border border-gray-200 rounded-md"
             >
-              <Box className="flex justify-between items-center w-full pr-4">
-                <Typography variant="subtitle1">
-                  Camada #{camada.camadaId} - {camada.proveedor}
-                </Typography>
-                <Box className="flex items-center gap-4">
-                  <Chip 
-                    label={estadoCamada(camada.fechaSalida)}
-                    color={camada.fechaSalida ? 'default' : 'success'}
-                    size="small"
-                  />
-                  <Typography variant="body2">
-                    Ingreso: {formatearFecha(camada.fechaIngreso)}
-                  </Typography>
-                  {camada.fechaSalida && (
-                    <Typography variant="body2">
-                      Salida: {formatearFecha(camada.fechaSalida)}
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                aria-controls={`panel-${camada.camadaId}-content`}
+                id={`panel-${camada.camadaId}-header`}
+                sx={{ backgroundColor: "#f9f9f9" }}
+              >
+                <Box className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full pr-4 gap-2 sm:gap-4">
+                  {/* Info Principal */}
+                  <Box>
+                    <Typography
+                      variant="subtitle1"
+                      className="text-black font-semibold"
+                    >
+                      Camada #{camada.camadaId}
                     </Typography>
-                  )}
-                  <Typography variant="body2" fontWeight="bold">
-                    Total: {calcularTotalAvesPorCamada(camada.camadaId)} aves
-                  </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Proveedor: {obtenerNombreProveedor(camada.proveedorId)}
+                    </Typography>
+                  </Box>
+
+                  {/* Info Secundaria y Estado */}
+                  <Box className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-sm">
+                    <Chip
+                      label={estadoCamada(camada.fechaSalida)}
+                      color={camada.fechaSalida ? "default" : "success"}
+                      size="small"
+                      variant="outlined"
+                    />
+                    <Typography variant="body2" color="textSecondary">
+                      Ingreso: {formatearFecha(camada.fechaIngreso)}
+                    </Typography>
+                    {camada.fechaSalida && (
+                      <Typography variant="body2" color="textSecondary">
+                        Salida: {formatearFecha(camada.fechaSalida)}
+                      </Typography>
+                    )}
+                    <Typography
+                      variant="body2"
+                      className="font-medium text-black"
+                    >
+                      Total:{" "}
+                      {calcularTotalAvesPorCamada(
+                        camada.camadaId
+                      ).toLocaleString()}{" "}
+                      aves
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Divider className="mb-3" />
-              <Typography variant="subtitle2" className="mb-2">
-                Distribución por Galpones:
-              </Typography>
-              
-              <TableContainer>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Galpón</TableCell>
-                      <TableCell align="right">Cantidad de Aves</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {obtenerGalponesPorCamada(camada.camadaId).map((galpon) => (
-                      <TableRow key={galpon.galponId}>
-                        <TableCell>{galpon.nombre}</TableCell>
-                        <TableCell align="right">
-                          {obtenerCantidadAves(galpon.galponId, camada.camadaId)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    <TableRow>
-                      <TableCell><strong>Total</strong></TableCell>
-                      <TableCell align="right">
-                        <strong>{calcularTotalAvesPorCamada(camada.camadaId)}</strong>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              
-              <Box className="flex justify-end mt-3">
-                <Button
-                  variant="outlined"
-                  startIcon={<Visibility />}
-                  size="small"
-                  onClick={() => verDetalleCamada(camada.camadaId)}
-                >
-                  Ver Detalles
-                </Button>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-        ))
+              </AccordionSummary>
+              <AccordionDetails>
+                {<CamadasGestion camada={camada} />}
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </>
       )}
     </Paper>
-  )
+  );
 }
