@@ -810,7 +810,7 @@
     {
       "camadaId": 1,
       "fechaIngreso": "2025-01-01",
-      "fechaSalida": "2025-03-15",
+      "fechaSalida": null,
       "proveedorId": 1
     },
     {
