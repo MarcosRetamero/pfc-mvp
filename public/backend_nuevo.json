@@ -226,6 +226,118 @@
       "tipo": "humedad",
       "modelo": "H-500",
       "unidadMedida": "%"
+    },
+    {
+      "sensorId": 17,
+      "seccionId": 9,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 18,
+      "seccionId": 10,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 19,
+      "seccionId": 11,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 20,
+      "seccionId": 12,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 21,
+      "seccionId": 13,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 22,
+      "seccionId": 14,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 23,
+      "seccionId": 15,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 24,
+      "seccionId": 16,
+      "tipo": "temperatura",
+      "modelo": "T-1000",
+      "unidadMedida": "°C"
+    },
+    {
+      "sensorId": 25,
+      "seccionId": 9,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 26,
+      "seccionId": 10,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 27,
+      "seccionId": 11,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 28,
+      "seccionId": 12,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 29,
+      "seccionId": 13,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 30,
+      "seccionId": 14,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 31,
+      "seccionId": 15,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
+    },
+    {
+      "sensorId": 32,
+      "seccionId": 16,
+      "tipo": "humedad",
+      "modelo": "H-500",
+      "unidadMedida": "%"
     }
   ],
   "lecturaSensor": [
@@ -510,6 +622,246 @@
       "sensorId": 15,
       "valor": 68.5,
       "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 48,
+      "sensorId": 9,
+      "valor": 23.2,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 49,
+      "sensorId": 10,
+      "valor": 23.5,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 50,
+      "sensorId": 11,
+      "valor": 61.0,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 51,
+      "sensorId": 12,
+      "valor": 62.0,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 52,
+      "sensorId": 9,
+      "valor": 23.8,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 53,
+      "sensorId": 10,
+      "valor": 24.0,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 54,
+      "sensorId": 11,
+      "valor": 61.5,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 55,
+      "sensorId": 12,
+      "valor": 62.5,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 56,
+      "sensorId": 13,
+      "valor": 24.5,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 57,
+      "sensorId": 14,
+      "valor": 24.8,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 58,
+      "sensorId": 15,
+      "valor": 69.0,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 59,
+      "sensorId": 16,
+      "valor": 69.5,
+      "fechaHora": "2025-01-05T10:00:00Z"
+    },
+    {
+      "lecturaId": 60,
+      "sensorId": 13,
+      "valor": 25.0,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 61,
+      "sensorId": 14,
+      "valor": 25.2,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 62,
+      "sensorId": 15,
+      "valor": 70.0,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 63,
+      "sensorId": 16,
+      "valor": 70.5,
+      "fechaHora": "2025-01-05T11:00:00Z"
+    },
+    {
+      "lecturaId": 64,
+      "sensorId": 13,
+      "valor": 25.5,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 65,
+      "sensorId": 14,
+      "valor": 25.8,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 66,
+      "sensorId": 15,
+      "valor": 71.0,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 67,
+      "sensorId": 16,
+      "valor": 71.5,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 68,
+      "sensorId": 17,
+      "valor": 25.2,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 69,
+      "sensorId": 18,
+      "valor": 25.5,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 70,
+      "sensorId": 19,
+      "valor": 25.8,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 71,
+      "sensorId": 20,
+      "valor": 26.0,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 72,
+      "sensorId": 25,
+      "valor": 65.5,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 73,
+      "sensorId": 26,
+      "valor": 66.0,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 74,
+      "sensorId": 27,
+      "valor": 66.5,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 75,
+      "sensorId": 28,
+      "valor": 67.0,
+      "fechaHora": "2025-01-05T12:00:00Z"
+    },
+    {
+      "lecturaId": 76,
+      "sensorId": 21,
+      "valor": 24.8,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 77,
+      "sensorId": 22,
+      "valor": 25.2,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 78,
+      "sensorId": 23,
+      "valor": 24.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 79,
+      "sensorId": 24,
+      "valor": 25.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 80,
+      "sensorId": 29,
+      "valor": 65.5,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 81,
+      "sensorId": 30,
+      "valor": 66.0,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 82,
+      "sensorId": 31,
+      "valor": 65.8,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 83,
+      "sensorId": 32,
+      "valor": 66.2,
+      "fechaHora": "2025-01-05T08:00:00Z"
+    },
+    {
+      "lecturaId": 84,
+      "sensorId": 17,
+      "valor": 25.5,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 85,
+      "sensorId": 18,
+      "valor": 25.8,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 86,
+      "sensorId": 19,
+      "valor": 25.2,
+      "fechaHora": "2025-01-05T09:00:00Z"
+    },
+    {
+      "lecturaId": 87,
+      "sensorId": 20,
+      "valor": 25.6,
+      "fechaHora": "2025-01-05T09:00:00Z"
     }
   ],
   "dispositivo": [
@@ -630,6 +982,174 @@
     {
       "dispositivoId": 20,
       "seccionId": 7,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 21,
+      "seccionId": 9,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 22,
+      "seccionId": 9,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 23,
+      "seccionId": 9,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 24,
+      "seccionId": 10,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 25,
+      "seccionId": 10,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 26,
+      "seccionId": 10,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 27,
+      "seccionId": 11,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 28,
+      "seccionId": 11,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 29,
+      "seccionId": 11,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 30,
+      "seccionId": 12,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 31,
+      "seccionId": 12,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 32,
+      "seccionId": 12,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 33,
+      "seccionId": 13,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 34,
+      "seccionId": 13,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 35,
+      "seccionId": 13,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 36,
+      "seccionId": 14,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 37,
+      "seccionId": 14,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 38,
+      "seccionId": 14,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 39,
+      "seccionId": 15,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 40,
+      "seccionId": 15,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 41,
+      "seccionId": 15,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 42,
+      "seccionId": 16,
+      "tipo": "ventilador",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 43,
+      "seccionId": 16,
+      "tipo": "aspersor",
+      "estadoInicial": "off"
+    },
+    {
+      "dispositivoId": 44,
+      "seccionId": 16,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 45,
+      "seccionId": 3,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 46,
+      "seccionId": 4,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 47,
+      "seccionId": 6,
+      "tipo": "luz",
+      "estadoInicial": "on"
+    },
+    {
+      "dispositivoId": 48,
+      "seccionId": 8,
       "tipo": "luz",
       "estadoInicial": "on"
     }

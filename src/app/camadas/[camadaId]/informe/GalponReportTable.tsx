@@ -1,4 +1,3 @@
-// src/app/camadas/[camadaId]/informe/GalponReportTable.tsx
 'use client'
 
 import React from 'react'
