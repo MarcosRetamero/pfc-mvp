@@ -3,6 +3,9 @@
 import React from "react";
 import { Box, Typography, Grid, Button } from "@mui/material";
 import SummaryCards from "./SummaryCards";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 import GalponReportTable from "./GalponReportTable";
 
 const mockDetallePorGalpon = {
@@ -61,7 +64,7 @@ const mockDetallePorGalpon = {
       avesVivas: 11940,
       avesFallecidas: 10,
       alimento: 94.3,
-      pesoProm: 0.30,
+      pesoProm: 0.3,
       tasaCrec: 0.08,
       tasaEngorde: 3.0,
       temp: 26,
@@ -86,7 +89,7 @@ const mockDetallePorGalpon = {
       avesFallecidas: 7,
       alimento: 94.3,
       pesoProm: 0.49,
-      tasaCrec: 0.10,
+      tasaCrec: 0.1,
       tasaEngorde: 3.2,
       temp: 24,
       humedad: 76,
@@ -112,7 +115,7 @@ const mockDetallePorGalpon = {
       avesFallecidas: 35,
       alimento: 82.5,
       pesoProm: 0.092,
-      tasaCrec: 0.050,
+      tasaCrec: 0.05,
       tasaEngorde: 2.48,
       temp: 28.6,
       humedad: 67,
@@ -136,7 +139,7 @@ const mockDetallePorGalpon = {
       avesFallecidas: 3,
       alimento: 82.5,
       pesoProm: 0.221,
-      tasaCrec: 0.070,
+      tasaCrec: 0.07,
       tasaEngorde: 2.85,
       temp: 26.8,
       humedad: 71,
@@ -171,14 +174,14 @@ const mockDetallePorGalpon = {
       avesVivas: 9920,
       avesFallecidas: 0,
       alimento: 82.5,
-      pesoProm: 0.500,
+      pesoProm: 0.5,
       tasaCrec: 0.105,
       tasaEngorde: 3.15,
       temp: 23.8,
       humedad: 76,
     },
   ],
-  
+
   3: [
     {
       id: "3-2025-05-01",
@@ -234,7 +237,7 @@ const mockDetallePorGalpon = {
       avesVivas: 11951,
       avesFallecidas: 14,
       alimento: 81.0,
-      pesoProm: 0.280,
+      pesoProm: 0.28,
       tasaCrec: 0.076,
       tasaEngorde: 2.97,
       temp: 25.6,
@@ -258,14 +261,14 @@ const mockDetallePorGalpon = {
       avesVivas: 11925,
       avesFallecidas: 5,
       alimento: 81.0,
-      pesoProm: 0.460,
+      pesoProm: 0.46,
       tasaCrec: 0.095,
       tasaEngorde: 3.15,
       temp: 23.9,
       humedad: 75,
     },
   ],
-  
+
   4: [
     {
       id: "4-2025-05-01",
@@ -297,7 +300,7 @@ const mockDetallePorGalpon = {
       avesVivas: 14970,
       avesFallecidas: 20,
       alimento: 118.0,
-      pesoProm: 0.160,
+      pesoProm: 0.16,
       tasaCrec: 0.065,
       tasaEngorde: 2.68,
       temp: 29.0,
@@ -321,7 +324,7 @@ const mockDetallePorGalpon = {
       avesVivas: 14940,
       avesFallecidas: 10,
       alimento: 118.0,
-      pesoProm: 0.320,
+      pesoProm: 0.32,
       tasaCrec: 0.085,
       tasaEngorde: 2.78,
       temp: 27.4,
@@ -345,14 +348,13 @@ const mockDetallePorGalpon = {
       avesVivas: 14910,
       avesFallecidas: 9,
       alimento: 118.0,
-      pesoProm: 0.520,
+      pesoProm: 0.52,
       tasaCrec: 0.105,
-      tasaEngorde: 2.90,
+      tasaEngorde: 2.9,
       temp: 25.7,
       humedad: 75,
     },
   ],
-  
 };
 
 const mockGalpones = [
@@ -374,9 +376,11 @@ function calcularResumenCamada(detallePorGalpon: typeof mockDetallePorGalpon) {
   for (const registros of Object.values(detallePorGalpon)) {
     if (registros.length === 0) continue;
     const avesFinales = registros[registros.length - 1].avesVivas;
-    const totalMuertes = registros.reduce((sum, r) => sum + r.avesFallecidas, 0);
+    const totalMuertes = registros.reduce(
+      (sum, r) => sum + r.avesFallecidas,
+      0
+    );
     const avesIniciales = avesFinales + totalMuertes;
-    
 
     pollosRecibidos += avesIniciales;
     pollosActuales += avesFinales;
@@ -388,7 +392,8 @@ function calcularResumenCamada(detallePorGalpon: typeof mockDetallePorGalpon) {
     tasasEngorde.push(
       registros
         .filter((r) => r.tasaEngorde > 0)
-        .reduce((sum, r) => sum + r.tasaEngorde, 0) / (registros.length - 1)
+        .reduce((sum, r) => sum + r.tasaEngorde, 0) /
+        (registros.length - 1)
     );
     temperaturas.push(...registros.map((r) => r.temp));
     humedades.push(...registros.map((r) => r.humedad));
@@ -400,7 +405,9 @@ function calcularResumenCamada(detallePorGalpon: typeof mockDetallePorGalpon) {
     fechaSalida: null,
     pollosRecibidos,
     pollosActuales,
-    porcentajeMortandad: Number((((pollosRecibidos - pollosActuales) / pollosRecibidos) * 100).toFixed(2)),
+    porcentajeMortandad: Number(
+      (((pollosRecibidos - pollosActuales) / pollosRecibidos) * 100).toFixed(2)
+    ),
 
     alimentoConsumido: Number(alimentoTotal.toFixed(1)),
     ultimoPesoPromedio: Number(
@@ -418,13 +425,111 @@ function calcularResumenCamada(detallePorGalpon: typeof mockDetallePorGalpon) {
     visitasVet: 2, // hardcoded
     incidencias: 1, // hardcoded
     tasaCrecimiento: Number(
-      (tasasCrecimiento.reduce((a, b) => a + b, 0) / tasasCrecimiento.length).toFixed(3)
+      (
+        tasasCrecimiento.reduce((a, b) => a + b, 0) / tasasCrecimiento.length
+      ).toFixed(3)
     ),
   };
 }
 
 // ✅ Ejecutar función y obtener resumen
 const mockSummary = calcularResumenCamada(mockDetallePorGalpon);
+
+function exportarPDF() {
+  const doc = new jsPDF();
+  const hoy = new Date().toLocaleDateString("es-AR");
+
+  // Título principal
+  doc.setFontSize(16);
+  doc.text(`Informe de Camada #${mockSummary.camadaId}`, 14, 20);
+  doc.setFontSize(12);
+  doc.text(`Fecha: ${hoy}`, 14, 28);
+
+  // Tabla de resumen
+  const resumenData = [
+    ["Fecha ingreso", mockSummary.fechaIngreso],
+    ["Fecha salida", mockSummary.fechaSalida || "—"],
+    ["Pollos recibidos", mockSummary.pollosRecibidos],
+    ["Pollos actuales", mockSummary.pollosActuales],
+    ["% Mortandad", `${mockSummary.porcentajeMortandad}%`],
+    ["Alimento consumido (kg)", mockSummary.alimentoConsumido],
+    ["Peso promedio (kg)", mockSummary.ultimoPesoPromedio],
+    ["Tasa de crecimiento", mockSummary.tasaCrecimiento],
+    ["Tasa de engorde (ICA)", mockSummary.tasaEngorde],
+    ["Temperatura promedio (°C)", mockSummary.tempPromedio],
+    ["Humedad promedio (%)", mockSummary.humedadPromedio],
+    ["Visitas veterinarias", mockSummary.visitasVet],
+    ["Incidencias", mockSummary.incidencias],
+  ];
+
+  autoTable(doc, {
+    head: [["Dato", "Valor"]],
+    body: resumenData,
+    startY: 35,
+    theme: "grid",
+    headStyles: { fillColor: [100, 100, 255] },
+  });
+
+  // Tabla de registros por galpón
+  const rows: any[] = [];
+  for (const galponId in mockDetallePorGalpon) {
+    const registros = mockDetallePorGalpon[galponId];
+    registros.forEach((r) => {
+      rows.push([
+        galponId,
+        r.fecha,
+        r.avesVivas,
+        r.avesFallecidas,
+        r.alimento,
+        r.pesoProm,
+        r.tasaCrec,
+        r.tasaEngorde,
+        r.temp,
+        r.humedad,
+      ]);
+    });
+  }
+
+  autoTable(doc, {
+    head: [[
+      "Galpón", "Fecha", "Aves Vivas", "Muertes", "Alimento",
+      "Peso Prom.", "Crec. Día", "ICA", "Temp", "Humedad"
+    ]],
+    body: rows,
+    startY: doc.lastAutoTable.finalY + 10,
+    theme: "striped",
+  });
+
+  doc.save(`informe-camada-${mockSummary.camadaId}.pdf`);
+}
+
+
+function exportarExcel() {
+  const rows: any[] = [];
+
+  for (const galponId in mockDetallePorGalpon) {
+    const registros = mockDetallePorGalpon[galponId];
+    registros.forEach((r) => {
+      rows.push({
+        Galpón: galponId,
+        Fecha: r.fecha,
+        "Aves Vivas": r.avesVivas,
+        Muertes: r.avesFallecidas,
+        "Alimento (kg)": r.alimento,
+        "Peso Prom. (kg)": r.pesoProm,
+        "Crecimiento Diario": r.tasaCrec,
+        "Índice Conversión Alimenticia": r.tasaEngorde,
+        "Temperatura (°C)": r.temp,
+        "Humedad (%)": r.humedad,
+      });
+    });
+  }
+
+  const worksheet = XLSX.utils.json_to_sheet(rows);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Informe");
+  XLSX.writeFile(workbook, "informe-camada.xlsx");
+}
 
 // 🔄 Página final
 export default function InformeCamadaPage() {
@@ -434,7 +539,12 @@ export default function InformeCamadaPage() {
         Informe de camada
       </Typography>
 
-      <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mb: 2 }}
+      >
         <Grid item>
           <Button onClick={() => history.back()}>← Volver</Button>
         </Grid>
@@ -454,12 +564,17 @@ export default function InformeCamadaPage() {
         </Box>
       ))}
 
-      <Grid container justifyContent="flex-end" alignItems="center" sx={{ mt: 4 }}>
-        <Button sx={{ mr: 1 }} variant="outlined">
-          Exportar CSV
+      <Grid
+        container
+        justifyContent="flex-end"
+        alignItems="center"
+        sx={{ mt: 4 }}
+      >
+        <Button sx={{ mr: 1 }} variant="outlined" onClick={exportarExcel}>
+          Exportar Excel
         </Button>
-        <Button variant="contained" color="primary">
-          Enviar al proveedor
+        <Button sx={{ mr: 1 }} variant="outlined" onClick={exportarPDF}>
+          Exportar PDF
         </Button>
       </Grid>
     </Box>
