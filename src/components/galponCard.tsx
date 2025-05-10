@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Box, Chip, Button, Switch, Divider, Grid, CircularProgress } from "@mui/material";
-import { Thermostat, Opacity, Circle, ArrowForward, Air, WaterDrop, Sensors, Lightbulb, WarningAmber, CheckCircleOutline, ReportProblemOutlined } from "@mui/icons-material";
+import { Card, CardContent, Typography, Box, Chip, Button, Divider, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, CircularProgress } from "@mui/material";
+import { Thermostat, Opacity, ArrowForward, WarningAmber, CheckCircleOutline, ReportProblemOutlined } from "@mui/icons-material";
 import { useRouter } from 'next/navigation';
 
 // --- Tipos basados en backend_nuevo.json ---
@@ -57,16 +57,20 @@ interface GalponCardProps {
 
 const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
   const router = useRouter();
-  const [temperatura, setTemperatura] = useState<number | null>(null);
-  const [humedad, setHumedad] = useState<number | null>(null);
+  const [seccionesDatos, setSeccionesDatos] = useState<Array<{
+    seccionId: number,
+    nombre: string,
+    temperatura: number | null,
+    humedad: number | null
+  }>>([]);
   const [loadingSensores, setLoadingSensores] = useState(true);
   const [alertasActivas, setAlertasActivas] = useState<Alerta[]>([]);
   const [loadingAlertas, setLoadingAlertas] = useState(true);
-
-  const [ventiladoresOn, setVentiladoresOn] = useState(true);
-  const [aspersoresOn, setAspersoresOn] = useState(false);
-  const [cortinasOn, setCortinasOn] = useState(true);
-  const [lucesOn, setLucesOn] = useState(true);
+  const [promedios, setPromedios] = useState<{ temperatura: number | null, humedad: number | null }>({
+    temperatura: null,
+    humedad: null
+  });
+  const [pollosVivos, setPollosVivos] = useState<number>(0);
 
   useEffect(() => {
     const fetchDatosGalpon = async () => {
@@ -76,50 +80,81 @@ const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
         const response = await fetch('/backend_nuevo.json');
         const data = await response.json();
 
-        // 1. Encontrar secciones del galpón actual
+        // 1. Encontrar secciones del galpón y sus datos
         const seccionesGalpon = data.seccion.filter((s: Seccion) => s.galponId === galpon.galponId);
-        const seccionIds = seccionesGalpon.map((s: Seccion) => s.seccionId);
+        
+        // 2. Procesar datos por sección
+        const datosSecciones = await Promise.all(seccionesGalpon.map(async (seccion: Seccion) => {
+          const sensoresSeccion = data.sensor.filter((sensor: Sensor) => 
+            sensor.seccionId === seccion.seccionId && 
+            (sensor.tipo === 'temperatura' || sensor.tipo === 'humedad')
+          );
 
-        // 2. Encontrar sensores de T y H en esas secciones
-        const sensoresGalpon = data.sensor.filter((sensor: Sensor) =>
-          seccionIds.includes(sensor.seccionId) && (sensor.tipo === 'temperatura' || sensor.tipo === 'humedad')
-        );
+          let tempValor = null;
+          let humValor = null;
 
-        // 3. Obtener las últimas lecturas para esos sensores
-        let tempLecturas: number[] = [];
-        let humLecturas: number[] = [];
+          sensoresSeccion.forEach((sensor: Sensor) => {
+            const lecturas = data.lecturaSensor
+              .filter((l: LecturaSensor) => l.sensorId === sensor.sensorId)
+              .sort((a: LecturaSensor, b: LecturaSensor) => 
+                new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime()
+              );
 
-        sensoresGalpon.forEach((sensor: Sensor) => {
-          const lecturasSensor = data.lecturaSensor
-            .filter((lectura: LecturaSensor) => lectura.sensorId === sensor.sensorId)
-            .sort((a: LecturaSensor, b: LecturaSensor) => new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime());
-
-          if (lecturasSensor.length > 0) {
-            if (sensor.tipo === 'temperatura') {
-              tempLecturas.push(lecturasSensor[0].valor);
-            } else if (sensor.tipo === 'humedad') {
-              humLecturas.push(lecturasSensor[0].valor);
+            if (lecturas.length > 0) {
+              if (sensor.tipo === 'temperatura') {
+                tempValor = lecturas[0].valor;
+              } else if (sensor.tipo === 'humedad') {
+                humValor = lecturas[0].valor;
+              }
             }
-          }
+          });
+
+          return {
+            seccionId: seccion.seccionId,
+            nombre: seccion.nombre,
+            temperatura: tempValor,
+            humedad: humValor
+          };
+        }));
+
+        setSeccionesDatos(datosSecciones);
+
+        // 3. Calcular promedios generales
+        const tempsValidas = datosSecciones.map(s => s.temperatura).filter((t): t is number => t !== null);
+        const humsValidas = datosSecciones.map(s => s.humedad).filter((h): h is number => h !== null);
+
+        setPromedios({
+          temperatura: tempsValidas.length > 0 ? 
+            parseFloat((tempsValidas.reduce((a, b) => a + b, 0) / tempsValidas.length).toFixed(1)) : null,
+          humedad: humsValidas.length > 0 ? 
+            parseFloat((humsValidas.reduce((a, b) => a + b, 0) / humsValidas.length).toFixed(1)) : null
         });
 
-        if (tempLecturas.length > 0) {
-          setTemperatura(parseFloat((tempLecturas.reduce((a, b) => a + b, 0) / tempLecturas.length).toFixed(1)));
-        }
-        if (humLecturas.length > 0) {
-          setHumedad(parseFloat((humLecturas.reduce((a, b) => a + b, 0) / humLecturas.length).toFixed(1)));
-        }
-        setLoadingSensores(false);
+        // 4. Calcular pollos vivos
+        const camadasEnGalpon = data.camadaGalpon.filter((cg: any) => cg.galponId === galpon.galponId);
+        let totalVivos = 0;
 
-        // 4. Cargar alertas activas para este galpón (o sus secciones)
+        camadasEnGalpon.forEach((cg: any) => {
+          const muertes = data.mortalidad
+            .filter((m: any) => m.camadaGalponId === cg.camadaGalponId)
+            .reduce((sum: number, m: any) => sum + m.cantidad, 0);
+          totalVivos += cg.cantidadInicial - muertes;
+        });
+
+        setPollosVivos(Math.max(0, totalVivos));
+
+        // 5. Cargar alertas activas
         const alertasGalpon = data.alerta.filter(
-          (alerta: Alerta) => !alerta.resuelta && (alerta.galponId === galpon.galponId || (alerta.seccionId && seccionIds.includes(alerta.seccionId)))
+          (alerta: Alerta) => !alerta.resuelta && 
+            (alerta.galponId === galpon.galponId || 
+             seccionesGalpon.some(s => s.seccionId === alerta.seccionId))
         );
         setAlertasActivas(alertasGalpon);
-        setLoadingAlertas(false);
 
+        setLoadingSensores(false);
+        setLoadingAlertas(false);
       } catch (error) {
-        console.error("Error fetching sensor data for galpon:", galpon.galponId, error);
+        console.error("Error fetching data for galpon:", galpon.galponId, error);
         setLoadingSensores(false);
         setLoadingAlertas(false);
       }
@@ -127,7 +162,6 @@ const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
 
     fetchDatosGalpon();
   }, [galpon.galponId]);
-
 
   const getEstadoGeneral = () => {
     if (loadingAlertas) return { text: "Cargando...", color: "default", icon: <CircularProgress size={16} color="inherit" /> };
@@ -139,76 +173,122 @@ const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
   const estadoGeneral = getEstadoGeneral();
 
   return (
-    <Card className="h-full flex flex-col shadow-lg border border-gray-200 rounded-lg overflow-hidden">
-      <CardContent className="flex-grow">
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1.5}>
-          <Typography variant="h6" component="div" className="font-semibold text-gray-800">
-            {galpon.nombre}
-          </Typography>
-          <Chip
-            icon={estadoGeneral.icon}
-            label={estadoGeneral.text}
-            color={estadoGeneral.color as "default" | "error" | "warning" | "success"}
-            size="small"
-            variant="outlined"
-          />
+    <Card className="h-full flex flex-col shadow-lg border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      <CardContent className="flex-grow p-0">
+        {/* Encabezado con nombre y estado */}
+        <Box className="bg-gradient-to-r from-blue-50 to-blue-100 p-4">
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6" component="div" className="font-semibold text-gray-800">
+              {galpon.nombre}
+            </Typography>
+            <Chip
+              icon={estadoGeneral.icon}
+              label={estadoGeneral.text}
+              color={estadoGeneral.color as "default" | "error" | "warning" | "success"}
+              size="small"
+              className="shadow-sm"
+            />
+          </Box>
         </Box>
 
-        <Divider sx={{ my: 1.5 }} />
-
-        {/* Datos de Sensores */}
-        <Grid container spacing={1.5} mb={2}>
-          <Grid item xs={6} display="flex" alignItems="center">
-            <Thermostat color="error" sx={{ mr: 1 }} />
-            <Typography variant="body2" color="text.secondary">
-              Temp: {loadingSensores ? <CircularProgress size={14} /> : (temperatura !== null ? `${temperatura}°C` : 'N/A')}
+        {/* Datos Generales - Diseño mejorado */}
+        <Box className="p-6 grid grid-cols-3 gap-4">
+          {/* Temperatura Promedio */}
+          <Box className="flex flex-col items-center justify-center p-3 rounded-lg bg-red-50">
+            <Thermostat color="error" sx={{ fontSize: 32, mb: 1 }} />
+            <Typography variant="h4" className="font-bold text-red-600">
+              {loadingSensores ? <CircularProgress size={32} /> : 
+                (promedios.temperatura !== null ? `${promedios.temperatura}°` : 'N/A')}
             </Typography>
-          </Grid>
-          <Grid item xs={6} display="flex" alignItems="center">
-            <Opacity color="primary" sx={{ mr: 1 }} />
-            <Typography variant="body2" color="text.secondary">
-              Hum: {loadingSensores ? <CircularProgress size={14} /> : (humedad !== null ? `${humedad}%` : 'N/A')}
+            <Typography variant="caption" color="text.secondary">
+              Temperatura
             </Typography>
-          </Grid>
-          {/* Podrías añadir más sensores aquí si es necesario */}
-        </Grid>
+          </Box>
 
-        {/* Controles (Toggles) */}
-        <Grid container spacing={1} justifyContent="space-around" mb={2}>
-          <Grid item xs={6} sm={3} display="flex" flexDirection="column" alignItems="center">
-            <Air fontSize="small" color={ventiladoresOn ? "primary" : "disabled"} />
-            <Switch size="small" checked={ventiladoresOn} onChange={() => setVentiladoresOn(!ventiladoresOn)} />
-            <Typography variant="caption" color="text.secondary">Vent.</Typography>
-          </Grid>
-          <Grid item xs={6} sm={3} display="flex" flexDirection="column" alignItems="center">
-            <WaterDrop fontSize="small" color={aspersoresOn ? "primary" : "disabled"} />
-            <Switch size="small" checked={aspersoresOn} onChange={() => setAspersoresOn(!aspersoresOn)} />
-            <Typography variant="caption" color="text.secondary">Aspers.</Typography>
-          </Grid>
-          <Grid item xs={6} sm={3} display="flex" flexDirection="column" alignItems="center">
-            <Sensors fontSize="small" color={cortinasOn ? "primary" : "disabled"} /> {/* Icono genérico para cortinas */}
-            <Switch size="small" checked={cortinasOn} onChange={() => setCortinasOn(!cortinasOn)} />
-            <Typography variant="caption" color="text.secondary">Cortinas</Typography>
-          </Grid>
-          <Grid item xs={6} sm={3} display="flex" flexDirection="column" alignItems="center">
-            <Lightbulb fontSize="small" color={lucesOn ? "primary" : "disabled"} />
-            <Switch size="small" checked={lucesOn} onChange={() => setLucesOn(!lucesOn)} />
-            <Typography variant="caption" color="text.secondary">Luces</Typography>
-          </Grid>
-        </Grid>
+          {/* Humedad Promedio */}
+          <Box className="flex flex-col items-center justify-center p-3 rounded-lg bg-blue-50">
+            <Opacity color="primary" sx={{ fontSize: 32, mb: 1 }} />
+            <Typography variant="h4" className="font-bold text-blue-600">
+              {loadingSensores ? <CircularProgress size={32} /> : 
+                (promedios.humedad !== null ? `${promedios.humedad}%` : 'N/A')}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Humedad
+            </Typography>
+          </Box>
 
+          {/* Cantidad de Aves */}
+          <Box className="flex flex-col items-center justify-center p-3 rounded-lg bg-green-50">
+            <Box className="rounded-full bg-green-100 p-2 mb-1">
+              🐤
+            </Box>
+            <Typography variant="h4" className="font-bold text-green-600">
+              {pollosVivos.toLocaleString()}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Aves
+            </Typography>
+          </Box>
+        </Box>
+
+        <Divider />
+
+        {/* Datos por Sección - Tabla Moderna */}
+        <Box className="p-4">
+          <Typography variant="subtitle1" className="font-semibold mb-3">
+            Secciones del Galpón
+          </Typography>
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell className="font-medium">Sección</TableCell>
+                  <TableCell align="center" className="font-medium">Temperatura</TableCell>
+                  <TableCell align="center" className="font-medium">Humedad</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {seccionesDatos.map((seccion) => (
+                  <TableRow 
+                    key={seccion.seccionId}
+                    className="hover:bg-gray-50 transition-colors duration-150"
+                  >
+                    <TableCell>{seccion.nombre}</TableCell>
+                    <TableCell align="center">
+                      <Box className="inline-flex items-center gap-1">
+                        <Thermostat fontSize="small" color="error" />
+                        <Typography>
+                          {seccion.temperatura !== null ? 
+                            `${seccion.temperatura.toFixed(1)}°C` : 'N/A'}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box className="inline-flex items-center gap-1">
+                        <Opacity fontSize="small" color="primary" />
+                        <Typography>
+                          {seccion.humedad !== null ? 
+                            `${seccion.humedad.toFixed(1)}%` : 'N/A'}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </CardContent>
 
       <Divider />
 
-      <Box p={1.5} display="flex" justifyContent="flex-end">
+      <Box className="p-3 bg-gray-50">
         <Button
-          variant="outlined"
-          size="small"
-          color="primary"
+          variant="contained"
+          fullWidth
           endIcon={<ArrowForward />}
           onClick={() => onSelect(galpon.galponId)}
-          sx={{ textTransform: 'none' }}
+          className="shadow-sm hover:shadow-md transition-shadow duration-300"
         >
           Ver Detalles
         </Button>

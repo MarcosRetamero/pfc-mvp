@@ -34,6 +34,9 @@ export default function Navbar() {
           <Button color="inherit" onClick={() => router.push("/camadas")}>
             Camadas
           </Button>
+          <Button color="inherit" onClick={() => router.push("/alimentacion")}>
+            Alimentos
+          </Button>
         </div>
         <div className="flex items-center gap-4">
           <Typography variant="body1" className="hidden sm:block">
