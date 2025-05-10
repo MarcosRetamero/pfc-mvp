@@ -1450,38 +1450,86 @@
       "cantidadMuestra": 50
     }
   ],
-  "reposicionAlimento": [
+"reposicionAlimento": [
     {
       "reposicionId": 1,
       "galponId": 1,
-      "fechaReposicion": "2025-01-03",
-      "tipoAlimento": "Starter",
-      "cantidadKg": 1000.0,
-      "fechaEstimadoFin": "2025-01-10"
+      "fechaReposicion": "2025-01-01",
+      "tipoAlimento": "Iniciador",
+      "cantidadKg": 1200,
+      "observaciones": "Reposición inicial"
     },
     {
       "reposicionId": 2,
-      "galponId": 2,
-      "fechaReposicion": "2025-01-04",
-      "tipoAlimento": "Grower",
-      "cantidadKg": 1200.0,
-      "fechaEstimadoFin": "2025-01-12"
+      "galponId": 1,
+      "fechaReposicion": "2025-01-03",
+      "tipoAlimento": "Iniciador",
+      "cantidadKg": 1400,
+      "observaciones": "Ajuste por consumo mayor al esperado"
     },
     {
       "reposicionId": 3,
-      "galponId": 3,
-      "fechaReposicion": "2025-01-05",
-      "tipoAlimento": "Starter",
-      "cantidadKg": 1100.0,
-      "fechaEstimadoFin": "2025-01-11"
+      "galponId": 2,
+      "fechaReposicion": "2025-01-01",
+      "tipoAlimento": "Crecimiento",
+      "cantidadKg": 1800,
+      "observaciones": "Reposición programada"
     },
     {
       "reposicionId": 4,
+      "galponId": 2,
+      "fechaReposicion": "2025-01-04",
+      "tipoAlimento": "Crecimiento",
+      "cantidadKg": 1900,
+      "observaciones": "Reposición por bajo nivel"
+    },
+    {
+      "reposicionId": 5,
+      "galponId": 3,
+      "fechaReposicion": "2025-01-02",
+      "tipoAlimento": "Finalizador",
+      "cantidadKg": 1600,
+      "observaciones": null
+    },
+    {
+      "reposicionId": 6,
       "galponId": 4,
-      "fechaReposicion": "2025-01-06",
-      "tipoAlimento": "Starter",
-      "cantidadKg": 1050.0,
-      "fechaEstimadoFin": "2025-01-13"
+      "fechaReposicion": "2025-01-02",
+      "tipoAlimento": "Finalizador",
+      "cantidadKg": 1500,
+      "observaciones": "Cambio a alimento finalizador"
+    },
+    {
+      "reposicionId": 7,
+      "galponId": 1,
+      "fechaReposicion": "2025-01-04",
+      "tipoAlimento": "Crecimiento",
+      "cantidadKg": 1300,
+      "observaciones": "Cambio a etapa de crecimiento"
+    },
+    {
+      "reposicionId": 8,
+      "galponId": 3,
+      "fechaReposicion": "2025-01-04",
+      "tipoAlimento": "Finalizador",
+      "cantidadKg": 1700,
+      "observaciones": "Reposición por bajo nivel"
+    },
+    {
+      "reposicionId": 9,
+      "galponId": 2,
+      "fechaReposicion": "2025-01-05",
+      "tipoAlimento": "Finalizador",
+      "cantidadKg": 1850,
+      "observaciones": "Cambio a etapa final"
+    },
+    {
+      "reposicionId": 10,
+      "galponId": 4,
+      "fechaReposicion": "2025-01-05",
+      "tipoAlimento": "Finalizador",
+      "cantidadKg": 1550,
+      "observaciones": "Reposición programada"
     }
   ],
   "incidencia": [
@@ -1788,6 +1836,49 @@
       "fechaHora": "2025-01-08T14:00:00Z",
       "modulo": "incidencias",
       "tipoAccion": "create"
+    }
+  ],
+  "consumoAlimento": [
+    {
+      "consumoId": 1,
+      "reposicionId": 1,
+      "fecha": "2025-01-05",
+      "cantidadConsumidaKg": 250.5,
+      "observaciones": "Consumo normal"
+    }
+  ],
+  "historicoConsumo": [
+    {
+      "historicoId": 1,
+      "galponId": 1,
+      "mes": "2024-12",
+      "consumoTotalKg": 2050,
+      "reposicionesTotales": 2,
+      "promedioConsumoKg": 68.3
+    },
+    {
+      "historicoId": 2,
+      "galponId": 2,
+      "mes": "2024-12",
+      "consumoTotalKg": 2450,
+      "reposicionesTotales": 2,
+      "promedioConsumoKg": 81.7
+    },
+    {
+      "historicoId": 3,
+      "galponId": 3,
+      "mes": "2024-12",
+      "consumoTotalKg": 2200,
+      "reposicionesTotales": 2,
+      "promedioConsumoKg": 73.3
+    },
+    {
+      "historicoId": 4,
+      "galponId": 4,
+      "mes": "2024-12",
+      "consumoTotalKg": 2080,
+      "reposicionesTotales": 2,
+      "promedioConsumoKg": 69.3
     }
   ]
 }
