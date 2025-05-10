@@ -1,4 +1,3 @@
-// src/app/camadas/[camadaId]/informe/SummaryCards.tsx
 'use client'
 
 import React from 'react'
@@ -13,6 +12,7 @@ export interface Summary {
   fechaSalida: string | null
   pollosRecibidos: number
   pollosActuales: number
+  porcentajeMortandad: number // ← NUEVO
   alimentoConsumido: number
   ultimoPesoPromedio: number
   tasaEngorde: number
@@ -29,19 +29,20 @@ interface SummaryCardsProps {
 
 export default function SummaryCards({ data }: SummaryCardsProps) {
   const cards = [
-    { label: 'Camada #',           value: data.camadaId },
-    { label: 'Fecha Desde',        value: data.fechaIngreso },
-    { label: 'Fecha Hasta',        value: data.fechaSalida ?? '—' },
-    { label: 'Pollos recibidos',   value: data.pollosRecibidos },
-    { label: 'Pollos actualmente', value: data.pollosActuales },
-    { label: 'Temp. prom. (°C)',   value: data.tempPromedio.toFixed(1) },
-    { label: 'Hum. prom. (%)',     value: data.humedadPromedio.toFixed(1) },
-    { label: 'Peso prom. (kg)',    value: data.ultimoPesoPromedio.toFixed(2) },
-    { label: 'Alimento (kg)',      value: data.alimentoConsumido.toFixed(1) },
-    { label: 'Tasa engorde',       value: data.tasaEngorde.toFixed(2) },
-    { label: 'Tasa crecimiento',   value: data.tasaCrecimiento.toFixed(3) },
-    { label: 'Visitas vet.',       value: data.visitasVet },
-    { label: 'Incidencias',        value: data.incidencias },
+    { label: 'Camada #',            value: data.camadaId },
+    { label: 'Fecha Desde',         value: data.fechaIngreso },
+    { label: 'Fecha Hasta',         value: data.fechaSalida ?? '—' },
+    { label: 'Pollos recibidos',    value: data.pollosRecibidos },
+    { label: 'Pollos actualmente',  value: data.pollosActuales },
+    { label: 'Mortandad (%)',       value: `${(data.porcentajeMortandad ?? 0).toFixed(2)}%` }, // ← NUEVO
+    { label: 'Temp. prom. (°C)',    value: data.tempPromedio.toFixed(1) },
+    { label: 'Hum. prom. (%)',      value: data.humedadPromedio.toFixed(1) },
+    { label: 'Peso prom. (kg)',     value: data.ultimoPesoPromedio.toFixed(2) },
+    { label: 'Alimento (kg)',       value: data.alimentoConsumido.toFixed(1) },
+    { label: 'Tasa engorde',        value: data.tasaEngorde.toFixed(2) },
+    { label: 'Tasa crecimiento',    value: data.tasaCrecimiento.toFixed(3) },
+    { label: 'Visitas vet.',        value: data.visitasVet },
+    { label: 'Incidencias',         value: data.incidencias },
   ]
 
   return (

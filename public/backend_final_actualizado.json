@@ -794,39 +794,104 @@
     }
   ],
   "mortalidad": [
-    {
-      "mortalidadId": 1,
-      "camadaGalponId": 1,
-      "fecha": "2025-01-05",
-      "cantidad": 10,
-      "motivo": "enfermedad",
-      "fechaCargaDato": "2025-01-06"
-    },
-    {
-      "mortalidadId": 2,
-      "camadaGalponId": 2,
-      "fecha": "2025-01-06",
-      "cantidad": 5,
-      "motivo": "estrés térmico",
-      "fechaCargaDato": "2025-01-06"
-    },
-    {
-      "mortalidadId": 3,
-      "camadaGalponId": 5,
-      "fecha": "2025-01-07",
-      "cantidad": 8,
-      "motivo": "aplastamiento",
-      "fechaCargaDato": "2025-01-06"
-    },
-    {
-      "mortalidadId": 4,
-      "camadaGalponId": 6,
-      "fecha": "2025-01-08",
-      "cantidad": 3,
-      "motivo": "desconocido",
-      "fechaCargaDato": "2025-01-06"
-    }
-  ],
+  {
+    "mortalidadId": 1,
+    "camadaGalponId": 1,
+    "fecha": "2025-01-07",
+    "fechaCargaDato": "2025-01-07",
+    "cantidad": 5,
+    "motivo": "Problemas respiratorios"
+  },
+  {
+    "mortalidadId": 2,
+    "camadaGalponId": 2,
+    "fecha": "2025-01-07",
+    "fechaCargaDato": "2025-01-07",
+    "cantidad": 2,
+    "motivo": "Estrés por calor"
+  },
+  {
+    "mortalidadId": 3,
+    "camadaGalponId": 3,
+    "fecha": "2025-01-07",
+    "fechaCargaDato": "2025-01-07",
+    "cantidad": 3,
+    "motivo": "Enfermedad digestiva"
+  },
+  {
+    "mortalidadId": 4,
+    "camadaGalponId": 4,
+    "fecha": "2025-01-07",
+    "fechaCargaDato": "2025-01-07",
+    "cantidad": 1,
+    "motivo": "Picaje"
+  },
+  {
+    "mortalidadId": 5,
+    "camadaGalponId": 1,
+    "fecha": "2025-01-08",
+    "fechaCargaDato": "2025-01-08",
+    "cantidad": 4,
+    "motivo": "Problemas respiratorios"
+  },
+  {
+    "mortalidadId": 6,
+    "camadaGalponId": 2,
+    "fecha": "2025-01-08",
+    "fechaCargaDato": "2025-01-08",
+    "cantidad": 1,
+    "motivo": "Depredación"
+  },
+  {
+    "mortalidadId": 7,
+    "camadaGalponId": 3,
+    "fecha": "2025-01-08",
+    "fechaCargaDato": "2025-01-08",
+    "cantidad": 2,
+    "motivo": "Causas naturales"
+  },
+  {
+    "mortalidadId": 8,
+    "camadaGalponId": 4,
+    "fecha": "2025-01-08",
+    "fechaCargaDato": "2025-01-08",
+    "cantidad": 3,
+    "motivo": "Deshidratación"
+  },
+  {
+    "mortalidadId": 9,
+    "camadaGalponId": 1,
+    "fecha": "2025-01-09",
+    "fechaCargaDato": "2025-01-09",
+    "cantidad": 6,
+    "motivo": "Virus aviar"
+  },
+  {
+    "mortalidadId": 10,
+    "camadaGalponId": 2,
+    "fecha": "2025-01-09",
+    "fechaCargaDato": "2025-01-09",
+    "cantidad": 3,
+    "motivo": "Golpe de calor"
+  },
+  {
+    "mortalidadId": 11,
+    "camadaGalponId": 3,
+    "fecha": "2025-01-09",
+    "fechaCargaDato": "2025-01-09",
+    "cantidad": 1,
+    "motivo": "Debilidad general"
+  },
+  {
+    "mortalidadId": 12,
+    "camadaGalponId": 4,
+    "fecha": "2025-01-09",
+    "fechaCargaDato": "2025-01-09",
+    "cantidad": 2,
+    "motivo": "Asfixia"
+  }
+]
+,
   "registroPeso": [
     {
       "pesoId": 1,
@@ -859,6 +924,38 @@
       "pesoPromedio": 1.18,
       "cantidadMuestra": 50,
       "fechaCargaDato": "2025-01-06"
+    },
+    {
+      "pesoId": 5,
+      "camadaGalponId": 3,
+      "fecha": "2025-01-07",
+      "pesoPromedio": 1.22,
+      "cantidadMuestra": 48,
+      "fechaCargaDato": "2025-01-07"
+    },
+    {
+      "pesoId": 6,
+      "camadaGalponId": 4,
+      "fecha": "2025-01-07",
+      "pesoPromedio": 1.19,
+      "cantidadMuestra": 50,
+      "fechaCargaDato": "2025-01-07"
+    },
+    {
+      "pesoId": 7,
+      "camadaGalponId": 3,
+      "fecha": "2025-01-09",
+      "pesoPromedio": 1.28,
+      "cantidadMuestra": 48,
+      "fechaCargaDato": "2025-01-09"
+    },
+    {
+      "pesoId": 8,
+      "camadaGalponId": 4,
+      "fecha": "2025-01-09",
+      "pesoPromedio": 1.26,
+      "cantidadMuestra": 50,
+      "fechaCargaDato": "2025-01-09"
     }
   ],
   "reposicionAlimento": [
@@ -867,33 +964,60 @@
       "galponId": 1,
       "fechaReposicion": "2025-01-03",
       "tipoAlimento": "Starter",
-      "cantidadKg": 1000.0,
-      "fechaEstimadoFin": "2025-01-10"
+      "cantidadKg": 1000.0
     },
     {
       "reposicionId": 2,
       "galponId": 2,
-      "fechaReposicion": "2025-01-04",
-      "tipoAlimento": "Grower",
-      "cantidadKg": 1200.0,
-      "fechaEstimadoFin": "2025-01-12"
+      "fechaReposicion": "2025-01-03",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 1200.0
     },
     {
       "reposicionId": 3,
       "galponId": 3,
-      "fechaReposicion": "2025-01-05",
+      "fechaReposicion": "2025-01-03",
       "tipoAlimento": "Starter",
-      "cantidadKg": 1100.0,
-      "fechaEstimadoFin": "2025-01-11"
+      "cantidadKg": 1100.0
     },
     {
       "reposicionId": 4,
       "galponId": 4,
-      "fechaReposicion": "2025-01-06",
+      "fechaReposicion": "2025-01-03",
       "tipoAlimento": "Starter",
-      "cantidadKg": 1050.0,
-      "fechaEstimadoFin": "2025-01-13"
+      "cantidadKg": 1050.0
+    },
+    {
+      "reposicionId":5,
+      "galponId": 1,
+      "fechaReposicion": "2025-01-10",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 500
+    },
+    {
+      "reposicionId": 6,
+      "galponId": 2,
+      "fechaReposicion": "2025-01-10",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 500
+    },
+    {
+      "reposicionId": 7,
+      "galponId": 3,
+      "fechaReposicion": "2025-01-10",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 500
+
+    },
+    {
+      "reposicionId": 8,
+      "galponId": 4,
+      "fechaReposicion": "2025-01-10",
+      "tipoAlimento": "Starter",
+      "cantidadKg": 500
+
     }
+    
   ],
   "incidencia": [
     {
@@ -1100,7 +1224,7 @@
     {
       "configId": 1,
       "galponId": 1,
-      "variable": "temperatura",
+      "tipo": "temperatura",
       "rolANotificar": "Gerente",
       "valorMin": 18.0,
       "valorMax": 28.0,
@@ -1109,7 +1233,7 @@
     {
       "configId": 2,
       "galponId": 2,
-      "variable": "humedad",
+      "tipo": "humedad",
       "rolANotificar": "Operario",
       "valorMin": 40.0,
       "valorMax": 70.0,
@@ -1118,7 +1242,7 @@
     {
       "configId": 3,
       "galponId": 3,
-      "variable": "temperatura",
+      "tipo": "temperatura",
       "rolANotificar": "Operario",
       "valorMin": 19.0,
       "valorMax": 27.0,
@@ -1127,7 +1251,7 @@
     {
       "configId": 4,
       "galponId": 4,
-      "variable": "humedad",
+      "tipo": "humedad",
       "rolANotificar": "Gerente",
       "valorMin": 45.0,
       "valorMax": 75.0,

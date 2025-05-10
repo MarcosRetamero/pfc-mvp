@@ -15,6 +15,7 @@
     "@mui/x-data-grid": "^8.3.0",
     "@mui/x-date-pickers": "^7.28.3",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "next": "15.2.5",
     "pfc-mvp": "file:",
     "react": "^19.0.0",

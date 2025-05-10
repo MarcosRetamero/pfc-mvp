@@ -1,303 +1,467 @@
-// src/app/camadas/[camadaId]/informe/page.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import {
-  Box,
-  Grid,
-  Button,
-  CircularProgress,
-  Alert,
-  Typography,
-} from "@mui/material";
+import React from "react";
+import { Box, Typography, Grid, Button } from "@mui/material";
 import SummaryCards from "./SummaryCards";
 import GalponReportTable from "./GalponReportTable";
 
-interface Summary {
-  camadaId: number;
-  fechaIngreso: string;
-  fechaSalida: string | null;
-  pollosRecibidos: number;
-  pollosActuales: number;
-  alimentoConsumido: number;
-  ultimoPesoPromedio: number;
-  tasaEngorde: number;
-  tempPromedio: number;
-  humedadPromedio: number;
-  visitasVet: number;
-  incidencias: number;
-  tasaCrecimiento: number;
+const mockDetallePorGalpon = {
+  1: [
+    {
+      id: "1-2025-05-01",
+      fecha: "2025-05-01",
+      avesVivas: 12000,
+      avesFallecidas: 0,
+      alimento: 94.3,
+      pesoProm: 0.04,
+      tasaCrec: 0.04,
+      tasaEngorde: 0,
+      temp: 30,
+      humedad: 65,
+    },
+    {
+      id: "1-2025-05-02",
+      fecha: "2025-05-02",
+      avesVivas: 11985,
+      avesFallecidas: 25,
+      alimento: 94.3,
+      pesoProm: 0.09,
+      tasaCrec: 0.05,
+      tasaEngorde: 2.5,
+      temp: 29,
+      humedad: 68,
+    },
+    {
+      id: "1-2025-05-03",
+      fecha: "2025-05-03",
+      avesVivas: 11970,
+      avesFallecidas: 20,
+      alimento: 94.3,
+      pesoProm: 0.15,
+      tasaCrec: 0.06,
+      tasaEngorde: 2.8,
+      temp: 28,
+      humedad: 70,
+    },
+    {
+      id: "1-2025-05-04",
+      fecha: "2025-05-04",
+      avesVivas: 11955,
+      avesFallecidas: 27,
+      alimento: 94.3,
+      pesoProm: 0.22,
+      tasaCrec: 0.07,
+      tasaEngorde: 2.9,
+      temp: 27,
+      humedad: 72,
+    },
+    {
+      id: "1-2025-05-05",
+      fecha: "2025-05-05",
+      avesVivas: 11940,
+      avesFallecidas: 10,
+      alimento: 94.3,
+      pesoProm: 0.30,
+      tasaCrec: 0.08,
+      tasaEngorde: 3.0,
+      temp: 26,
+      humedad: 74,
+    },
+    {
+      id: "1-2025-05-06",
+      fecha: "2025-05-06",
+      avesVivas: 11925,
+      avesFallecidas: 15,
+      alimento: 94.3,
+      pesoProm: 0.39,
+      tasaCrec: 0.09,
+      tasaEngorde: 3.1,
+      temp: 25,
+      humedad: 75,
+    },
+    {
+      id: "1-2025-05-07",
+      fecha: "2025-05-07",
+      avesVivas: 11910,
+      avesFallecidas: 7,
+      alimento: 94.3,
+      pesoProm: 0.49,
+      tasaCrec: 0.10,
+      tasaEngorde: 3.2,
+      temp: 24,
+      humedad: 76,
+    },
+  ],
+  2: [
+    {
+      id: "2-2025-05-01",
+      fecha: "2025-05-01",
+      avesVivas: 10000,
+      avesFallecidas: 0,
+      alimento: 82.5,
+      pesoProm: 0.042,
+      tasaCrec: 0.042,
+      tasaEngorde: 0,
+      temp: 29.5,
+      humedad: 66,
+    },
+    {
+      id: "2-2025-05-02",
+      fecha: "2025-05-02",
+      avesVivas: 9987,
+      avesFallecidas: 35,
+      alimento: 82.5,
+      pesoProm: 0.092,
+      tasaCrec: 0.050,
+      tasaEngorde: 2.48,
+      temp: 28.6,
+      humedad: 67,
+    },
+    {
+      id: "2-2025-05-03",
+      fecha: "2025-05-03",
+      avesVivas: 9975,
+      avesFallecidas: 12,
+      alimento: 82.5,
+      pesoProm: 0.151,
+      tasaCrec: 0.059,
+      tasaEngorde: 2.79,
+      temp: 27.9,
+      humedad: 69,
+    },
+    {
+      id: "2-2025-05-04",
+      fecha: "2025-05-04",
+      avesVivas: 9962,
+      avesFallecidas: 3,
+      alimento: 82.5,
+      pesoProm: 0.221,
+      tasaCrec: 0.070,
+      tasaEngorde: 2.85,
+      temp: 26.8,
+      humedad: 71,
+    },
+    {
+      id: "2-2025-05-05",
+      fecha: "2025-05-05",
+      avesVivas: 9950,
+      avesFallecidas: 12,
+      alimento: 82.5,
+      pesoProm: 0.302,
+      tasaCrec: 0.081,
+      tasaEngorde: 2.97,
+      temp: 25.9,
+      humedad: 73,
+    },
+    {
+      id: "2-2025-05-06",
+      fecha: "2025-05-06",
+      avesVivas: 9935,
+      avesFallecidas: 1,
+      alimento: 82.5,
+      pesoProm: 0.395,
+      tasaCrec: 0.093,
+      tasaEngorde: 3.05,
+      temp: 24.7,
+      humedad: 74,
+    },
+    {
+      id: "2-2025-05-07",
+      fecha: "2025-05-07",
+      avesVivas: 9920,
+      avesFallecidas: 0,
+      alimento: 82.5,
+      pesoProm: 0.500,
+      tasaCrec: 0.105,
+      tasaEngorde: 3.15,
+      temp: 23.8,
+      humedad: 76,
+    },
+  ],
+  
+  3: [
+    {
+      id: "3-2025-05-01",
+      fecha: "2025-05-01",
+      avesVivas: 12000,
+      avesFallecidas: 0,
+      alimento: 81.0,
+      pesoProm: 0.038,
+      tasaCrec: 0.038,
+      tasaEngorde: 0,
+      temp: 28.9,
+      humedad: 64,
+    },
+    {
+      id: "3-2025-05-02",
+      fecha: "2025-05-02",
+      avesVivas: 11988,
+      avesFallecidas: 43,
+      alimento: 81.0,
+      pesoProm: 0.085,
+      tasaCrec: 0.047,
+      tasaEngorde: 2.49,
+      temp: 28.0,
+      humedad: 65,
+    },
+    {
+      id: "3-2025-05-03",
+      fecha: "2025-05-03",
+      avesVivas: 11976,
+      avesFallecidas: 12,
+      alimento: 81.0,
+      pesoProm: 0.139,
+      tasaCrec: 0.054,
+      tasaEngorde: 2.78,
+      temp: 27.2,
+      humedad: 67,
+    },
+    {
+      id: "3-2025-05-04",
+      fecha: "2025-05-04",
+      avesVivas: 11964,
+      avesFallecidas: 13,
+      alimento: 81.0,
+      pesoProm: 0.204,
+      tasaCrec: 0.065,
+      tasaEngorde: 2.85,
+      temp: 26.5,
+      humedad: 69,
+    },
+    {
+      id: "3-2025-05-05",
+      fecha: "2025-05-05",
+      avesVivas: 11951,
+      avesFallecidas: 14,
+      alimento: 81.0,
+      pesoProm: 0.280,
+      tasaCrec: 0.076,
+      tasaEngorde: 2.97,
+      temp: 25.6,
+      humedad: 71,
+    },
+    {
+      id: "3-2025-05-06",
+      fecha: "2025-05-06",
+      avesVivas: 11938,
+      avesFallecidas: 3,
+      alimento: 81.0,
+      pesoProm: 0.365,
+      tasaCrec: 0.085,
+      tasaEngorde: 3.06,
+      temp: 24.5,
+      humedad: 73,
+    },
+    {
+      id: "3-2025-05-07",
+      fecha: "2025-05-07",
+      avesVivas: 11925,
+      avesFallecidas: 5,
+      alimento: 81.0,
+      pesoProm: 0.460,
+      tasaCrec: 0.095,
+      tasaEngorde: 3.15,
+      temp: 23.9,
+      humedad: 75,
+    },
+  ],
+  
+  4: [
+    {
+      id: "4-2025-05-01",
+      fecha: "2025-05-01",
+      avesVivas: 15000,
+      avesFallecidas: 0,
+      alimento: 118.0,
+      pesoProm: 0.043,
+      tasaCrec: 0.043,
+      tasaEngorde: 0,
+      temp: 30.5,
+      humedad: 66,
+    },
+    {
+      id: "4-2025-05-02",
+      fecha: "2025-05-02",
+      avesVivas: 14985,
+      avesFallecidas: 23,
+      alimento: 118.0,
+      pesoProm: 0.095,
+      tasaCrec: 0.052,
+      tasaEngorde: 2.27,
+      temp: 29.8,
+      humedad: 67,
+    },
+    {
+      id: "4-2025-05-03",
+      fecha: "2025-05-03",
+      avesVivas: 14970,
+      avesFallecidas: 20,
+      alimento: 118.0,
+      pesoProm: 0.160,
+      tasaCrec: 0.065,
+      tasaEngorde: 2.68,
+      temp: 29.0,
+      humedad: 69,
+    },
+    {
+      id: "4-2025-05-04",
+      fecha: "2025-05-04",
+      avesVivas: 14955,
+      avesFallecidas: 15,
+      alimento: 118.0,
+      pesoProm: 0.235,
+      tasaCrec: 0.075,
+      tasaEngorde: 2.73,
+      temp: 28.3,
+      humedad: 71,
+    },
+    {
+      id: "4-2025-05-05",
+      fecha: "2025-05-05",
+      avesVivas: 14940,
+      avesFallecidas: 10,
+      alimento: 118.0,
+      pesoProm: 0.320,
+      tasaCrec: 0.085,
+      tasaEngorde: 2.78,
+      temp: 27.4,
+      humedad: 73,
+    },
+    {
+      id: "4-2025-05-06",
+      fecha: "2025-05-06",
+      avesVivas: 14925,
+      avesFallecidas: 10,
+      alimento: 118.0,
+      pesoProm: 0.415,
+      tasaCrec: 0.095,
+      tasaEngorde: 2.84,
+      temp: 26.5,
+      humedad: 74,
+    },
+    {
+      id: "4-2025-05-07",
+      fecha: "2025-05-07",
+      avesVivas: 14910,
+      avesFallecidas: 9,
+      alimento: 118.0,
+      pesoProm: 0.520,
+      tasaCrec: 0.105,
+      tasaEngorde: 2.90,
+      temp: 25.7,
+      humedad: 75,
+    },
+  ],
+  
+};
+
+const mockGalpones = [
+  { galponId: 1, nombre: "Galpón 1" },
+  { galponId: 2, nombre: "Galpón 2" },
+  { galponId: 3, nombre: "Galpón 3" },
+  { galponId: 4, nombre: "Galpón 4" },
+];
+function calcularResumenCamada(detallePorGalpon: typeof mockDetallePorGalpon) {
+  let pollosRecibidos = 0;
+  let pollosActuales = 0;
+  let alimentoTotal = 0;
+  let ultimoPesos: number[] = [];
+  let tasasCrecimiento: number[] = [];
+  let tasasEngorde: number[] = [];
+  let temperaturas: number[] = [];
+  let humedades: number[] = [];
+
+  for (const registros of Object.values(detallePorGalpon)) {
+    if (registros.length === 0) continue;
+    const avesFinales = registros[registros.length - 1].avesVivas;
+    const totalMuertes = registros.reduce((sum, r) => sum + r.avesFallecidas, 0);
+    const avesIniciales = avesFinales + totalMuertes;
+    
+
+    pollosRecibidos += avesIniciales;
+    pollosActuales += avesFinales;
+    alimentoTotal += registros.reduce((sum, r) => sum + r.alimento, 0);
+    ultimoPesos.push(registros[registros.length - 1].pesoProm);
+    tasasCrecimiento.push(
+      registros.reduce((sum, r) => sum + r.tasaCrec, 0) / registros.length
+    );
+    tasasEngorde.push(
+      registros
+        .filter((r) => r.tasaEngorde > 0)
+        .reduce((sum, r) => sum + r.tasaEngorde, 0) / (registros.length - 1)
+    );
+    temperaturas.push(...registros.map((r) => r.temp));
+    humedades.push(...registros.map((r) => r.humedad));
+  }
+
+  return {
+    camadaId: 1,
+    fechaIngreso: "2025-05-01",
+    fechaSalida: null,
+    pollosRecibidos,
+    pollosActuales,
+    porcentajeMortandad: Number((((pollosRecibidos - pollosActuales) / pollosRecibidos) * 100).toFixed(2)),
+
+    alimentoConsumido: Number(alimentoTotal.toFixed(1)),
+    ultimoPesoPromedio: Number(
+      (ultimoPesos.reduce((a, b) => a + b, 0) / ultimoPesos.length).toFixed(3)
+    ),
+    tasaEngorde: Number(
+      (tasasEngorde.reduce((a, b) => a + b, 0) / tasasEngorde.length).toFixed(3)
+    ),
+    tempPromedio: Number(
+      (temperaturas.reduce((a, b) => a + b, 0) / temperaturas.length).toFixed(1)
+    ),
+    humedadPromedio: Number(
+      (humedades.reduce((a, b) => a + b, 0) / humedades.length).toFixed(1)
+    ),
+    visitasVet: 2, // hardcoded
+    incidencias: 1, // hardcoded
+    tasaCrecimiento: Number(
+      (tasasCrecimiento.reduce((a, b) => a + b, 0) / tasasCrecimiento.length).toFixed(3)
+    ),
+  };
 }
 
+// ✅ Ejecutar función y obtener resumen
+const mockSummary = calcularResumenCamada(mockDetallePorGalpon);
+
+// 🔄 Página final
 export default function InformeCamadaPage() {
-  const { camadaId } = useParams();
-  const router = useRouter();
-  const [summary, setSummary] = useState<Summary | null>(null);
-  const [galpones, setGalpones] = useState<any[]>([]);
-  const [detallePorGalpon, setDetallePorGalpon] = useState<
-    Record<number, any[]>
-  >({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadInforme() {
-      try {
-        setLoading(true);
-        const res = await fetch("/backend_nuevo.json");
-        const db = await res.json();
-
-        const id = Number(camadaId);
-        const camada = db.camada.find((c: any) => c.camadaId === id);
-        if (!camada) throw new Error("Camada no encontrada");
-
-        // 1. Camada-Galpón
-        const cgAll = db.camadaGalpon.filter((cg: any) => cg.camadaId === id);
-        const pollosRecibidos = cgAll.reduce(
-          (sum: number, cg: any) => sum + cg.cantidadInicial,
-          0
-        );
-
-        // 2. Mortalidad
-        const mortAll = db.mortalidad.filter((m: any) =>
-          cgAll.some((cg: any) => cg.camadaGalponId === m.camadaGalponId)
-        );
-        const totalMuertes = mortAll.reduce(
-          (sum: number, m: any) => sum + m.cantidad,
-          0
-        );
-        const pollosActuales = pollosRecibidos - totalMuertes;
-
-        // 3. Alimento consumido
-        const galponIds = cgAll.map((cg: any) => cg.galponId);
-        const alimAll = db.reposicionAlimento.filter((r: any) =>
-          galponIds.includes(r.galponId)
-        );
-        const alimentoConsumido = alimAll.reduce(
-          (sum: number, r: any) => sum + r.cantidadKg,
-          0
-        );
-
-        // 4. Peso promedio
-        const pesoAll = db.registroPeso
-          .filter((r: any) =>
-            cgAll.some((cg: any) => cg.camadaGalponId === r.camadaGalponId)
-          )
-          .sort(
-            (a: any, b: any) =>
-              new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
-          );
-        const primerPeso = pesoAll.length ? pesoAll[0].pesoPromedio : 0;
-        const ultimoPeso = pesoAll.length
-          ? pesoAll[pesoAll.length - 1].pesoPromedio
-          : 0;
-
-        // 5. Días de vida
-        const fechaIngreso = new Date(camada.fechaIngreso);
-        const fechaFin = camada.fechaSalida
-          ? new Date(camada.fechaSalida)
-          : new Date();
-        const diasVida = Math.max(
-          1,
-          Math.ceil((fechaFin.getTime() - fechaIngreso.getTime()) / 86400000)
-        );
-
-        // 6. Tasa de crecimiento y engorde
-        const tasaCrecimiento = (ultimoPeso - primerPeso) / diasVida;
-        const tasaEngorde =
-          ultimoPeso - primerPeso > 0
-            ? alimentoConsumido / (ultimoPeso - primerPeso)
-            : 0;
-
-        // 7. Sensores: temp y humedad promedio
-        const seccionIds = db.seccion
-          .filter((s: any) => galponIds.includes(s.galponId))
-          .map((s: any) => s.seccionId);
-        const sensorMap = new Map(db.sensor.map((s: any) => [s.sensorId, s]));
-        const lecturas = db.lecturaSensor.filter((l: any) =>
-          seccionIds.includes(l.seccionId)
-        );
-        const temps = lecturas
-          .filter((l: any) => sensorMap.get(l.sensorId)?.tipo === "temperatura")
-          .map((l: any) => l.valor);
-        const hums = lecturas
-          .filter((l: any) => sensorMap.get(l.sensorId)?.tipo === "humedad")
-          .map((l: any) => l.valor);
-        const tempPromedio = temps.length
-          ? temps.reduce((a, v) => a + v, 0) / temps.length
-          : 0;
-        const humedadPromedio = hums.length
-          ? hums.reduce((a, v) => a + v, 0) / hums.length
-          : 0;
-
-        // 8. Visitas y incidencias
-        const visitasVet = db.visitaVeterinaria.filter(
-          (v: any) => v.camadaId === id
-        ).length;
-        const incidencias = db.incidencia.filter(
-          (i: any) => i.camadaId === id
-        ).length;
-
-        setSummary({
-          camadaId: id,
-          fechaIngreso: camada.fechaIngreso,
-          fechaSalida: camada.fechaSalida,
-          pollosRecibidos,
-          pollosActuales,
-          alimentoConsumido,
-          ultimoPesoPromedio: ultimoPeso,
-          tasaEngorde,
-          tempPromedio,
-          humedadPromedio,
-          visitasVet,
-          incidencias,
-          tasaCrecimiento,
-        });
-
-        // 9. Galpones asociados
-        const galponInfo = db.galpon.filter((g: any) =>
-          galponIds.includes(g.galponId)
-        );
-        setGalpones(galponInfo);
-
-        // 10. Detalle por galpón
-        const detalleMap: Record<number, any[]> = {};
-        for (const cg of cgAll) {
-          const gid = cg.galponId;
-
-          // reunir fechas únicas
-          const fechas = new Set<string>();
-          mortAll
-            .filter((m: any) => m.camadaGalponId === cg.camadaGalponId)
-            .forEach((m: any) => fechas.add(m.fecha));
-          pesoAll
-            .filter((r: any) => r.camadaGalponId === cg.camadaGalponId)
-            .forEach((r: any) => fechas.add(r.fecha));
-          alimAll
-            .filter((r: any) => r.galponId === gid)
-            .forEach((r: any) => fechas.add(r.fecha));
-          lecturas
-            .filter((l: any) => seccionIds.includes(l.seccionId))
-            .forEach((l: any) => fechas.add(l.fechaHora.split("T")[0]));
-
-          const allFechas = Array.from(fechas).sort(
-            (a, b) => new Date(a).getTime() - new Date(b).getTime()
-          );
-          let acumuladoMuertes = 0;
-          let prevPeso = primerPeso;
-
-          detalleMap[gid] = allFechas.map((fecha) => {
-            const muertesHoy = mortAll
-              .filter((m: any) => {
-                // busca el cg correspondiente y comprueba que pertenezca a este galpón
-                const cg = cgAll.find(
-                  (cg) => cg.camadaGalponId === m.camadaGalponId
-                );
-                return m.fecha === fecha && cg?.galponId === gid;
-              })
-              .reduce((sum: number, m: any) => sum + m.cantidad, 0);
-            acumuladoMuertes += muertesHoy;
-            const avesVivas = cg.cantidadInicial - acumuladoMuertes;
-
-            const alimentoHoy = alimAll
-              .filter((r: any) => r.fecha === fecha && r.galponId === gid)
-              .reduce((sum: number, r: any) => sum + r.cantidadKg, 0);
-
-            const registroHoy = db.registroPeso.find(
-              (r: any) =>
-                r.fecha === fecha && r.camadaGalponId === cg.camadaGalponId
-            );
-            const pesoProm = registroHoy?.pesoPromedio ?? prevPeso;
-            const tasaCrec = pesoProm - prevPeso;
-            prevPeso = pesoProm;
-            const tasaEng = tasaCrec > 0 ? alimentoHoy / tasaCrec : 0;
-
-            const lectHoy = lecturas.filter((l) =>
-              l.fechaHora.startsWith(fecha)
-            );
-            const tempsHoy = lectHoy
-              .filter((l) => sensorMap.get(l.sensorId)?.tipo === "temperatura")
-              .map((l) => l.valor);
-            const humHoy = lectHoy
-              .filter((l) => sensorMap.get(l.sensorId)?.tipo === "humedad")
-              .map((l) => l.valor);
-            const tempHoy = tempsHoy.length
-              ? tempsHoy.reduce((a, v) => a + v, 0) / tempsHoy.length
-              : 0;
-            const humHoyAvg = humHoy.length
-              ? humHoy.reduce((a, v) => a + v, 0) / humHoy.length
-              : 0;
-
-            return {
-              id: `${gid}-${fecha}`,
-              fecha,
-              avesVivas,
-              avesFallecidas: muertesHoy,
-              alimento: alimentoHoy,
-              pesoProm,
-              tasaCrec,
-              tasaEngorde: tasaEng,
-              temp: tempHoy,
-              humedad: humHoyAvg,
-            };
-          });
-        }
-        setDetallePorGalpon(detalleMap);
-      } catch (e: any) {
-        console.error(e);
-        setError(e.message || "Error al cargar datos");
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadInforme();
-  }, [camadaId]);
-
-  if (loading) {
-    return (
-      <Box sx={{ p: 4, textAlign: "center" }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-  if (error || !summary) {
-    return <Alert severity="error">{error || "Informe no disponible"}</Alert>;
-  }
-
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom >
+      <Typography variant="h4" gutterBottom>
         Informe de camada
       </Typography>
-    <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-      <Grid item>
-        <Button onClick={() => router.back()}>← Volver</Button>
+
+      <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+        <Grid item>
+          <Button onClick={() => history.back()}>← Volver</Button>
+        </Grid>
       </Grid>
-    </Grid>
 
-    <SummaryCards data={summary} />
+      <SummaryCards data={mockSummary} />
 
-    {galpones.map((gp) => (
-      <Box key={gp.galponId} sx={{ mt: 4 }}>
-        <Typography variant="h6" gutterBottom>
-          {gp.nombre}
-        </Typography>
-        <GalponReportTable
-          galpon={gp}
-          registros={detallePorGalpon[gp.galponId] || []}
-        />
-      </Box>
-    ))}
+      {mockGalpones.map((gp) => (
+        <Box key={gp.galponId} sx={{ mt: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            {gp.nombre}
+          </Typography>
+          <GalponReportTable
+            galpon={gp}
+            registros={mockDetallePorGalpon[gp.galponId]}
+          />
+        </Box>
+      ))}
 
-    <Grid container justifyContent="flex-end" alignItems="center" sx={{ mt: 4 }}>
-      <Button sx={{ mr: 1 }} variant="outlined">
-        Exportar CSV
-      </Button>
-      <Button variant="contained" color="primary">
-        Enviar al proveedor
-      </Button>
-    </Grid>
-  </Box>
-);
+      <Grid container justifyContent="flex-end" alignItems="center" sx={{ mt: 4 }}>
+        <Button sx={{ mr: 1 }} variant="outlined">
+          Exportar CSV
+        </Button>
+        <Button variant="contained" color="primary">
+          Enviar al proveedor
+        </Button>
+      </Grid>
+    </Box>
+  );
 }
