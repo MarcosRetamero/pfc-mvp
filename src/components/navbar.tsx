@@ -39,7 +39,7 @@ export default function Navbar() {
     <AppBar position="static" className="bg-blue-600">
       <Toolbar className="flex justify-between">
         <Typography variant="h6" component="div">
-          Sistema Avícola
+          Avito
         </Typography>
         <div className="flex gap-4 mx-4">
           <Button color="inherit" onClick={() => router.push("/dashboard")}>
