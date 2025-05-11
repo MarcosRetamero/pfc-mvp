@@ -31,6 +31,7 @@ import {
   ExitToApp,
   PictureAsPdf,
 } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 
 interface CamadasGestionProps {
@@ -43,6 +44,7 @@ interface CamadasGestionProps {
 }
 
 export const CamadasGestion: React.FC<CamadasGestionProps> = ({ camada }) => {
+  const router = useRouter();
   const [openPeso, setOpenPeso] = useState(false);
   const [openMortalidad, setOpenMortalidad] = useState(false);
   const [openFinalizacion, setOpenFinalizacion] = useState(false);
@@ -108,6 +110,7 @@ export const CamadasGestion: React.FC<CamadasGestionProps> = ({ camada }) => {
 
   const handleGenerarReporte = () => {
     setOpenReporte(true);
+    router.push(`/camadas/${camada.camadaId}/informe`);
   };
 
   return (
@@ -179,7 +182,7 @@ export const CamadasGestion: React.FC<CamadasGestionProps> = ({ camada }) => {
                 onClick={handleGenerarReporte}
                 color="primary"
               >
-                Generar Reporte
+                Informe camada
               </Button>
             </Tooltip>
           </Stack>
@@ -317,7 +320,7 @@ export const CamadasGestion: React.FC<CamadasGestionProps> = ({ camada }) => {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>Previsualización del Reporte</DialogTitle>
+        {/* <DialogTitle>Previsualización del Reporte</DialogTitle>
         <DialogContent>
           <Box sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>
@@ -389,7 +392,7 @@ export const CamadasGestion: React.FC<CamadasGestionProps> = ({ camada }) => {
           >
             Descargar PDF
           </Button>
-        </DialogActions>
+        </DialogActions> */}
       </Dialog>
     </Box>
   );

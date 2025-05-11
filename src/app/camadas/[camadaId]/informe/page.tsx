@@ -7,6 +7,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
 import GalponReportTable from "./GalponReportTable";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const mockDetallePorGalpon = {
   1: [
@@ -491,10 +493,20 @@ function exportarPDF() {
   }
 
   autoTable(doc, {
-    head: [[
-      "Galpón", "Fecha", "Aves Vivas", "Muertes", "Alimento",
-      "Peso Prom.", "Crec. Día", "ICA", "Temp", "Humedad"
-    ]],
+    head: [
+      [
+        "Galpón",
+        "Fecha",
+        "Aves Vivas",
+        "Muertes",
+        "Alimento",
+        "Peso Prom.",
+        "Crec. Día",
+        "ICA",
+        "Temp",
+        "Humedad",
+      ],
+    ],
     body: rows,
     startY: doc.lastAutoTable.finalY + 10,
     theme: "striped",
@@ -502,7 +514,6 @@ function exportarPDF() {
 
   doc.save(`informe-camada-${mockSummary.camadaId}.pdf`);
 }
-
 
 function exportarExcel() {
   const rows: any[] = [];
@@ -533,6 +544,11 @@ function exportarExcel() {
 
 // 🔄 Página final
 export default function InformeCamadaPage() {
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  function handleEnviar() {
+    setOpenSnackbar(true);
+  }
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
@@ -576,7 +592,25 @@ export default function InformeCamadaPage() {
         <Button sx={{ mr: 1 }} variant="outlined" onClick={exportarPDF}>
           Exportar PDF
         </Button>
+        <Button sx={{ mr: 1 }} variant="outlined" onClick={handleEnviar}>
+          Enviar
+        </Button>
       </Grid>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          severity="success"
+          onClose={() => setOpenSnackbar(false)}
+        >
+          Enviado a proveedor@gmail.com
+        </MuiAlert>
+      </Snackbar>
     </Box>
   );
 }
