@@ -1,110 +1,192 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import FormularioAlerta from '@/components/configurarAlerta'
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
   Paper,
-  CircularProgress,
-  Alert,
+  IconButton,
+  Stack,
+  Switch,
+  Tooltip,
   Snackbar,
-  Button
-} from '@mui/material'
-import { ArrowBack } from '@mui/icons-material'
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import AddIcon from "@mui/icons-material/Add";
+import FormularioAlerta from "@/components/configurarAlerta";
 
-// Tipos
-type Galpon = {
-  galponId: number
-  nombre: string
+interface ConfiguracionAlerta {
+  configId: number;
+  galponId: number;
+  tipo: string;
+  rolANotificar: string;
+  valorMin: number;
+  valorMax: number;
+  canalNotificacion: string;
+  activa: boolean;
 }
 
-type NuevaAlertaData = {
-  galponId: number | null
-  variable: string
-  valorMin: number
-  valorMax: number
-  canalNotificacion: string
-  rolANotificar: string // CSV (Ej: "Operario,Gerente")
-}
+const AlertasPage = () => {
+  const [alertas, setAlertas] = useState<ConfiguracionAlerta[]>([]);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [galpones, setGalpones] = useState<{ galponId: number; nombre: string }[]>([]);
 
-const Alertas = () => {
-  const router = useRouter()
-  const [galpones, setGalpones] = useState<Galpon[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [successMsg, setSuccessMsg] = useState<string | null>(null)
-
-  // Cargar galpones desde JSON al montar
   useEffect(() => {
-    const fetchGalpones = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const res = await fetch('/backend_nuevo.json')
-        if (!res.ok) throw new Error("Error al obtener galpones")
-        const data = await res.json()
+    setAlertas([
+      {
+        configId: 1,
+        galponId: 1,
+        tipo: "temperatura",
+        rolANotificar: "Gerente,Operario",
+        valorMin: 20,
+        valorMax: 30,
+        canalNotificacion: "WhatsApp",
+        activa: true,
+      },
+      {
+        configId: 2,
+        galponId: 2,
+        tipo: "humedad",
+        rolANotificar: "Operario",
+        valorMin: 40,
+        valorMax: 60,
+        canalNotificacion: "Email",
+        activa: false,
+      },
+    ]);
 
-        if (!data.galpon || !Array.isArray(data.galpon)) {
-          throw new Error("No se encontró la lista de galpones en el JSON")
-        }
+    // Simular carga de galpones
+    setGalpones([
+      { galponId: 1, nombre: "Galpón 1" },
+      { galponId: 2, nombre: "Galpón 2" },
+    ]);
+  }, []);
 
-        setGalpones(data.galpon)
-      } catch (err) {
-        console.error(err)
-        setError(err instanceof Error ? err.message : "Error desconocido")
-        setGalpones([])
-      } finally {
-        setLoading(false)
-      }
-    }
+  const toggleAlerta = (configId: number) => {
+    setAlertas((prev) =>
+      prev.map((a) =>
+        a.configId === configId ? { ...a, activa: !a.activa } : a
+      )
+    );
+    setSuccessMsg("Estado de alerta actualizado.");
+  };
 
-    fetchGalpones()
-  }, [])
+  const eliminarAlerta = (configId: number) => {
+    setAlertas((prev) => prev.filter((a) => a.configId !== configId));
+    setSuccessMsg("Alerta eliminada correctamente.");
+  };
 
-  // Simulación del guardado de alerta
-  const handleGuardarAlerta = (nuevaAlertaData: NuevaAlertaData) => {
-    console.log("Simulando guardado de alerta (datos ya validados):", nuevaAlertaData)
-
-    // Aquí iría el POST real al backend o update al JSON
-    setSuccessMsg("Alerta registrada correctamente.")
-  }
+  const handleGuardarAlerta = (nuevaAlerta: ConfiguracionAlerta) => {
+    setAlertas((prev) => [...prev, { ...nuevaAlerta, configId: Date.now() }]);
+    setSuccessMsg("Nueva alerta registrada.");
+    setModalAbierto(false);
+  };
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* Botón de navegación */}
-      <Button
-        startIcon={<ArrowBack />}
-        onClick={() => router.push('/dashboard')}
-        sx={{ mb: 2 }}
-      >
-        Volver al Dashboard
-      </Button>
-
-      <Typography variant="h4" gutterBottom className="text-black">
-        Nueva Configuración de Alerta
+      <Typography variant="h4" gutterBottom>
+        Alertas Configuradas
       </Typography>
 
-      <Paper elevation={3} sx={{ p: 8 }}>
-        {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 100 }}>
-            <CircularProgress />
-            <Typography sx={{ ml: 2 }}>Cargando datos de galpones...</Typography>
-          </Box>
-        ) : error ? (
-          <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
-        ) : galpones.length === 0 ? (
-          <Alert severity="warning">No se encontraron galpones disponibles para configurar alertas.</Alert>
-        ) : (
+      <Button
+        startIcon={<AddIcon />}
+        variant="contained"
+        onClick={() => setModalAbierto(true)}
+        sx={{ mb: 3 }}
+      >
+        Nueva Alerta
+      </Button>
+
+      <Stack spacing={2}>
+        {alertas.map((alerta) => (
+          <Paper key={alerta.configId} sx={{ p: 2 }}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Box>
+                <Typography variant="subtitle1">
+                  {alerta.tipo} — Galpón #{alerta.galponId}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Notifica por {alerta.canalNotificacion} a {alerta.rolANotificar}
+                </Typography>
+              </Box>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Tooltip title="Eliminar alerta">
+                  <IconButton onClick={() => eliminarAlerta(alerta.configId)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={alerta.activa ? "Desactivar" : "Activar"}>
+                  <Switch
+                    checked={alerta.activa}
+                    onChange={() => toggleAlerta(alerta.configId)}
+                  />
+                </Tooltip>
+                <IconButton
+                  onClick={() =>
+                    setExpandedId(
+                      expandedId === alerta.configId ? null : alerta.configId
+                    )
+                  }
+                >
+                  {expandedId === alerta.configId ? (
+                    <ExpandLessIcon />
+                  ) : (
+                    <ExpandMoreIcon />
+                  )}
+                </IconButton>
+              </Stack>
+            </Stack>
+
+            {expandedId === alerta.configId && (
+              <Box sx={{ mt: 2 }}>
+                <Typography variant="body2">
+                  <b>Valor mínimo:</b> {alerta.valorMin} | <b>Valor máximo:</b> {alerta.valorMax}
+                </Typography>
+                <Typography variant="body2">
+                  <b>Roles a notificar:</b> {alerta.rolANotificar}
+                </Typography>
+                <Typography variant="body2">
+                  <b>Canal:</b> {alerta.canalNotificacion}
+                </Typography>
+              </Box>
+            )}
+          </Paper>
+        ))}
+
+        {alertas.length === 0 && (
+          <Typography color="text.secondary">
+            No hay alertas configuradas.
+          </Typography>
+        )}
+      </Stack>
+
+      {/* Diálogo de creación de alerta */}
+      <Dialog open={modalAbierto} onClose={() => setModalAbierto(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Nueva Configuración de Alerta</DialogTitle>
+        <DialogContent sx={{ pt: 3 }}>
           <FormularioAlerta
             galponesDisponibles={galpones}
             onGuardar={handleGuardarAlerta}
           />
-        )}
-      </Paper>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setModalAbierto(false)}>Cancelar</Button>
+        </DialogActions>
+      </Dialog>
 
-      {/* Feedback visual */}
       <Snackbar
         open={!!successMsg}
         autoHideDuration={4000}
@@ -112,7 +194,7 @@ const Alertas = () => {
         message={successMsg}
       />
     </Box>
-  )
-}
+  );
+};
 
-export default Alertas
+export default AlertasPage;

@@ -196,7 +196,8 @@ const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
           {/* Temperatura Promedio */}
           <Box className="flex flex-col items-center justify-center p-3 rounded-lg bg-red-50">
             <Thermostat color="error" sx={{ fontSize: 32, mb: 1 }} />
-            <Typography variant="h4" className="font-bold text-red-600">
+            <Typography   className="font-bold text-red-600 text-lg sm:text-xl md:text-2xl lg:text-3xl"
+            >
               {loadingSensores ? <CircularProgress size={32} /> : 
                 (promedios.temperatura !== null ? `${promedios.temperatura}°` : 'N/A')}
             </Typography>
@@ -208,7 +209,8 @@ const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
           {/* Humedad Promedio */}
           <Box className="flex flex-col items-center justify-center p-3 rounded-lg bg-blue-50">
             <Opacity color="primary" sx={{ fontSize: 32, mb: 1 }} />
-            <Typography variant="h4" className="font-bold text-blue-600">
+            <Typography   className="font-bold text-blue-600 text-lg sm:text-xl md:text-2xl lg:text-3xl"
+            >
               {loadingSensores ? <CircularProgress size={32} /> : 
                 (promedios.humedad !== null ? `${promedios.humedad}%` : 'N/A')}
             </Typography>
@@ -220,9 +222,10 @@ const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
           {/* Cantidad de Aves */}
           <Box className="flex flex-col items-center justify-center p-3 rounded-lg bg-green-50">
             <Box className="rounded-full bg-green-100 p-2 mb-1">
-              🐤
+              🐔
             </Box>
-            <Typography variant="h4" className="font-bold text-green-600">
+            <Typography   className="font-bold text-green-600 text-lg sm:text-xl md:text-2xl lg:text-3xl"
+            >
               {pollosVivos.toLocaleString()}
             </Typography>
             <Typography variant="caption" color="text.secondary">
