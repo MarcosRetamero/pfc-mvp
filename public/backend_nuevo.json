@@ -1597,6 +1597,7 @@
       "temperatura": 22.5,
       "humedad": 55.0,
       "viento": 4.5,
+      "direccionViento": "Suroeste",
       "lluvia": false,
       "presion": 1010.0
     }
