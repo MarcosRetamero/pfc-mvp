@@ -88,7 +88,7 @@ export default function GestionAlimentacionPage() {
           startIcon={<Add />}
           onClick={() => setOpenReposicion(true)}
         >
-          Nueva Reposición Total
+          Nueva Reposición
         </Button>
       </Box>
 
