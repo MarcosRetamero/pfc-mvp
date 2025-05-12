@@ -48,7 +48,7 @@ export default function Navbar() {
           <Button color="inherit" onClick={() => router.push("/camadas")}>
             Camadas
           </Button>
-          <Button color="inherit" onClick={() => router.push("/alertas/alimentacion")}>
+          <Button color="inherit" onClick={() => router.push("/alertas")}>
             Alertas
           </Button>
           <Button color="inherit" onClick={handleMenuClick}>
