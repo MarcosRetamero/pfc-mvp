@@ -147,7 +147,7 @@ const GalponCard: React.FC<GalponCardProps> = ({ galpon, onSelect }) => {
         const alertasGalpon = data.alerta.filter(
           (alerta: Alerta) => !alerta.resuelta && 
             (alerta.galponId === galpon.galponId || 
-             seccionesGalpon.some(s => s.seccionId === alerta.seccionId))
+             seccionesGalpon.some((s: Seccion) => s.seccionId === alerta.seccionId))
         );
         setAlertasActivas(alertasGalpon);
 
