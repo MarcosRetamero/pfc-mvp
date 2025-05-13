@@ -107,19 +107,19 @@ export default function GalponReportTable({
 
   return (
     <Box sx={{ width: '100%', mt: 2 }}>
-      <DataGrid
-        autoHeight
-        rows={registros}
-        columns={columns}
-        getRowId={row => row.id}
-        initialState={{
-          pagination: {
-            paginationModel: { pageSize: 10 }
-          }
-        }}
-        rowsPerPageOptions={[5, 10, 25]}
-        density="compact"
-        sx={{
+<DataGrid
+          autoHeight
+          rows={registros}
+          columns={columns}
+          getRowId={(row) => row.registroId || row.id} // Ensure a unique ID
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 25]} // Changed from rowsPerPageOptions
+          density="compact"
+          sx={{
           '& .MuiDataGrid-columnHeaders': {
             backgroundColor: 'background.default'
           },
