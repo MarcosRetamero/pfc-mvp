@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Grid, Paper, Typography } from '@mui/material'
+import { Stack, Paper, Typography } from '@mui/material'
 
 /**
  * Shape of the summary object passed in from page.tsx
@@ -12,7 +12,7 @@ export interface Summary {
   fechaSalida: string | null
   pollosRecibidos: number
   pollosActuales: number
-  porcentajeMortandad: number // ← NUEVO
+  porcentajeMortandad: number
   alimentoConsumido: number
   ultimoPesoPromedio: number
   tasaEngorde: number
@@ -34,7 +34,7 @@ export default function SummaryCards({ data }: SummaryCardsProps) {
     { label: 'Fecha Hasta',         value: data.fechaSalida ?? '—' },
     { label: 'Pollos recibidos',    value: data.pollosRecibidos },
     { label: 'Pollos actualmente',  value: data.pollosActuales },
-    { label: 'Mortandad (%)',       value: `${(data.porcentajeMortandad ?? 0).toFixed(2)}%` }, // ← NUEVO
+    { label: 'Mortandad (%)',       value: `${data.porcentajeMortandad.toFixed(2)}%` },
     { label: 'Temp. prom. (°C)',    value: data.tempPromedio.toFixed(1) },
     { label: 'Hum. prom. (%)',      value: data.humedadPromedio.toFixed(1) },
     { label: 'Peso prom. (kg)',     value: data.ultimoPesoPromedio.toFixed(2) },
@@ -46,19 +46,22 @@ export default function SummaryCards({ data }: SummaryCardsProps) {
   ]
 
   return (
-    <Grid container spacing={2}>
+    <Stack
+      direction="row"
+      spacing={2}
+      flexWrap="wrap"
+      sx={{ '& > *': { flex: '1 1 200px', minWidth: 160 } }}
+    >
       {cards.map(({ label, value }) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} key={label}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Typography variant="subtitle2" color="textSecondary">
-              {label}
-            </Typography>
-            <Typography variant="h6">
-              {value}
-            </Typography>
-          </Paper>
-        </Grid>
+        <Paper key={label} sx={{ p: 2, textAlign: 'center' }} elevation={2}>
+          <Typography variant="subtitle2" color="text.secondary">
+            {label}
+          </Typography>
+          <Typography variant="h6">
+            {value}
+          </Typography>
+        </Paper>
       ))}
-    </Grid>
+    </Stack>
   )
 }
