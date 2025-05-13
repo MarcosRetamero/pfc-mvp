@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import { Box, Typography, Grid, Button, Stack } from "@mui/material";
 import SummaryCards from "./SummaryCards";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -10,7 +10,24 @@ import GalponReportTable from "./GalponReportTable";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-const mockDetallePorGalpon = {
+interface RegistroDiario {
+  id: string;
+  fecha: string;
+  avesVivas: number;
+  avesFallecidas: number;
+  alimento: number;
+  pesoProm: number;
+  tasaCrec: number;
+  tasaEngorde: number;
+  temp: number;
+  humedad: number;
+}
+
+type DetallePorGalpon = {
+  [key: string]: RegistroDiario[];
+};
+
+const mockDetallePorGalpon: DetallePorGalpon = {
   1: [
     {
       id: "1-2025-05-01",
@@ -440,6 +457,7 @@ const mockSummary = calcularResumenCamada(mockDetallePorGalpon);
 function exportarPDF() {
   const doc = new jsPDF();
   const hoy = new Date().toLocaleDateString("es-AR");
+  const finalY = (doc as any).lastAutoTable?.finalY || 50;
 
   // Título principal
   doc.setFontSize(16);
@@ -508,7 +526,7 @@ function exportarPDF() {
       ],
     ],
     body: rows,
-    startY: doc.lastAutoTable.finalY + 10,
+    startY: finalY + 10,
     theme: "striped",
   });
 
@@ -555,16 +573,16 @@ export default function InformeCamadaPage() {
         Informe de camada
       </Typography>
 
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mb: 2 }}
-      >
-        <Grid item>
-          <Button onClick={() => history.back()}>← Volver</Button>
-        </Grid>
-      </Grid>
+      <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+      sx={{ mb: 2 }}
+    >
+      <Box>
+        <Button onClick={() => history.back()}>← Volver</Button>
+      </Box>
+    </Stack>
 
       <SummaryCards data={mockSummary} />
 
