@@ -56,7 +56,7 @@ const AlertasPage = () => {
       {
         configId: 1,
         galponId: 1,
-        tipo: "temperatura",
+        tipoAlerta: "temperatura",
         rolANotificar: "Gerente,Operario",
         valorMin: 20,
         valorMax: 30,
@@ -66,7 +66,7 @@ const AlertasPage = () => {
       {
         configId: 2,
         galponId: 2,
-        tipo: "humedad",
+        tipoAlerta: "humedad",
         rolANotificar: "Operario",
         valorMin: 40,
         valorMax: 60,
@@ -76,7 +76,7 @@ const AlertasPage = () => {
       {
         configId: 3,
         galponId: 3,
-        tipo: "mortandad",
+        tipoAlerta: "mortandad",
         rolANotificar: "Operario, Gerente",
         valorMin: 0,
         valorMax: 2,
@@ -155,7 +155,7 @@ const AlertasPage = () => {
             >
               <Box>
                 <Typography variant="subtitle1">
-                  {alerta.tipo} — Galpón #{alerta.galponId}
+                  {alerta.tipoAlerta} — Galpón #{alerta.galponId}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Notifica por {alerta.canalNotificacion} a {alerta.rolANotificar}
@@ -204,7 +204,7 @@ const AlertasPage = () => {
                 <Typography variant="body2">
                   <b>Valor mínimo:</b> {alerta.valorMin} |{" "}
                   <b>Valor máximo:</b>{" "}
-                  {alerta.tipo === "mortandad"
+                  {alerta.tipoAlerta === "mortandad"
                     ? `${alerta.valorMax}%`
                     : alerta.valorMax}
                 </Typography>
