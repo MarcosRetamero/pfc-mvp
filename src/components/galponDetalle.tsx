@@ -875,6 +875,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
             />
           )}
         </Stack>
+
         {/* Encabezado con botón alineado */}
         <Box
           display="flex"
@@ -886,37 +887,30 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
           <Button
             variant="contained"
             startIcon={<Add />}
-            onClick={handleCrearAlerta} // Asegurate de definir esta función
-            title="Registrar una nueva alerta manual" // Personalizá el tooltip según necesidad
+            onClick={handleCrearAlerta}
+            title="Registrar una nueva alerta manual"
           >
             Configurar Alerta
           </Button>
         </Box>
+
         {/* Panel de Resumen */}
         <Paper sx={{ p: 3, mb: 3 }} elevation={2}>
-          <Grid
-            container
+          <Stack
+            direction="row"
             spacing={3}
             sx={{
-              display: "flex",
-              "& .MuiGrid-item": {
+              flexWrap: "wrap",
+              "& > *": {
+                flex: "1 1 200px",
                 display: "flex",
-                flex: 1,
-                "& > *": {
-                  width: "100%",
-                },
               },
             }}
           >
             {/* Temperatura */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Box sx={{ flex: "1 1 200px" }}>
               <Paper
-                sx={{
-                  ...statCardStyles.card,
-                  width: "100%",
-                  height: "100%",
-                  p: 2,
-                }}
+                sx={{ ...statCardStyles.card, width: "100%", height: "100%", p: 2 }}
                 elevation={1}
               >
                 <CardContent
@@ -939,17 +933,12 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                   </Typography>
                 </CardContent>
               </Paper>
-            </Grid>
+            </Box>
 
             {/* Humedad */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Box sx={{ flex: "1 1 200px" }}>
               <Paper
-                sx={{
-                  ...statCardStyles.card,
-                  width: "100%",
-                  height: "100%",
-                  p: 2,
-                }}
+                sx={{ ...statCardStyles.card, width: "100%", height: "100%", p: 2 }}
                 elevation={1}
               >
                 <CardContent
@@ -972,17 +961,12 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                   </Typography>
                 </CardContent>
               </Paper>
-            </Grid>
+            </Box>
 
             {/* Aves Vivas */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Box sx={{ flex: "1 1 200px" }}>
               <Paper
-                sx={{
-                  ...statCardStyles.card,
-                  width: "100%",
-                  height: "100%",
-                  p: 2,
-                }}
+                sx={{ ...statCardStyles.card, width: "100%", height: "100%", p: 2 }}
                 elevation={1}
               >
                 <CardContent
@@ -1005,17 +989,12 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                   </Typography>
                 </CardContent>
               </Paper>
-            </Grid>
+            </Box>
 
             {/* Mortalidad */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Box sx={{ flex: "1 1 200px" }}>
               <Paper
-                sx={{
-                  ...statCardStyles.card,
-                  width: "100%",
-                  height: "100%",
-                  p: 2,
-                }}
+                sx={{ ...statCardStyles.card, width: "100%", height: "100%", p: 2 }}
                 elevation={1}
               >
                 <CardContent
@@ -1038,8 +1017,8 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                   </Typography>
                 </CardContent>
               </Paper>
-            </Grid>
-          </Grid>
+            </Box>
+          </Stack>
         </Paper>
       </Box>
 
@@ -1061,8 +1040,13 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
             <Typography>Cargando estado de cortinas...</Typography>
           </Stack>
         ) : (
-          <Grid container spacing={3} alignItems="center">
-            <Grid item xs={12} md={5}>
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={3}
+            alignItems="center"
+            sx={{ flexWrap: "wrap" }}
+          >
+            <Box sx={{ flex: "1 1 300px" }}>
               <Stack spacing={1}>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <VerticalSplit color="primary" />
@@ -1082,15 +1066,12 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                   max={100}
                 />
               </Stack>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12} md={5}>
+            <Box sx={{ flex: "1 1 300px" }}>
               <Stack spacing={1}>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <VerticalSplit
-                    color="primary"
-                    sx={{ transform: "scaleX(-1)" }}
-                  />
+                  <VerticalSplit color="primary" sx={{ transform: "scaleX(-1)" }} />
                   <Typography>Cortina Derecha:</Typography>
                   <Chip label={`${cortinasGalpon.derecha}%`} size="small" />
                 </Stack>
@@ -1107,11 +1088,11 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                   max={100}
                 />
               </Stack>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12} md={2}>
+            <Box sx={{ flex: "1 1 200px" }}>
               <Button
-                fullWidth // <--- Ocupa todo el ancho en su celda de Grid
+                fullWidth
                 variant="contained"
                 onClick={guardarCambiosCortinas}
                 disabled={guardandoCortinas}
@@ -1123,10 +1104,11 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
               >
                 {guardandoCortinas ? "Guardando..." : "Aplicar"}
               </Button>
-            </Grid>
-          </Grid>
+            </Box>
+          </Stack>
         )}
       </Paper>
+
       {/* Control de Secciones */}
       <Paper sx={{ p: 3, mb: 4 }} elevation={2}>
         <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
@@ -1145,11 +1127,13 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
             <Typography>Cargando secciones...</Typography>
           </Stack>
         ) : seccionesDetalle.length > 0 ? (
-          <Grid container spacing={3}>
+          <Stack
+            direction="row"
+            spacing={3}
+            sx={{ flexWrap: "wrap", "& > *": { flex: "1 1 300px" } }}
+          >
             {seccionesDetalle.map((seccion) => (
-              <Grid item xs={12} sm={6} md={4} key={seccion.seccionId}>
-                {" "}
-                {/* <--- Ajustado para mejor responsividad */}
+              <Box key={seccion.seccionId} sx={{ flex: "1 1 300px" }}>
                 <Card
                   sx={{
                     height: "100%",
@@ -1165,11 +1149,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
 
                     <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
                       {seccion.temperatura !== null && (
-                        <Stack
-                          direction="row"
-                          alignItems="center"
-                          spacing={0.5}
-                        >
+                        <Stack direction="row" alignItems="center" spacing={0.5}>
                           <Thermostat color="error" fontSize="small" />
                           <Typography variant="body2">
                             {seccion.temperatura}°C
@@ -1177,11 +1157,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                         </Stack>
                       )}
                       {seccion.humedad !== null && (
-                        <Stack
-                          direction="row"
-                          alignItems="center"
-                          spacing={0.5}
-                        >
+                        <Stack direction="row" alignItems="center" spacing={0.5}>
                           <Opacity color="primary" fontSize="small" />
                           <Typography variant="body2">
                             {seccion.humedad}%
@@ -1197,11 +1173,9 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                     </Typography>
 
                     <Stack spacing={1.5}>
-                      {" "}
-                      {/* <--- Usando Stack para la lista de dispositivos */}
                       {seccion.dispositivos.map((disp) => {
                         let icon;
-                        let color = disp.estado ? "primary" : "action"; // 'action' para color grisáceo de íconos desactivados
+                        const color = disp.estado ? "primary" : "action";
 
                         switch (disp.tipo.toLowerCase()) {
                           case "ventilador":
@@ -1212,9 +1186,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                             break;
                           case "luz":
                             icon = (
-                              <Lightbulb
-                                color={disp.estado ? "warning" : "action"}
-                              />
+                              <Lightbulb color={disp.estado ? "warning" : "action"} />
                             );
                             break;
                           default:
@@ -1222,26 +1194,11 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                         }
 
                         return (
-                          <Paper
-                            key={disp.id}
-                            variant="outlined"
-                            sx={{ p: 1.5, borderRadius: 2 }}
-                          >
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              justifyContent="space-between"
-                            >
-                              <Stack
-                                direction="row"
-                                alignItems="center"
-                                spacing={1}
-                              >
+                          <Paper key={disp.id} variant="outlined" sx={{ p: 1.5, borderRadius: 2 }}>
+                            <Stack direction="row" alignItems="center" justifyContent="space-between">
+                              <Stack direction="row" alignItems="center" spacing={1}>
                                 {icon}
-                                <Typography
-                                  variant="body2"
-                                  sx={{ textTransform: "capitalize" }}
-                                >
+                                <Typography variant="body2" sx={{ textTransform: "capitalize" }}>
                                   {disp.tipo}
                                 </Typography>
                               </Stack>
@@ -1249,11 +1206,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                                 size="small"
                                 checked={disp.estado}
                                 onChange={(e) =>
-                                  handleDispositivoChange(
-                                    seccion.seccionId,
-                                    disp.id,
-                                    e.target.checked
-                                  )
+                                  handleDispositivoChange(seccion.seccionId, disp.id, e.target.checked)
                                 }
                                 color="primary"
                               />
@@ -1264,52 +1217,30 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                     </Stack>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Stack>
         ) : (
-          <Typography
-            sx={{ textAlign: "center", p: 4, color: "text.secondary" }}
-          >
+          <Typography sx={{ textAlign: "center", p: 4, color: "text.secondary" }}>
             No hay secciones configuradas para este galpón.
           </Typography>
         )}
       </Paper>
+
       {/* Pestañas para diferentes secciones */}
       <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
-        <Tabs
-          value={tabIndex}
-          onChange={handleTabChange}
-          aria-label="galpon-tabs"
-          variant="fullWidth"
-        >
-          <Tab
-            icon={<ShowChart />}
-            iconPosition="start"
-            label="Gráficos"
-            id="tab-0"
-          />
-          <Tab
-            icon={<History />}
-            iconPosition="start"
-            label="Historial"
-            id="tab-1"
-          />
-          <Tab
-            icon={<NotificationsActive />}
-            iconPosition="start"
-            label="Alertas"
-            id="tab-2"
-          />
+        <Tabs value={tabIndex} onChange={handleTabChange} aria-label="galpon-tabs" variant="fullWidth">
+          <Tab icon={<ShowChart />} iconPosition="start" label="Gráficos" id="tab-0" />
+          <Tab icon={<History />} iconPosition="start" label="Historial" id="tab-1" />
+          <Tab icon={<NotificationsActive />} iconPosition="start" label="Alertas" id="tab-2" />
         </Tabs>
       </Box>
+
       {/* Contenido de las pestañas */}
       <Box>
         {/* Pestaña de Gráficos */}
         {tabIndex === 0 && (
           <Paper sx={{ p: { xs: 2, md: 3 } }} elevation={2}>
-            {" "}
-            {/* <--- Padding responsivo */}
             <Typography variant="h6" gutterBottom>
               Evolución de Temperatura y Humedad
             </Typography>
@@ -1326,29 +1257,12 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
               </Stack>
             ) : chartData.length > 0 ? (
               <Box sx={{ height: { xs: 300, md: 400 }, width: "100%" }}>
-                {" "}
-                {/* <--- Altura responsiva */}
                 <ResponsiveContainer>
-                  <LineChart
-                    data={chartData}
-                    margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
-                  >
-                    {" "}
-                    {/* <--- Ajustado margen izquierdo */}
+                  <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
                     <XAxis dataKey="time" tick={{ fontSize: 12 }} />
-                    <YAxis
-                      yAxisId="left"
-                      orientation="left"
-                      stroke="#8884d8"
-                      tick={{ fontSize: 12 }}
-                    />
-                    <YAxis
-                      yAxisId="right"
-                      orientation="right"
-                      stroke="#82ca9d"
-                      tick={{ fontSize: 12 }}
-                    />
+                    <YAxis yAxisId="left" orientation="left" stroke="#8884d8" tick={{ fontSize: 12 }} />
+                    <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" tick={{ fontSize: 12 }} />
                     <Tooltip />
                     <Legend />
                     <Line
@@ -1373,9 +1287,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                 </ResponsiveContainer>
               </Box>
             ) : (
-              <Typography
-                sx={{ textAlign: "center", p: 4, color: "text.secondary" }}
-              >
+              <Typography sx={{ textAlign: "center", p: 4, color: "text.secondary" }}>
                 No hay datos disponibles para mostrar en el gráfico.
               </Typography>
             )}
@@ -1406,9 +1318,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
             ) : historialGalpon.length > 0 ? (
               <TableContainer>
                 <Table size="small">
-                  {/* Remove any whitespace here */}
                   <TableHead>
-                    {/* Keep these tags together */}
                     <TableRow>
                       <TableCell>Fecha/Hora</TableCell>
                       <TableCell>Evento</TableCell>
@@ -1416,12 +1326,9 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {/* Keep table body tight with its rows */}
                     {historialGalpon.map((evento) => (
                       <TableRow key={evento.id}>
-                        <TableCell>
-                          {formatDateTime(evento.fechaHora)}
-                        </TableCell>
+                        <TableCell>{formatDateTime(evento.fechaHora)}</TableCell>
                         <TableCell>{evento.evento}</TableCell>
                         <TableCell>{evento.usuarioNombre}</TableCell>
                       </TableRow>
@@ -1430,15 +1337,14 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                 </Table>
               </TableContainer>
             ) : (
-              <Typography
-                sx={{ textAlign: "center", p: 4, color: "text.secondary" }}
-              >
+              <Typography sx={{ textAlign: "center", p: 4, color: "text.secondary" }}>
                 No hay eventos registrados para este galpón.
               </Typography>
             )}
           </Paper>
         )}
 
+        {/* Pestaña de Alertas */}
         {tabIndex === 2 && (
           <Paper sx={{ p: { xs: 2, md: 3 } }} elevation={2}>
             <Typography variant="h6" gutterBottom>
@@ -1517,9 +1423,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
                   </Table>
                 </TableContainer>
               ) : (
-                <Typography
-                  sx={{ textAlign: "center", p: 4, color: "text.secondary" }}
-                >
+                <Typography sx={{ textAlign: "center", p: 4, color: "text.secondary" }}>
                   No hay alertas registradas para este galpón.
                 </Typography>
               );

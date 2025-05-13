@@ -17,7 +17,8 @@ import {
   TableHead,
   TableRow,
   Grid,
-  Paper
+  Paper,
+  Stack
 } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
@@ -100,42 +101,75 @@ export default function HistorialAlimentacion({
           </TableContainer>
         )}
 
-        {tabValue === 1 && (
+{tabValue === 1 && (
           <Box>
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
               Estadísticas de Consumo
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Paper sx={{ p: 2 }}>
+            {/* Reemplazamos Grid container con Stack */}
+            <Stack
+              direction="row"
+              spacing={2} // Mantenemos el espaciado original
+              flexWrap="wrap" // Permitimos que los elementos se ajusten
+              useFlexGap // Mejoramos la gestión del espaciado
+            >
+              {/* Reemplazamos Grid item con Box */}
+              <Box
+                sx={{
+                  width: { xs: '100%', md: (theme) => `calc(50% - ${theme.spacing(1)})` }, // theme.spacing(1) es la mitad de spacing={2}
+                  mb: { xs: 2, md: 0 } // Añadimos margen inferior en móviles si están apilados
+                }}
+              >
+                <Paper sx={{ p: 2, height: '100%' }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    Último Período
+                    Último Período de Consumo Registrado
                   </Typography>
-                  {calcularConsumoEstimado(galpon?.galponId) && (
+                  {galpon && calcularConsumoEstimado(galpon.galponId) ? (
                     <>
                       <Typography variant="body2">
-                        Consumo Diario: {calcularConsumoEstimado(galpon?.galponId)?.consumoDiario.toFixed(2)} kg/día
+                        Consumo Diario Estimado: {calcularConsumoEstimado(galpon.galponId)?.consumoDiario.toFixed(2)} kg/día
                       </Typography>
                       <Typography variant="body2">
-                        Días Transcurridos: {calcularConsumoEstimado(galpon?.galponId)?.diasTranscurridos} días
+                        Días Desde Última Reposición: {calcularConsumoEstimado(galpon.galponId)?.diasTranscurridos} días
+                      </Typography>
+                      <Typography variant="body2">
+                        Cantidad en Última Reposición: {calcularConsumoEstimado(galpon.galponId)?.cantidadInicial} kg
                       </Typography>
                     </>
+                  ) : (
+                    <Typography variant="body2">
+                      No hay suficientes datos para calcular el consumo del último período.
+                    </Typography>
                   )}
                 </Paper>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Paper sx={{ p: 2 }}>
+              </Box>
+              {/* Reemplazamos Grid item con Box */}
+              <Box
+                sx={{
+                  width: { xs: '100%', md: (theme) => `calc(50% - ${theme.spacing(1)})` }
+                }}
+              >
+                <Paper sx={{ p: 2, height: '100%' }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    Promedio General
+                    Promedio General de Reposiciones
                   </Typography>
-                  <Typography variant="body2">
-                    Consumo Promedio: {
-                      (reposicionesGalpon.reduce((acc, curr) => acc + curr.cantidadKg, 0) / reposicionesGalpon.length).toFixed(2)
-                    } kg/reposición
-                  </Typography>
+                  {reposicionesGalpon.length > 0 ? (
+                    <Typography variant="body2">
+                      Cantidad Promedio por Reposición: {
+                        (reposicionesGalpon.reduce((acc, curr) => acc + curr.cantidadKg, 0) / reposicionesGalpon.length).toFixed(2)
+                      } kg
+                    </Typography>
+                  ) : (
+                     <Typography variant="body2">
+                      No hay reposiciones registradas para este galpón.
+                    </Typography>
+                  )}
+                   <Typography variant="body2" sx={{ mt: 1}}>
+                      Total de Reposiciones Registradas: {reposicionesGalpon.length}
+                    </Typography>
                 </Paper>
-              </Grid>
-            </Grid>
+              </Box>
+            </Stack>
           </Box>
         )}
       </DialogContent>

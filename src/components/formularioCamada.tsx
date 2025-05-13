@@ -14,7 +14,8 @@ import {
   IconButton,
   CircularProgress,
   Alert,
-  SelectChangeEvent
+  SelectChangeEvent,
+  Stack
 } from '@mui/material';
 import { AddCircleOutline, DeleteOutline } from '@mui/icons-material';
 
@@ -209,57 +210,70 @@ const FormularioCamada: React.FC<FormularioCamadaProps> = ({ onGuardar, galpones
   // Renderizar el formulario
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-      <Grid container spacing={3}>
-        {/* Campo Fecha de Ingreso */}
-        <Grid item xs={12} sm={6}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="fechaIngreso"
-            label="Fecha de Ingreso"
-            name="fechaIngreso"
-            type="date"
-            value={fechaIngreso}
-            onChange={(e) => setFechaIngreso(e.target.value)}
-            InputLabelProps={{
-              shrink: true, // Para que la etiqueta no se superponga con la fecha
-            }}
-          />
-        </Grid>
+      {/* Stack principal para todo el formulario, los elementos principales en fila y luego el resto en columna */}
+      <Stack spacing={3}>
+        {/* Stack para Fecha de Ingreso y Proveedor en la misma fila */}
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
+          {/* Campo Fecha de Ingreso */}
+          <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="fechaIngreso"
+              label="Fecha de Ingreso"
+              name="fechaIngreso"
+              type="date"
+              value={fechaIngreso}
+              onChange={(e) => setFechaIngreso(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Box>
 
-        {/* Campo Selector de Proveedor */}
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth margin="normal" required>
-            <InputLabel id="proveedor-label">Proveedor</InputLabel>
-            <Select
-              labelId="proveedor-label"
-              id="proveedorId"
-              value={proveedorId}
-              label="Proveedor"
-              onChange={handleProveedorChange}
-            >
-              <MenuItem value="">
-                <em>Seleccione un proveedor</em>
-              </MenuItem>
-              {proveedores.map((p) => (
-                <MenuItem key={p.proveedorId} value={p.proveedorId.toString()}>
-                  {p.nombre}
+          {/* Campo Selector de Proveedor */}
+          <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="proveedor-label">Proveedor</InputLabel>
+              <Select
+                labelId="proveedor-label"
+                id="proveedorId"
+                value={proveedorId}
+                label="Proveedor"
+                onChange={handleProveedorChange}
+              >
+                <MenuItem value="">
+                  <em>Seleccione un proveedor</em>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+                {proveedores.map((p) => (
+                  <MenuItem key={p.proveedorId} value={p.proveedorId.toString()}>
+                    {p.nombre}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Stack>
 
         {/* Sección de Distribución por Galpón */}
-        <Grid item xs={12}>
+        <Box sx={{ width: '100%' }}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Distribución por Galpón ({distribucion.length}/{galponesDisponibles.length}) {/* Mostrar contador */}
+            Distribución por Galpón ({distribucion.length}/{galponesDisponibles.length})
           </Typography>
           {distribucion.map((item, index) => (
-            <Grid container spacing={2} key={item.id} alignItems="center" sx={{ mb: 1 }}>
+            // Stack para cada fila de distribución
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={2}
+              key={item.id}
+              alignItems="center"
+              sx={{ mb: 2 }} // Aumentamos un poco el margen inferior para separar las filas
+              flexWrap="wrap"
+              useFlexGap
+            >
               {/* Selector de Galpón */}
-              <Grid item xs={12} sm={5}>
+              <Box sx={{ width: { xs: '100%', sm: 'calc(50% - 8px - 32px)', md: 'calc(40% - 8px - 32px)'} }}> {/* Ajustar para botón y espaciado */}
                 <FormControl fullWidth size="small" required>
                   <InputLabel id={`galpon-label-${item.id}`}>Galpón</InputLabel>
                   <Select
@@ -270,22 +284,20 @@ const FormularioCamada: React.FC<FormularioCamadaProps> = ({ onGuardar, galpones
                     required
                   >
                     <MenuItem value=""><em>Seleccione</em></MenuItem>
-                    {/* Usar galponesDisponibles pasados por props */}
                     {galponesDisponibles.map((g) => (
                       <MenuItem
                         key={g.galponId}
                         value={g.galponId.toString()}
-                        // Opcional: Deshabilitar si ya está seleccionado en otra fila
                         disabled={distribucion.some(d => d.galponId === g.galponId.toString() && d.id !== item.id)}
                       >
-                        {g.nombre} (Max: {g.capacidadMax ?? 'N/A'}) {/* Mostrar capacidad */}
+                        {g.nombre} (Max: {g.capacidadMax ?? 'N/A'})
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-              </Grid>
+              </Box>
               {/* Campo Cantidad Inicial */}
-              <Grid item xs={8} sm={5}> {/* Ajustar tamaño para que quepa el botón */}
+              <Box sx={{ width: { xs: '100%', sm: 'calc(50% - 8px)', md: 'calc(40% - 8px)'} }}> {/* Ajustar para botón y espaciado */}
                 <TextField
                   fullWidth
                   size="small"
@@ -294,42 +306,42 @@ const FormularioCamada: React.FC<FormularioCamadaProps> = ({ onGuardar, galpones
                   required
                   value={item.cantidadInicial}
                   onChange={(e) => handleDistribucionChange(item.id, 'cantidadInicial', e.target.value)}
-                  inputProps={{ min: "1" }} // HTML5 validation
+                  inputProps={{ min: "1" }}
                 />
-              </Grid>
+              </Box>
               {/* Botón Eliminar Fila */}
-              <Grid item xs={4} sm={2}> {/* Ajustar tamaño */}
+              <Box sx={{ width: { xs: '100%', sm: 'auto' }, display: 'flex', justifyContent: {xs: 'flex-end', sm: 'center'} }}>
                 <IconButton
                   onClick={() => handleRemoveGalpon(item.id)}
                   color="error"
-                  disabled={distribucion.length <= 1} // No permitir eliminar la última fila
+                  disabled={distribucion.length <= 1}
                   title="Eliminar asignación"
                 >
                   <DeleteOutline />
                 </IconButton>
-              </Grid>
-            </Grid>
+              </Box>
+            </Stack>
           ))}
           {/* Botón Añadir Fila */}
           <Button
             startIcon={<AddCircleOutline />}
             onClick={handleAddGalpon}
             sx={{ mt: 1 }}
-            disabled={distribucion.length >= galponesDisponibles.length} // Deshabilitar si se alcanzó el límite
+            disabled={distribucion.length >= galponesDisponibles.length}
           >
             Añadir Galpón
           </Button>
-        </Grid>
+        </Box>
 
         {/* Mostrar Error del Formulario */}
         {formError && (
-            <Grid item xs={12}>
+            <Box sx={{ width: '100%' }}>
                 <Alert severity="error">{formError}</Alert>
-            </Grid>
+            </Box>
         )}
 
         {/* Botón de Envío */}
-        <Grid item xs={12}>
+        <Box sx={{ width: '100%' }}>
           <Button
             type="submit"
             fullWidth
@@ -338,8 +350,8 @@ const FormularioCamada: React.FC<FormularioCamadaProps> = ({ onGuardar, galpones
           >
             Registrar Camada
           </Button>
-        </Grid>
-      </Grid>
+        </Box>
+      </Stack>
     </Box>
   );
 };

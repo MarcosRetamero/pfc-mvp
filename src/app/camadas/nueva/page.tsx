@@ -38,14 +38,14 @@ export default function NuevaCamadaPage() {
           throw new Error('No se pudo cargar la información de los galpones.');
         }
         const data = await res.json();
-        const galponData = Array.isArray(data.galpon) ? data.galpon.map((g: any) => ({
+        const galponData = Array.isArray(data.galpon) ? data.galpon.map((g: { galponId: number; nombre: string; capacidadMax: number }) => ({
           galponId: g.galponId,
           nombre: g.nombre,
           capacidadMax: g.capacidadMax // Asegurarse que se extrae capacidadMax
         })) : [];
 
         // Validar que los galpones tengan capacidadMax
-        if (galponData.some(g => typeof g.capacidadMax !== 'number')) {
+        if (galponData.some((g: GalponInfo) => typeof g.capacidadMax !== 'number')) {
              console.warn("Algunos galpones no tienen 'capacidadMax' definida en backend_nuevo.json");
              // Podrías lanzar un error o asignar un valor por defecto si es crítico
              // throw new Error("Faltan datos de capacidad máxima en algunos galpones.");

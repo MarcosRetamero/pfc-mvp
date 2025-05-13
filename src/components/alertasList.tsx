@@ -40,16 +40,7 @@ const alertasMockeadas = [
 
 const AlertasList: React.FC = () => {
 
-  // Aquí posteriormente iría la carga real desde el backend:
-  /*
-  useEffect(() => {
-    fetch('/backend.json')
-      .then(res => res.json())
-      .then(data => {
-        setAlertas(data.alerta);
-      });
-  }, []);
-  */
+
 
   return (
     <Paper elevation={2} sx={{ p: 3, mt: 4 }}>

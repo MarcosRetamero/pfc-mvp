@@ -16,6 +16,7 @@ import GalponDetalle from "@/components/galponDetalle"; // Importa el nuevo comp
 
 // --- Tipos basados en backend_nuevo.json ---
 
+
 type Rol = {
   rolId: number;
   nombre: string;
@@ -149,6 +150,7 @@ type ClimaExterno = {
   temperatura: number;
   humedad: number;
   viento: number;
+  direccionViento: string;
   lluvia: boolean;
   presion: number;
 };
@@ -204,12 +206,16 @@ type LogSistema = {
 type GalponDashboard = {
   galponId: number;
   nombre: string;
-  temperatura: number; // Promedio
-  humedad: number; // Promedio
-  estado: "normal" | "precaucion" | "critico"; // Derivado
+  superficieM2: number;
+  cantidadSecciones: number;
+  capacidadMax: number;
+  capacidadSiloKg: number;
+  temperatura: number;
+  humedad: number;
+  estado: "normal" | "precaucion" | "critico";
   pollosVivos: number;
   pollosFallecidos: number;
-  alertas: Alerta[]; // Alertas activas para este galpón
+  alertas: Alerta[];
 };
 
 // --- Componente ---
@@ -532,7 +538,7 @@ export default function DashboardPage() {
 
           {tab === 1 && (
             <Box className="mt-4">
-              <AlertasList galpones={galponesDashboard} />
+              <AlertasList />
             </Box>
           )}
         </>
