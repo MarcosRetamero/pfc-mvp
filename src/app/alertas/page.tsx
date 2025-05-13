@@ -25,13 +25,16 @@ import FormularioAlerta from "@/components/configurarAlerta";
 
 interface ConfiguracionAlerta {
   configId: number;
-  galponId: number;
-  tipo: string;
-  rolANotificar: string;
-  valorMin: number;
-  valorMax: number;
+  galponId: number | null;
+  tipoAlerta: string;  // cambiar 'tipo' por 'tipoAlerta'
+  valorMin?: number;
+  valorMax?: number;
+  umbralMortalidad?: number;
+  umbralHoras?: number;
   canalNotificacion: string;
+  rolANotificar: string;
   activa: boolean;
+  dispositivoObjetivo?: string;
 }
 
 interface FormularioAlertaProps {
