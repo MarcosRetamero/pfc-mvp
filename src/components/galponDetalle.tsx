@@ -831,7 +831,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
-  
+
   if (!galpon) {
     return (
       <Container maxWidth="sm" sx={{ py: 4, textAlign: "center" }}>
@@ -868,31 +868,30 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
             {galpon?.nombre || "Galpón"}
           </Typography>
           {galpon?.estado && (
-              <Chip
+            <Chip
               {...getChipProps(galpon.estado)}
               size="small"
               sx={{ ml: "auto" }}
-              />
-            )}
-            
+            />
+          )}
         </Stack>
-          {/* Encabezado con botón alineado */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={1}
-        py={2}
-      >
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          onClick={handleCrearAlerta} // Asegurate de definir esta función
-          title="Registrar una nueva alerta manual" // Personalizá el tooltip según necesidad
+        {/* Encabezado con botón alineado */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={1}
+          py={2}
         >
-          Configurar Alerta
-        </Button>
-      </Box>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={handleCrearAlerta} // Asegurate de definir esta función
+            title="Registrar una nueva alerta manual" // Personalizá el tooltip según necesidad
+          >
+            Configurar Alerta
+          </Button>
+        </Box>
         {/* Panel de Resumen */}
         <Paper sx={{ p: 3, mb: 3 }} elevation={2}>
           <Grid
@@ -1043,7 +1042,7 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
           </Grid>
         </Paper>
       </Box>
-      
+
       {/* Control de Cortinas a nivel Galpón */}
       <Paper sx={{ p: 3, mb: 4 }} elevation={2}>
         <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
@@ -1440,81 +1439,91 @@ const GalponDetalle: React.FC<GalponDetalleProps> = ({ galpon, onVolver }) => {
           </Paper>
         )}
 
-        {/* Pestaña de Alertas */}
         {tabIndex === 2 && (
           <Paper sx={{ p: { xs: 2, md: 3 } }} elevation={2}>
             <Typography variant="h6" gutterBottom>
-              Alertas Activas
+              Alertas del Galpón
             </Typography>
-            {galpon.alertas && galpon.alertas.length > 0 ? (
-              <TableContainer>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Severidad</TableCell>
-                      <TableCell>Descripción</TableCell>
-                      <TableCell
-                        sx={{ display: { xs: "none", md: "table-cell" } }}
-                      >
-                        Fecha/Hora
-                      </TableCell>
-                      <TableCell>Estado</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {galpon.alertas.map((alerta) => {
-                      const chipProps = getChipProps(alerta.severidad);
-                      return (
-                        <TableRow hover key={alerta.alertaId}>
+
+            {/* 🔁 Simulación de alertas tipo notificación por sección */}
+            {(() => {
+              const alertasMockeadas = [
+                {
+                  alertaId: 1,
+                  seccion: "5",
+                  descripcion: "Temperatura excesiva detectada: 32°C",
+                  fechaHora: "2024-05-12T15:30:00",
+                  resuelta: false,
+                },
+                {
+                  alertaId: 2,
+                  seccion: "3",
+                  descripcion: "Humedad baja detectada: 21%",
+                  fechaHora: "2024-05-11T08:15:00",
+                  resuelta: true,
+                },
+                {
+                  alertaId: 3,
+                  seccion: "1",
+                  descripcion: "Alta mortalidad registrada: 3%",
+                  fechaHora: "2024-05-10T18:45:00",
+                  resuelta: false,
+                },
+                {
+                  alertaId: 4,
+                  seccion: "2",
+                  descripcion: "Humedad fuera de rango: 85%",
+                  fechaHora: "2024-05-12T17:00:00",
+                  resuelta: true,
+                },
+                {
+                  alertaId: 5,
+                  seccion: "1",
+                  descripcion: "Temperatura baja detectada: 18°C",
+                  fechaHora: "2024-05-09T06:30:00",
+                  resuelta: false,
+                },
+              ];
+
+              return alertasMockeadas.length > 0 ? (
+                <TableContainer>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Sección</TableCell>
+                        <TableCell>Descripción</TableCell>
+                        <TableCell>Fecha y hora</TableCell>
+                        <TableCell>Resuelta</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {alertasMockeadas.map((alerta) => (
+                        <TableRow key={alerta.alertaId}>
+                          <TableCell>{alerta.seccion}</TableCell>
+                          <TableCell>{alerta.descripcion}</TableCell>
+                          <TableCell>
+                            {new Date(alerta.fechaHora).toLocaleString("es-AR")}
+                          </TableCell>
                           <TableCell>
                             <Chip
-                              icon={chipProps.icon}
-                              label={chipProps.label}
-                              color={chipProps.color}
+                              label={alerta.resuelta ? "Sí" : "No"}
+                              color={alerta.resuelta ? "success" : "error"}
                               size="small"
                             />
                           </TableCell>
-                          <TableCell>
-                            <Typography variant="body2">
-                              {alerta.descripcion}
-                            </Typography>
-                          </TableCell>
-                          <TableCell
-                            sx={{ display: { xs: "none", md: "table-cell" } }}
-                          >
-                            <MuiTooltip
-                              title={formatDateTime(alerta.fechaHora)}
-                            >
-                              <Typography variant="body2">
-                                {formatRelativeTime(alerta.fechaHora)}
-                              </Typography>
-                            </MuiTooltip>
-                          </TableCell>
-                          <TableCell>
-                            {alerta.resuelta ? (
-                              <Chip
-                                label="Resuelta"
-                                color="success"
-                                size="small"
-                                variant="outlined"
-                              />
-                            ) : (
-                              <Chip label="Activa" color="error" size="small" />
-                            )}
-                          </TableCell>
                         </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            ) : (
-              <Typography
-                sx={{ textAlign: "center", p: 4, color: "text.secondary" }}
-              >
-                No hay alertas activas para este galpón.
-              </Typography>
-            )}
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              ) : (
+                <Typography
+                  sx={{ textAlign: "center", p: 4, color: "text.secondary" }}
+                >
+                  No hay alertas registradas para este galpón.
+                </Typography>
+              );
+            })()}
           </Paper>
         )}
       </Box>

@@ -50,7 +50,7 @@ export default function IncidenciasPage() {
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const tiposOpciones = ["Sistema", "Sanitaria", "Otro"];
+  const tiposOpciones = ["Sistema", "Sanitaria", "Ambiental", "Otro"];
 
   useEffect(() => {
     setCamadas([1, 2, 3]);

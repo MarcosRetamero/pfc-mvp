@@ -20,6 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
 import FormularioAlerta from "@/components/configurarAlerta";
 
 interface ConfiguracionAlerta {
@@ -33,11 +34,18 @@ interface ConfiguracionAlerta {
   activa: boolean;
 }
 
+interface FormularioAlertaProps {
+  galponesDisponibles: { galponId: number; nombre: string }[];
+  onGuardar: (nuevaAlerta: ConfiguracionAlerta) => void;
+  alertaExistente?: ConfiguracionAlerta | null;
+}
+
 const AlertasPage = () => {
   const [alertas, setAlertas] = useState<ConfiguracionAlerta[]>([]);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [alertaEditando, setAlertaEditando] = useState<ConfiguracionAlerta | null>(null);
   const [galpones, setGalpones] = useState<{ galponId: number; nombre: string }[]>([]);
 
   useEffect(() => {
@@ -60,14 +68,24 @@ const AlertasPage = () => {
         valorMin: 40,
         valorMax: 60,
         canalNotificacion: "Email",
-        activa: false,
+        activa: true,
+      },
+      {
+        configId: 3,
+        galponId: 3,
+        tipo: "mortandad",
+        rolANotificar: "Operario, Gerente",
+        valorMin: 0,
+        valorMax: 2,
+        canalNotificacion: "WhatsApp",
+        activa: true,
       },
     ]);
 
-    // Simular carga de galpones
     setGalpones([
       { galponId: 1, nombre: "Galpón 1" },
       { galponId: 2, nombre: "Galpón 2" },
+      { galponId: 3, nombre: "Galpón 3" },
     ]);
   }, []);
 
@@ -86,8 +104,23 @@ const AlertasPage = () => {
   };
 
   const handleGuardarAlerta = (nuevaAlerta: ConfiguracionAlerta) => {
-    setAlertas((prev) => [...prev, { ...nuevaAlerta, configId: Date.now() }]);
-    setSuccessMsg("Nueva alerta registrada.");
+    if (alertaEditando) {
+      setAlertas((prev) =>
+        prev.map((a) =>
+          a.configId === alertaEditando.configId
+            ? { ...nuevaAlerta, configId: alertaEditando.configId }
+            : a
+        )
+      );
+      setSuccessMsg("Alerta modificada correctamente.");
+    } else {
+      setAlertas((prev) => [
+        ...prev,
+        { ...nuevaAlerta, configId: Date.now() },
+      ]);
+      setSuccessMsg("Nueva alerta registrada.");
+    }
+    setAlertaEditando(null);
     setModalAbierto(false);
   };
 
@@ -100,7 +133,10 @@ const AlertasPage = () => {
       <Button
         startIcon={<AddIcon />}
         variant="contained"
-        onClick={() => setModalAbierto(true)}
+        onClick={() => {
+          setAlertaEditando(null);
+          setModalAbierto(true);
+        }}
         sx={{ mb: 3 }}
       >
         Nueva Alerta
@@ -123,6 +159,16 @@ const AlertasPage = () => {
                 </Typography>
               </Box>
               <Stack direction="row" spacing={1} alignItems="center">
+                <Tooltip title="Modificar alerta">
+                  <IconButton
+                    onClick={() => {
+                      setAlertaEditando(alerta);
+                      setModalAbierto(true);
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
                 <Tooltip title="Eliminar alerta">
                   <IconButton onClick={() => eliminarAlerta(alerta.configId)}>
                     <DeleteIcon />
@@ -153,7 +199,11 @@ const AlertasPage = () => {
             {expandedId === alerta.configId && (
               <Box sx={{ mt: 2 }}>
                 <Typography variant="body2">
-                  <b>Valor mínimo:</b> {alerta.valorMin} | <b>Valor máximo:</b> {alerta.valorMax}
+                  <b>Valor mínimo:</b> {alerta.valorMin} |{" "}
+                  <b>Valor máximo:</b>{" "}
+                  {alerta.tipo === "mortandad"
+                    ? `${alerta.valorMax}%`
+                    : alerta.valorMax}
                 </Typography>
                 <Typography variant="body2">
                   <b>Roles a notificar:</b> {alerta.rolANotificar}
@@ -173,17 +223,35 @@ const AlertasPage = () => {
         )}
       </Stack>
 
-      {/* Diálogo de creación de alerta */}
-      <Dialog open={modalAbierto} onClose={() => setModalAbierto(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Nueva Configuración de Alerta</DialogTitle>
+      {/* Diálogo de creación o modificación de alerta */}
+      <Dialog
+        open={modalAbierto}
+        onClose={() => {
+          setModalAbierto(false);
+          setAlertaEditando(null);
+        }}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          {alertaEditando ? "Modificar Alerta" : "Nueva Configuración de Alerta"}
+        </DialogTitle>
         <DialogContent sx={{ pt: 3 }}>
           <FormularioAlerta
             galponesDisponibles={galpones}
             onGuardar={handleGuardarAlerta}
+            alertaExistente={alertaEditando}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setModalAbierto(false)}>Cancelar</Button>
+          <Button
+            onClick={() => {
+              setModalAbierto(false);
+              setAlertaEditando(null);
+            }}
+          >
+            Cancelar
+          </Button>
         </DialogActions>
       </Dialog>
 

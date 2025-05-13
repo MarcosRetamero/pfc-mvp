@@ -193,33 +193,46 @@ export const CamadasGestion: React.FC<CamadasGestionProps> = ({ camada }) => {
       <Dialog open={openPeso} onClose={() => setOpenPeso(false)}>
         <DialogTitle>Registrar Peso Promedio</DialogTitle>
         <DialogContent>
+          <FormControl fullWidth margin="dense" sx={{ mt: 2 }}>
+        <InputLabel id="galpon-label">Galpón</InputLabel>
+        <Select
+          labelId="galpon-label"
+          defaultValue=""
+          label="Galpón"
+        >
+          <MenuItem value="galpon1">Galpón 1</MenuItem>
+          <MenuItem value="galpon2">Galpón 2</MenuItem>
+          <MenuItem value="galpon3">Galpón 3</MenuItem>
+          <MenuItem value="galpon4">Galpón 4</MenuItem>
+        </Select>
+          </FormControl>
           <TextField
-            autoFocus
-            margin="dense"
-            label="Peso Promedio (kg)"
-            type="number"
-            fullWidth
-            variant="outlined"
-            inputProps={{ step: "0.01" }}
-          />
-            <TextField
-            margin="dense"
-            label="Fecha"
-            type="date"
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            defaultValue={new Date().toISOString().split('T')[0]}
+        autoFocus
+        margin="dense"
+        label="Peso Promedio (kg)"
+        type="number"
+        fullWidth
+        variant="outlined"
+        inputProps={{ step: "0.01" }}
           />
           <TextField
-            margin="dense"
-            label="Tamaño de la Muestra"
-            type="number"
-            fullWidth
-            variant="outlined"
-            helperText="Cantidad de aves pesadas"
+        margin="dense"
+        label="Fecha"
+        type="date"
+        fullWidth
+        variant="outlined"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        defaultValue={new Date().toISOString().split('T')[0]}
+          />
+          <TextField
+        margin="dense"
+        label="Tamaño de la Muestra"
+        type="number"
+        fullWidth
+        variant="outlined"
+        helperText="Cantidad de aves pesadas"
           />
         </DialogContent>
         <DialogActions>
@@ -232,49 +245,62 @@ export const CamadasGestion: React.FC<CamadasGestionProps> = ({ camada }) => {
       <Dialog open={openMortalidad} onClose={() => setOpenMortalidad(false)}>
         <DialogTitle>Registrar Mortalidad</DialogTitle>
         <DialogContent>
+          <FormControl fullWidth margin="dense" sx={{ mt: 2 }}>
+        <InputLabel id="galpon-label">Galpón</InputLabel>
+        <Select
+          labelId="galpon-label"
+          defaultValue=""
+          label="Galpón"
+        >
+          <MenuItem value="galpon1">Galpón 1</MenuItem>
+          <MenuItem value="galpon2">Galpón 2</MenuItem>
+          <MenuItem value="galpon3">Galpón 3</MenuItem>
+          <MenuItem value="galpon4">Galpón 4</MenuItem>
+        </Select>
+          </FormControl>
           <TextField
-            autoFocus
-            margin="dense"
-            label="Cantidad"
-            type="number"
-            fullWidth
-            variant="outlined"
+        autoFocus
+        margin="dense"
+        label="Cantidad"
+        type="number"
+        fullWidth
+        variant="outlined"
           />
-            <TextField
-            margin="dense"
-            label="Fecha"
-            type="date"
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            defaultValue={new Date().toISOString().split('T')[0]}
+          <TextField
+        margin="dense"
+        label="Fecha"
+        type="date"
+        fullWidth
+        variant="outlined"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        defaultValue={new Date().toISOString().split('T')[0]}
           />
-<FormControl fullWidth margin="dense" sx={{ mt: 2 }}>
-            <InputLabel id="causa-label">Causa</InputLabel>
-            <Select
-              labelId="causa-label"
-              value={causa}
-              onChange={(e) => setCausa(e.target.value)}
-              required
-              label="Causa"
-            >
-              <MenuItem value="enfermedad">Enfermedad</MenuItem>
-              <MenuItem value="temperatura">Temperatura</MenuItem>
-              <MenuItem value="accidente">Accidente</MenuItem>
-              <MenuItem value="otro">Otro</MenuItem>
-            </Select>
+          <FormControl fullWidth margin="dense" sx={{ mt: 2 }}>
+        <InputLabel id="causa-label">Causa</InputLabel>
+        <Select
+          labelId="causa-label"
+          value={causa}
+          onChange={(e) => setCausa(e.target.value)}
+          required
+          label="Causa"
+        >
+          <MenuItem value="enfermedad">Enfermedad</MenuItem>
+          <MenuItem value="temperatura">Temperatura</MenuItem>
+          <MenuItem value="accidente">Accidente</MenuItem>
+          <MenuItem value="otro">Otro</MenuItem>
+        </Select>
           </FormControl>
           {causa === 'otro' && (
-            <TextField
-              margin="dense"
-              label="Especifique la causa"
-              fullWidth
-              variant="outlined"
-              multiline
-              rows={2}
-            />
+        <TextField
+          margin="dense"
+          label="Especifique la causa"
+          fullWidth
+          variant="outlined"
+          multiline
+          rows={2}
+        />
           )}
         </DialogContent>
         <DialogActions>
